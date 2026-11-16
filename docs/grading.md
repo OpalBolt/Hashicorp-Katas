@@ -1,51 +1,89 @@
 # How grading works
 
-You finish a task. An AI checks it. The AI grades from evidence, so you must produce evidence.
+The grading skill checks your work against the slice file. It checks both the tasks and your written Explain answers.
+It uses your files and runs checks when it can.
 
-## Slice layout
+## Submission layout
 
-Each slice has:
+Use one folder for each slice:
 
-- **Why.** Why the goal matters to a client. Read this first.
-- **Concepts.** Names of things you must understand. You research them yourself.
-- **Tasks.** Each has a goal, constraints, and a **Done when** list. Every line in that list must be true.
-- **Explain.** Written questions. These test understanding, not only working code.
-
-## Where your work goes
-
-```
+```text
 submissions/
   01-workflow/
-    code/        your Terraform, compose files, scripts
-    evidence/    command output, logs, screenshots as text
-    answers.md   your written answers to Explain
+    code/
+    evidence/
+      task-01.md
+      task-02.md
+    answers.md
 ```
 
-Use the same pattern for each slice.
+Copy the previous slice's `code/` into the new slice, then extend it.
+Keep each slice's evidence and answers in its own folder.
+Slices that start a new tool track can start with an empty `code/` folder.
 
-## Asking the AI to grade
+## Evidence format
 
-Give the AI these things:
+Create one Markdown file per task at `evidence/task-NN.md`.
+Use the task number from the slice file. Keep the sections in this order:
 
-1. The slice file.
-2. The matching `submissions/<slice>/` folder.
-3. This instruction:
+```markdown
+# Task NN evidence
 
-> Grade my submission against the slice's "Done when" lists and "Explain" questions. Use only my files and, where you can, run the checks yourself. For each task, give PASS, PARTIAL or FAIL with the exact line that failed and why. Do not write the solution. Do not give a fix. If I fail, give one hint that points at the concept, not the answer. Then judge each written answer as solid, shallow or wrong, and say what is missing.
+## Done when 1
+- Result:
+- Source:
 
-`AGENTS.md` in the repo root gives the same rules to an agent that reads it on its own.
+## Done when 2
+- Result:
+- Source:
 
-## Rules for you
+## Notes
+```
 
-- Do not paste secrets or real tokens into evidence. Dev-mode tokens and test keys are fine. Real ones are not.
-- Evidence must come from your run, not from a guide.
-- A pass without understanding does not count. If you cannot explain it, redo it.
-- Use the AI for grading and hints only. If you ask it to write the solution, you lose the learning.
+Write the observed result under `Result`.
+Point `Source` to a command, output file, log, or screenshot.
+Use one `Done when` section for every line in the task.
+Evidence must come from your own run. Do not paste real secrets or tokens.
+
+Write one answer for each question in `answers.md`:
+
+```markdown
+# Explain
+
+## Explain 1
+Answer:
+
+## Explain 2
+Answer:
+```
+
+## Grading checklist
+
+The grading skill:
+
+1. Reads the slice file, submission folder, and relevant source files.
+2. Checks every `Done when` line against evidence.
+3. Runs safe checks when the environment supports them.
+4. Reports each task as `PASS`, `PARTIAL`, or `FAIL`.
+5. Names the exact unmet line and explains why it is unmet.
+6. Judges each Explain answer as `solid`, `shallow`, or `wrong`.
+7. States what an incomplete Explain answer is missing.
+
+Evidence does not turn a failed check into a pass.
+The grader may reject evidence that does not prove the claim.
+
+## Hints
+
+For a failed task, the grading skill gives exactly one hint.
+The hint names one concept to study. It does not give a fix, a command, or solution code.
+If you still cannot explain the result, redo the task.
+
+Ask the grading skill to grade only. Asking it to write a solution removes the learning goal.
 
 ## Grades
 
 | Grade | Meaning |
 |---|---|
-| PASS | Every "Done when" line is true and shown by evidence. |
-| PARTIAL | Some lines are true. The rest are missing or unproven. |
-| FAIL | The task is not met, or the evidence is not yours or does not show it. |
+| PASS | Every `Done when` line is true and supported by evidence. |
+| PARTIAL | Some lines are true. Other lines are missing or unproven. |
+| FAIL | The task is not met, or its evidence does not prove the result. |

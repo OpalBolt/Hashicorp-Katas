@@ -1,50 +1,58 @@
 # Terraform and Vault training
 
-This guide takes you from "played with Terraform, new to Vault" to a consultant who can advise existing HashiCorp customers and also build what you advise.
-
-You do the work. The guide gives you goals, the reason for each goal, and tests for success. It does not give you the answers.
+This guide helps you build hands-on Terraform and Vault skills for consulting work.
+It gives you goals, reasons, constraints, and checks. It does not give you solutions.
 
 ## Who this is for
 
 - You know Docker and have some CI/CD experience.
-- You have used Terraform before, but not deeply.
+- You have used Terraform before, but not in depth.
 - You are new to Vault.
-- Your clients are existing HashiCorp customers, so most work is advice. Good advice needs hands-on skill, so you still build everything.
+- Your clients already use HashiCorp products. You need hands-on skill to give useful advice.
 
 ## Tools
 
 | Tool | Use | Limit to remember |
 |---|---|---|
-| [Floci](https://github.com/floci-io/floci) | Local AWS emulator on `localhost:4566`. Free, MIT licence. | It is an emulator. It does not enforce IAM like real AWS. Some services are missing or approximate. |
-| Vault Community Edition | Run it from the `hashicorp/vault` image. Free to run. | No Enterprise features. You must still learn what they are. |
-| GitHub Actions, public repo | Free runners. Run Floci and Vault as service containers. | A Vault inside a job dies with the job. |
-| MkDocs Material | Build this site: `pip install mkdocs-material`, then `mkdocs serve`. | None. |
+| [Floci](https://github.com/floci-io/floci) | Emulate AWS on `localhost:4566`. | It does not prove real AWS behavior, including IAM behavior. |
+| Vault Community Edition | Run Vault locally in a container. | It does not include Enterprise features. |
+| GitHub Actions | Run the CI slice on free runners. | A Vault service container ends with its job. |
+| MkDocs Material | Build and serve this guide. | None. |
 
-AWS is the cloud target because it is the largest. The ideas move to Azure and GCP.
+AWS is the cloud target. The ideas also apply to other clouds.
 
-## Pace
+## Work pattern
 
-No deadline. Each slice stands alone once its listed prerequisites are done. Stop and resume any time. Your progress lives in `submissions/`.
+There is no deadline. Complete a slice after its prerequisites are done.
+You can stop and resume at any time. Your work lives in `submissions/`.
+The guide uses one folder per slice. Start a new slice by copying the previous slice's work,
+then extend it. Slices 01 and 04 start fresh because they begin separate tool tracks.
 
-## Slices
+## Slice order
 
-Do them in order the first time. Slices 01 to 03 are Terraform. Slices 04 to 06 are Vault. Slices 07 and 08 join them. Slices 09 and 10 are the advisory layer.
+Complete the slices in this order the first time. Each row lists the required earlier work.
 
-| # | Slice | Needs |
+| # | Slice | Prerequisites |
 |---|---|---|
 | 01 | Local AWS and Terraform workflow | none |
 | 02 | State and drift | 01 |
 | 03 | HCL and modules | 02 |
 | 04 | Vault first contact | none |
 | 05 | Vault as a real server | 04 |
-| 06 | Dynamic secrets, PKI, transit | 05 |
-| 07 | Terraform with Vault | 03, 06 |
-| 08 | CI/CD with no stored secrets | 07 |
-| 09 | Advisory: licences, forks, Enterprise | 07 |
-| 10 | Capstone: client scenarios | all |
+| 06 | Dynamic secrets and rotation | 05 |
+| 07 | PKI and transit | 06 |
+| 08 | Terraform with Vault | 03, 07 |
+| 09 | CI/CD with no stored secrets | 08 |
+| 10 | Advisory: licensing and Enterprise | 08 |
+| Capstone | Client scenarios | 07, 09, 10 |
 
-## Exams
+The capstone has a written diagnosis stage and a build stage.
+The build stage uses the provided synthetic customer environment.
 
-Terraform Associate and Vault Associate objectives overlap with these slices. This guide does not aim at the exams. When you finish, read the official objective lists and note any gaps.
+## Exams and reference
 
-See [How grading works](grading.md) before you start.
+The slices loosely overlap with Terraform Associate and Vault Associate objectives.
+The guide does not prepare you for either exam.
+Read the official objectives later and record any gaps.
+
+Read [How grading works](grading.md) before you start.
