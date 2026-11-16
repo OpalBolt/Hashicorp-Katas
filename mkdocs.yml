@@ -13,14 +13,3 @@ markdown_extensions:
 nav:
   - Home: index.md
   - How grading works: grading.md
-  - Slices:
-      - 01 Local AWS and Terraform workflow: slices/01-workflow.md
-      - 02 State and drift: slices/02-state.md
-      - 03 HCL and modules: slices/03-modules.md
-      - 04 Vault first contact: slices/04-vault-first-contact.md
-      - 05 Vault as a real server: slices/05-vault-server.md
-      - 06 Dynamic secrets, PKI, transit: slices/06-dynamic-secrets.md
-      - 07 Terraform with Vault: slices/07-terraform-with-vault.md
-      - 08 CI/CD with no stored secrets: slices/08-ci.md
-      - 09 Advisory: licences, forks, Enterprise: slices/09-advisory.md
-      - 10 Capstone: client scenarios: slices/10-capstone.md

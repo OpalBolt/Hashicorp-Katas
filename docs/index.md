@@ -32,16 +32,16 @@ Do them in order the first time. Slices 01 to 03 are Terraform. Slices 04 to 06 
 
 | # | Slice | Needs |
 |---|---|---|
-| 01 | [Local AWS and Terraform workflow](slices/01-workflow.md) | none |
-| 02 | [State and drift](slices/02-state.md) | 01 |
-| 03 | [HCL and modules](slices/03-modules.md) | 02 |
-| 04 | [Vault first contact](slices/04-vault-first-contact.md) | none |
-| 05 | [Vault as a real server](slices/05-vault-server.md) | 04 |
-| 06 | [Dynamic secrets, PKI, transit](slices/06-dynamic-secrets.md) | 05 |
-| 07 | [Terraform with Vault](slices/07-terraform-with-vault.md) | 03, 06 |
-| 08 | [CI/CD with no stored secrets](slices/08-ci.md) | 07 |
-| 09 | [Advisory: licences, forks, Enterprise](slices/09-advisory.md) | 07 |
-| 10 | [Capstone: client scenarios](slices/10-capstone.md) | all |
+| 01 | Local AWS and Terraform workflow | none |
+| 02 | State and drift | 01 |
+| 03 | HCL and modules | 02 |
+| 04 | Vault first contact | none |
+| 05 | Vault as a real server | 04 |
+| 06 | Dynamic secrets, PKI, transit | 05 |
+| 07 | Terraform with Vault | 03, 06 |
+| 08 | CI/CD with no stored secrets | 07 |
+| 09 | Advisory: licences, forks, Enterprise | 07 |
+| 10 | Capstone: client scenarios | all |
 
 ## Exams
 
