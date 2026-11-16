@@ -24,15 +24,15 @@ Write all Terraform configuration yourself.
 
 ### Task 01 — Configure a local target
 
-Create a Terraform configuration in `submissions/01-workflow/`.
+Create a Terraform configuration in `submissions/01-workflow/code/`.
 Point its AWS provider at Floci.
 Choose at least two AWS resources that Floci supports and manage them together.
 
 #### Constraints
 
-- Work only in `submissions/01-workflow/`.
+- Keep Terraform configuration in `submissions/01-workflow/code/`.
 - Use the local Floci endpoint. Do not use a real AWS account.
-- Do not add cloud credentials or copy a finished configuration.
+- Do not add real cloud credentials or copy a finished configuration.
 - Pin the AWS provider to a chosen version.
 
 #### Done when
