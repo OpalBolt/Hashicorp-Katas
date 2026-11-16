@@ -4,6 +4,16 @@ services:
     ports:
       - "127.0.0.1:4566:4566"
 
+  floci-ui:
+    image: floci/floci-ui:latest
+    environment:
+      FLOCI_CLOUD: aws
+      FLOCI_ENDPOINT: http://floci:4566
+    ports:
+      - "127.0.0.1:4500:4500"
+    depends_on:
+      - floci
+
   postgres:
     image: postgres:16-alpine
     environment:

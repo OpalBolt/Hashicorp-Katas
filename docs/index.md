@@ -19,6 +19,7 @@ It gives you goals, reasons, constraints, and checks. It does not give you solut
 | Tool | Use | Limit to remember |
 |---|---|---|
 | [Floci](https://github.com/floci-io/floci) | Emulate AWS on `localhost:4566`. | It does not prove real AWS behavior, including IAM behavior. |
+| [Floci UI](https://github.com/floci-io/floci-ui) | Browse Floci resources at `localhost:4500`. | It shows Floci only, not real AWS. |
 | Vault Community Edition | Run Vault locally in a container. | It does not include Enterprise features. |
 | GitHub Actions | Run the CI slice on free runners. | A Vault service container ends with its job. |
 | MkDocs Material | Build and serve this guide. | None. |
@@ -45,6 +46,9 @@ Floci. For example, this lists the buckets in Floci, not in AWS:
 ```bash
 aws s3 ls
 ```
+
+You can also open Floci UI at <http://localhost:4500> to see what Terraform
+created.
 
 The test key also protects you. If the endpoint is missing, real AWS rejects
 the key, so nothing reaches a real account.

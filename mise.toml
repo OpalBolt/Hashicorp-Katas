@@ -19,7 +19,7 @@ description = "Serve the guide locally"
 run = "mkdocs serve"
 
 [tasks.start]
-description = "Start the Floci and PostgreSQL containers"
+description = "Start the Floci, Floci UI, and PostgreSQL containers"
 run = "docker compose up --detach"
 
 [tasks.stop]
