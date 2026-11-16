@@ -14,7 +14,8 @@ You will use a local AWS emulator so that you can repeat the workflow without cr
 
 Start this slice in a new folder: `submissions/01-workflow/`.
 
-Use Floci at `localhost:4566`, as documented on the home page.
+Use Floci at `localhost:4566`. Set the shell variables in
+[Connect to Floci](../index.md#connect-to-floci) first.
 Write all Terraform configuration yourself.
 
 ## Concepts

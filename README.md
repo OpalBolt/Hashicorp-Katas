@@ -30,6 +30,8 @@ mise run start
 Floci is the local AWS emulator used by slices 01–03 and answers on
 `localhost:4566`. PostgreSQL supports the dynamic-secrets work in slice 06.
 The compose file uses test-only database values and does not include Vault.
+Before you run Terraform or the AWS CLI against Floci, set the shell
+variables in the guide's "Connect to Floci" section on the home page.
 
 Stop the containers and remove this project's container data:
 

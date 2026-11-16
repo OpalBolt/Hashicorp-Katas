@@ -25,6 +25,39 @@ It gives you goals, reasons, constraints, and checks. It does not give you solut
 
 AWS is the cloud target. The ideas also apply to other clouds.
 
+## Connect to Floci
+
+With a real AWS account, you would create an access key and export it. Floci
+accepts any key, so you set test values and an endpoint instead. Run this in
+each shell that you use for slices 01–03. Your CI job in slice 09 needs the
+same values:
+
+```bash
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+export AWS_REGION=us-east-1
+export AWS_ENDPOINT_URL=http://localhost:4566
+```
+
+`AWS_ENDPOINT_URL` sends both the Terraform AWS provider and the AWS CLI to
+Floci. For example, this lists the buckets in Floci, not in AWS:
+
+```bash
+aws s3 ls
+```
+
+The test key also protects you. If the endpoint is missing, real AWS rejects
+the key, so nothing reaches a real account.
+
+!!! warning "Use these values only for Floci"
+    Close the shell or unset these variables before you work with a real AWS
+    account. Never put a real access key in `submissions/`.
+
+These variables cover credentials and the endpoint only. Slice 01 asks you to
+pin the provider and decide which other provider settings Floci needs.
+Use the [Floci Terraform guide](https://floci.io/floci/getting-started/terraform/)
+when a resource or the S3 backend does not behave as expected.
+
 ## Work pattern
 
 There is no deadline. Complete a slice after its prerequisites are done.
