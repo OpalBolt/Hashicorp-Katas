@@ -9,7 +9,8 @@ Install these two tools:
 - [Docker](https://docs.docker.com/engine/install/)
 - [mise](https://mise.jdx.dev/installing-mise.html)
 
-Docker runs the local AWS emulator and Vault server. Mise installs the pinned
+Docker Compose runs the local AWS emulator and PostgreSQL database. The Vault
+slices ask you to build the Vault server separately. Mise installs the pinned
 Terraform, Vault CLI, AWS CLI, Python, and MkDocs tools.
 
 ## Start the guide
@@ -18,6 +19,22 @@ From the repository root, install the pinned tools:
 
 ```bash
 mise install
+```
+
+Start the supporting containers:
+
+```bash
+mise run start
+```
+
+Floci is the local AWS emulator used by slices 01–03 and answers on
+`localhost:4566`. PostgreSQL supports the dynamic-secrets work in slice 06.
+The compose file uses test-only database values and does not include Vault.
+
+Stop the containers and remove this project's container data:
+
+```bash
+mise run stop
 ```
 
 Serve the guide locally:

@@ -17,3 +17,11 @@ run = "mkdocs build --strict"
 depends = ["setup"]
 description = "Serve the guide locally"
 run = "mkdocs serve"
+
+[tasks.start]
+description = "Start the Floci and PostgreSQL containers"
+run = "docker compose up --detach"
+
+[tasks.stop]
+description = "Stop the containers and remove their data"
+run = "docker compose down --volumes"
