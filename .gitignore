@@ -3,4 +3,5 @@ site/
 submissions/capstone/code/**/terraform/.terraform/
 submissions/capstone/code/**/terraform/*.tfstate*
 submissions/capstone/code/mossvale-supply/.mossvale-initializing
+submissions/capstone/.mossvale-initializing
 submissions/capstone/.mossvale-reset-backups/

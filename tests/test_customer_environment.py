@@ -22,6 +22,7 @@ class CustomerEnvironmentTests(unittest.TestCase):
         )
         self.working = self.root / "submissions/capstone/code/mossvale-supply"
         self.backups = self.root / "submissions/capstone/.mossvale-reset-backups"
+        self.initializing = self.root / "submissions/capstone/.mossvale-initializing"
         self.log = self.root / "commands.log"
         bin_dir = self.root / "bin"
         bin_dir.mkdir()
@@ -101,12 +102,37 @@ esac
 
     def test_failed_initialization_does_not_start_on_retry(self):
         self.assertNotEqual(self.run_customer("start", FAIL_INIT="1").returncode, 0)
-        self.assertTrue((self.working / ".mossvale-initializing").exists())
+        self.assertTrue(self.initializing.exists())
 
         result = self.run_customer("start")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Initialization did not finish", result.stderr)
         self.assertNotIn("docker ", self.log.read_text())
+
+    def test_failed_copy_can_be_reset_without_losing_the_partial_copy(self):
+        copy_command = self.root / "bin/cp"
+        self.write_command(
+            copy_command,
+            """#!/bin/sh
+mkdir -p "$3"
+: > "$3/partial-copy"
+exit 1
+""",
+        )
+
+        self.assertNotEqual(self.run_customer("start").returncode, 0)
+        self.assertTrue(self.initializing.exists())
+        retry = self.run_customer("start")
+        self.assertNotEqual(retry.returncode, 0)
+        self.assertIn("Initialization did not finish", retry.stderr)
+        self.assertFalse(self.log.exists())
+        copy_command.unlink()
+
+        result = self.run_customer("reset")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(self.initializing.exists())
+        self.assertEqual(len(list(self.backups.glob("*/working-copy/partial-copy"))), 1)
+        self.assertNotIn(" down ", self.log.read_text())
 
 
 if __name__ == "__main__":

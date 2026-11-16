@@ -6,6 +6,7 @@ repo_root=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 baseline="$repo_root/customers/mossvale-supply"
 dir="$repo_root/submissions/capstone/code/mossvale-supply"
 backup_root="$repo_root/submissions/capstone/.mossvale-reset-backups"
+initializing="$repo_root/submissions/capstone/.mossvale-initializing"
 project="mossvale-supply-$(id -u)"
 
 if [ ! -d "$baseline" ]; then
@@ -27,25 +28,25 @@ compose() {
 
 copy_baseline() {
   mkdir -p "$(dirname "$dir")"
+  : > "$initializing"
   cp -R "$baseline" "$dir"
-  : > "$dir/.mossvale-initializing"
 }
 
 initialize_state() {
   terraform -chdir="$dir/terraform" init -input=false
   terraform -chdir="$dir/terraform" apply -input=false -auto-approve
-  rm "$dir/.mossvale-initializing"
+  rm "$initializing"
 }
 
 start() {
+  if [ -e "$initializing" ] || [ -e "$dir/.mossvale-initializing" ]; then
+    printf '%s\n' "Initialization did not finish. Run mise run customer-reset to preserve this copy and retry." >&2
+    exit 1
+  fi
+
   if [ ! -e "$dir" ]; then
     copy_baseline
     initialize_state
-  fi
-
-  if [ -e "$dir/.mossvale-initializing" ]; then
-    printf '%s\n' "Initialization did not finish. Run mise run customer-reset to preserve this copy and retry." >&2
-    exit 1
   fi
 
   compose up --detach
@@ -53,7 +54,9 @@ start() {
 
 reset() {
   if [ -e "$dir" ] || [ -L "$dir" ]; then
-    compose down --volumes
+    if [ ! -e "$initializing" ] && [ ! -e "$dir/.mossvale-initializing" ]; then
+      compose down --volumes
+    fi
     mkdir -p "$backup_root"
     backup=$(mktemp -d "$backup_root/reset-XXXXXXXX")
     mv "$dir" "$backup/working-copy"
