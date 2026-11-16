@@ -43,6 +43,7 @@ for arg in "$@"; do
   case "$arg" in -chdir=*) dir=${arg#-chdir=} ;; esac
 done
 case " $* " in
+  *" init "*) [ "${FAIL_INIT:-0}" != 1 ] ;;
   *" apply "*) : > "$dir/terraform.tfstate" ;;
 esac
 """,
@@ -97,6 +98,15 @@ esac
         self.assertNotEqual(self.run_customer("reset", FAIL_DOWN="1").returncode, 0)
         self.assertEqual(note.read_text(), "learner work")
         self.assertFalse(self.backups.exists())
+
+    def test_failed_initialization_does_not_start_on_retry(self):
+        self.assertNotEqual(self.run_customer("start", FAIL_INIT="1").returncode, 0)
+        self.assertTrue((self.working / ".mossvale-initializing").exists())
+
+        result = self.run_customer("start")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Initialization did not finish", result.stderr)
+        self.assertNotIn("docker ", self.log.read_text())
 
 
 if __name__ == "__main__":

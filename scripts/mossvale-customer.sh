@@ -28,17 +28,24 @@ compose() {
 copy_baseline() {
   mkdir -p "$(dirname "$dir")"
   cp -R "$baseline" "$dir"
+  : > "$dir/.mossvale-initializing"
 }
 
 initialize_state() {
   terraform -chdir="$dir/terraform" init -input=false
   terraform -chdir="$dir/terraform" apply -input=false -auto-approve
+  rm "$dir/.mossvale-initializing"
 }
 
 start() {
   if [ ! -e "$dir" ]; then
     copy_baseline
     initialize_state
+  fi
+
+  if [ -e "$dir/.mossvale-initializing" ]; then
+    printf '%s\n' "Initialization did not finish. Run mise run customer-reset to preserve this copy and retry." >&2
+    exit 1
   fi
 
   compose up --detach

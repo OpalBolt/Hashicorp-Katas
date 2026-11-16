@@ -59,6 +59,8 @@ creates its initial local Terraform state. Later starts keep that working
 copy unchanged. Reset moves the old working copy to the ignored
 `submissions/capstone/.mossvale-reset-backups/` directory, restores a fresh
 baseline, and starts it again.
+If initialization fails, reset the environment to preserve the partial copy
+and try again.
 
 The customer Compose project uses loopback-only ports and a separate project
 name for each local user.
