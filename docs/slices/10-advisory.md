@@ -1,3 +1,9 @@
+---
+icon: material/briefcase-outline
+tags:
+  - Advisory
+---
+
 # 10 — Advisory: licensing and Enterprise
 
 ## Why

@@ -1,3 +1,7 @@
+---
+icon: material/clipboard-check-outline
+---
+
 # How grading works
 
 The grading skill checks your work against the slice file. It checks both the tasks and your written Explain answers.

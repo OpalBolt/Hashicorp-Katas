@@ -1,3 +1,9 @@
+---
+icon: simple/terraform
+tags:
+  - Terraform
+---
+
 # 01 — Local AWS and Terraform workflow
 
 ## Why

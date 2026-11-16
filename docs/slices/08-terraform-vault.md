@@ -1,3 +1,10 @@
+---
+icon: simple/hashicorp
+tags:
+  - Terraform
+  - Vault
+---
+
 # 08 — Terraform with Vault
 
 ## Why

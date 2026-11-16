@@ -1,3 +1,9 @@
+---
+icon: simple/vault
+tags:
+  - Vault
+---
+
 # 05 — Vault as a real server
 
 ## Why

@@ -1,3 +1,13 @@
+---
+icon: material/school-outline
+tags:
+  - Capstone
+  - Terraform
+  - Vault
+  - CI
+  - Advisory
+---
+
 # Capstone — Mossvale Supply written scenarios
 
 ## Why

@@ -1,3 +1,9 @@
+---
+icon: simple/vault
+tags:
+  - Vault
+---
+
 # 06 — Dynamic secrets and rotation
 
 ## Why

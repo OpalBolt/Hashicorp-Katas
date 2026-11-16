@@ -1,3 +1,9 @@
+---
+icon: simple/terraform
+tags:
+  - Terraform
+---
+
 # 02 — State and drift
 
 ## Why

@@ -1,3 +1,9 @@
+---
+icon: simple/vault
+tags:
+  - Vault
+---
+
 # 04 — Vault first contact
 
 ## Why

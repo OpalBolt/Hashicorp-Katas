@@ -1,27 +1,77 @@
 site_name: Terraform and Vault training
+site_description: Hands-on Terraform and Vault practice for consulting work
 docs_dir: docs
 theme:
   name: material
+  icon:
+    logo: simple/hashicorp
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to system preference
   features:
+    - navigation.instant
+    - navigation.tracking
     - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
     - content.code.copy
+plugins:
+  - search
+  - tags
+extra_css:
+  - stylesheets/extra.css
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
   - pymdownx.details
   - pymdownx.superfences
-  - tables
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 nav:
   - Home: index.md
   - How grading works: grading.md
-  - Slices:
+  - Tracks: tracks.md
+  - Terraform:
       - "01 — Local AWS and Terraform workflow": slices/01-workflow.md
       - "02 — State and drift": slices/02-state.md
       - "03 — HCL and modules": slices/03-modules.md
+  - Vault:
       - "04 — Vault first contact": slices/04-vault-first-contact.md
       - "05 — Vault as a real server": slices/05-vault-server.md
       - "06 — Dynamic secrets and rotation": slices/06-dynamic-secrets.md
       - "07 — PKI and transit": slices/07-pki-transit.md
+  - Terraform + Vault:
       - "08 — Terraform with Vault": slices/08-terraform-vault.md
       - "09 — CI/CD with no stored secrets": slices/09-ci.md
-      - "10 — Advisory: licensing and Enterprise": slices/10-advisory.md
+  - Advisory:
+      - "10 — Licensing and Enterprise": slices/10-advisory.md
   - Capstone: capstone.md

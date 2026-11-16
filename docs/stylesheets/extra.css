@@ -1,0 +1,42 @@
+:root {
+  --track-terraform: #7b42bc;
+  --track-vault: #ffcf25;
+  --track-ci: #2088ff;
+  --track-advisory: #00a37a;
+  --track-capstone: #e5534b;
+}
+
+.md-typeset .md-tag {
+  font-weight: 700;
+}
+
+.md-typeset .md-tag[href$="#tag:terraform"] {
+  background-color: var(--track-terraform);
+  color: #fff;
+}
+
+.md-typeset .md-tag[href$="#tag:vault"] {
+  background-color: var(--track-vault);
+  color: #000;
+}
+
+.md-typeset .md-tag[href$="#tag:ci"] {
+  background-color: var(--track-ci);
+  color: #fff;
+}
+
+.md-typeset .md-tag[href$="#tag:advisory"] {
+  background-color: var(--track-advisory);
+  color: #fff;
+}
+
+.md-typeset .md-tag[href$="#tag:capstone"] {
+  background-color: var(--track-capstone);
+  color: #fff;
+}
+
+.md-typeset .track-terraform { color: var(--track-terraform); }
+.md-typeset .track-vault { color: #c99a00; }
+.md-typeset .track-ci { color: var(--track-ci); }
+.md-typeset .track-advisory { color: var(--track-advisory); }
+.md-typeset .track-capstone { color: var(--track-capstone); }

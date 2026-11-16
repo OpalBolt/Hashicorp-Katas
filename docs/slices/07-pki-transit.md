@@ -1,3 +1,9 @@
+---
+icon: simple/vault
+tags:
+  - Vault
+---
+
 # 07 — PKI and transit
 
 ## Why

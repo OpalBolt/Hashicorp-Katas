@@ -1,3 +1,9 @@
+---
+icon: simple/terraform
+tags:
+  - Terraform
+---
+
 # 03 — HCL and modules
 
 ## Why

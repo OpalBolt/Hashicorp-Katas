@@ -1,3 +1,7 @@
+---
+icon: material/home-outline
+---
+
 # Terraform and Vault training
 
 This guide helps you build hands-on Terraform and Vault skills for consulting work.
@@ -28,23 +32,56 @@ You can stop and resume at any time. Your work lives in `submissions/`.
 The guide uses one folder per slice. Start a new slice by copying the previous slice's work,
 then extend it. Slices 01 and 04 start fresh because they begin separate tool tracks.
 
+## Tracks
+
+Every slice belongs to one or more tracks. Each slice page shows its track
+tags at the top, and the navigation groups the slices by track.
+
+<div class="grid cards" markdown>
+
+-   :simple-terraform:{ .lg .middle .track-terraform } **Terraform**
+
+    ---
+
+    Slices 01–03. Workflow, state, drift, HCL, and modules against local AWS.
+
+-   :simple-vault:{ .lg .middle .track-vault } **Vault**
+
+    ---
+
+    Slices 04–07. Dev mode, a real server, dynamic secrets, PKI, and transit.
+
+-   :simple-hashicorp:{ .lg .middle .track-terraform } **Terraform + Vault**
+
+    ---
+
+    Slices 08–09. Both tools together, then CI/CD with no stored secrets.
+
+-   :material-briefcase-outline:{ .lg .middle .track-advisory } **Advisory**
+
+    ---
+
+    Slice 10 and the capstone. Licensing, Enterprise fit, and client advice.
+
+</div>
+
 ## Slice order
 
 Complete the slices in this order the first time. Each row lists the required earlier work.
 
-| # | Slice | Prerequisites |
-|---|---|---|
-| 01 | Local AWS and Terraform workflow | none |
-| 02 | State and drift | 01 |
-| 03 | HCL and modules | 02 |
-| 04 | Vault first contact | none |
-| 05 | Vault as a real server | 04 |
-| 06 | Dynamic secrets and rotation | 05 |
-| 07 | PKI and transit | 06 |
-| 08 | Terraform with Vault | 03, 07 |
-| 09 | CI/CD with no stored secrets | 08 |
-| 10 | Advisory: licensing and Enterprise | 08 |
-| Capstone | Client scenarios | 07, 09, 10 |
+| # | Slice | Track | Prerequisites |
+|---|---|---|---|
+| 01 | Local AWS and Terraform workflow | :simple-terraform:{ .track-terraform } Terraform | none |
+| 02 | State and drift | :simple-terraform:{ .track-terraform } Terraform | 01 |
+| 03 | HCL and modules | :simple-terraform:{ .track-terraform } Terraform | 02 |
+| 04 | Vault first contact | :simple-vault:{ .track-vault } Vault | none |
+| 05 | Vault as a real server | :simple-vault:{ .track-vault } Vault | 04 |
+| 06 | Dynamic secrets and rotation | :simple-vault:{ .track-vault } Vault | 05 |
+| 07 | PKI and transit | :simple-vault:{ .track-vault } Vault | 06 |
+| 08 | Terraform with Vault | :simple-hashicorp: Terraform + Vault | 03, 07 |
+| 09 | CI/CD with no stored secrets | :simple-githubactions:{ .track-ci } Terraform + Vault, CI | 08 |
+| 10 | Advisory: licensing and Enterprise | :material-briefcase-outline:{ .track-advisory } Advisory | 08 |
+| Capstone | Client scenarios | :material-school-outline:{ .track-capstone } All tracks | 07, 09, 10 |
 
 The capstone has a written diagnosis stage and a build stage.
 The build stage uses the provided synthetic customer environment.
