@@ -61,13 +61,16 @@ file. Use integrated storage with data on a persistent local volume.
 ### Task 02 — Initialize, unseal, and restart the server
 
 Initialize the server, protect the key shares, unseal it, and restart it.
-Show that the server remains recoverable without using dev mode.
+Before restarting, write a fictitious test secret to the persistent server
+storage. Show that the server remains recoverable without using dev mode and
+that the same secret is readable after recovery.
 
 #### Constraints
 
 - Use a test-only initialization.
 - Choose more than one key share and a threshold that requires more than one share.
 - Store shares and the initial token outside the repository.
+- Write a fictitious test secret before the restart.
 - Never place shares, tokens, or secret values in evidence.
 - Restart the server without deleting its persistent storage.
 - Do not use the root token for routine checks.
@@ -79,7 +82,7 @@ Show that the server remains recoverable without using dev mode.
 - The server becomes ready after the required unseal shares are supplied.
 - A non-root check works after unseal.
 - The server starts sealed after restart and becomes ready after unseal again.
-- The test data from the earlier slice remains available after restart.
+- The same test secret is readable after restart and unseal.
 
 #### Evidence to produce
 
