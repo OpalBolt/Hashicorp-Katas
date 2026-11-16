@@ -110,7 +110,7 @@ root CA. Check the service identity during verification.
 - The identity check succeeds for the intended service.
 - The verification identifies the intermediate issuer.
 - A missing or incorrect chain or identity fails verification.
-- Evidence proves the old certificate chain check without exposing certificate data.
+- Evidence proves the certificate chain check without exposing certificate data.
 
 #### Evidence to produce
 
