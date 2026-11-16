@@ -54,10 +54,14 @@ Reset its containers and runtime data with:
 mise run customer-reset
 ```
 
-The reset task does not remove files from the customer directory.
+The first start copies the tracked baseline to the working directory and
+creates its initial local Terraform state. Later starts keep that working
+copy unchanged. Reset moves the old working copy to the ignored
+`submissions/capstone/.mossvale-reset-backups/` directory, restores a fresh
+baseline, and starts it again.
 
 The customer Compose project uses loopback-only ports and a separate project
-name. To run a copy, set `MOSSVALE_DIR` to that copy's directory.
+name for each local user.
 
 Serve the guide locally:
 

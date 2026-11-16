@@ -16,7 +16,10 @@ Reset the customer containers and runtime data:
 mise run customer-reset
 ```
 
-The reset task does not remove files from this directory.
+The first start creates the working copy and its initial local Terraform
+state. Later starts keep learner edits. Reset preserves the previous working
+copy under the ignored `submissions/capstone/.mossvale-reset-backups/`
+directory, restores a fresh baseline, and starts it again.
 
 The Compose project uses `127.0.0.1:18200` for Vault and
 `127.0.0.1:15432` for PostgreSQL.
