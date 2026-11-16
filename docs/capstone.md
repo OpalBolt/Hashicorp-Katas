@@ -171,6 +171,191 @@ hosted service, and identify what the local build can and cannot demonstrate.
 - The answer preserves a Community-compatible local build and records which
   Enterprise or hosted claims remain untested or uncertain.
 
+### Stage 2 — Build
+
+Answer the Explain questions at the end of this page before you start stage 2.
+Now build the recommendations you wrote in stage 1. Work only in a copy of
+the synthetic customer environment:
+
+```text
+customers/mossvale-supply/                 immutable baseline
+submissions/capstone/code/mossvale-supply/ your working copy
+```
+
+Use the customer start and reset tasks in `customers/mossvale-supply/README.md`.
+Never edit the baseline. Keep evidence in
+`submissions/capstone/evidence/task-05.md` through `task-08.md`, and keep
+your build-stage answers in `submissions/capstone/answers.md`.
+
+Record before and after results. Redact passwords, tokens, and other secret
+values. If a check fails, keep the failure and explain what it means. Do not
+claim that a local result proves behavior in a hosted service or Enterprise
+product.
+
+### Task 05 — Build the Terraform recommendation
+
+Implement the recommendation you wrote for Task 01 in your working copy.
+Your change must make ownership and environment boundaries clear without
+assuming that a refactor makes existing resources safe.
+
+#### Constraints
+
+- Preserve the immutable baseline and work only in the working copy.
+- Keep development and production distinguishable in configuration and state.
+- Do not add real credentials or secret values to the repository.
+- Stop before any destructive action if your evidence does not explain the
+  proposed ownership or replacement.
+
+#### Done when
+
+- Before and after plan output shows how your change affects each environment.
+- State and configuration evidence identifies which setup owns each resource.
+- The configuration makes inputs, derived values, and environment-specific
+  resources easy to review.
+- A check shows that a development change does not silently alter production.
+- Your evidence records any remaining uncertainty and the safe stopping point.
+
+#### Evidence to produce
+
+Record the commands, redacted plan output, relevant state or configuration
+excerpts, and the before-and-after comparison in `evidence/task-05.md`.
+
+#### Explain
+
+- What did you change, and which part of your written recommendation did it
+  implement?
+- Which evidence proves that ownership and environment boundaries improved?
+- What did you leave unchanged, and why?
+- What risk remains if the team applies this setup outside the local copy?
+
+**Concept pointer:** Terraform state ownership.
+
+### Task 06 — Build the Vault recommendation
+
+Implement the recommendation you wrote for Task 02 in your working copy.
+Keep the local service usable while you improve its operation, access
+boundary, and secret handling.
+
+#### Constraints
+
+- Use temporary training values only. Do not add real credentials to files,
+  state, output, or evidence.
+- Keep a working recovery path while you test changes.
+- Test access removal without destroying the only working test setup.
+- Separate observations supported by the local environment from claims that
+  need a client Vault.
+
+#### Done when
+
+- Evidence shows how the service behaves across the recovery event relevant to
+  your recommendation.
+- The routine access path differs from bootstrap access in the way your
+  recommendation requires.
+- A secret-handling check shows that the changed path does not expose secret
+  values through configuration, state, or command output.
+- An access-removal check shows what happens after temporary access ends.
+- The evidence identifies which Vault behaviors remain untested locally.
+
+#### Evidence to produce
+
+Record redacted before and after status, recovery, access, and secret-handling
+results in `evidence/task-06.md`. Keep raw secret values outside the
+repository.
+
+#### Explain
+
+- What changed, and why did you choose that order?
+- Which result proves that the service can recover without relying on one
+  operator credential?
+- What did you choose not to change, and why?
+- What would a client still need to verify before using this design in
+  production?
+
+**Concept pointer:** Vault secret lifecycle.
+
+### Task 07 — Build the CI trust recommendation
+
+Implement the recommendation you wrote for Task 03 in the working copy's
+workflow. Preserve a reviewable plan and make the allowed and rejected paths
+observable without exposing credentials.
+
+#### Constraints
+
+- Do not add token contents or long-lived routine credentials to the
+  repository.
+- Keep plan and apply within the trust boundaries in your written
+  recommendation.
+- Test both an allowed change and a rejected branch or repository path.
+- Review every third-party action version you change or retain.
+
+#### Done when
+
+- The workflow separates planning from the apply decision in a way that a
+  reviewer can verify.
+- The allowed path receives only the permissions and access it needs.
+- The rejected path receives no protected secret or privileged operation.
+- Authentication does not depend on the long-lived routine credential you
+  diagnosed, or the evidence explains the remaining exception.
+- Evidence records action versions, permission settings, review behavior, and
+  redacted logs.
+
+#### Evidence to produce
+
+Record before and after workflow excerpts, allowed and rejected path results,
+permission checks, and redacted log output in `evidence/task-07.md`.
+
+#### Explain
+
+- What changed at each trust boundary, and why did you change it in that
+  order?
+- How do the tests prove both access and rejection?
+- What did you choose not to change, and why?
+- What risk remains if a reviewer, action, or repository setting changes?
+
+**Concept pointer:** CI trust boundaries.
+
+### Task 08 — Build the Enterprise-fit recommendation
+
+Implement the Community-compatible part of the recommendation you wrote for
+Task 04 in the working copy. Use the build to record what the local setup can
+prove and what requires current client or vendor evidence.
+
+#### Constraints
+
+- Keep the local build compatible with the Community components supplied here.
+- Do not present an Enterprise or hosted feature as locally implemented when
+  it is not available in this environment.
+- Record source dates and owners for claims that need later verification.
+- Do not make a commercial recommendation from a feature name alone.
+
+#### Done when
+
+- The working copy demonstrates the local controls that your recommendation
+  says the Community setup can support.
+- A decision record separates client requirements, product capability, license,
+  hosting, support, and operating cost.
+- Each untested Enterprise or hosted claim has an owner, source to check, and
+  decision impact.
+- The record states what evidence would change the recommendation.
+- You state what you chose not to change in the local build and why.
+
+#### Evidence to produce
+
+Record the local before and after result, the decision record, dated official
+sources, and unresolved questions in `evidence/task-08.md`. Do not copy
+license text or secret values into the submission.
+
+#### Explain
+
+- What did you build locally, and how does it support your written
+  recommendation?
+- Which requirement remains unproven, and what evidence would prove it?
+- What did you choose not to change, and why?
+- How would staffing, recovery targets, or support requirements change your
+  recommendation?
+
+**Concept pointer:** Product fit evidence.
+
 ## Explain
 
 Answer these questions in `submissions/capstone/answers.md` after the four
