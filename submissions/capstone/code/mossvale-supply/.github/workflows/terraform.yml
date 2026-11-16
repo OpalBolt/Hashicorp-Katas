@@ -1,0 +1,23 @@
+name: Mossvale Terraform
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions: write-all
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      VAULT_ADDR: http://127.0.0.1:18200
+      VAULT_TOKEN: ${{ secrets.MOSSVALE_VAULT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform -chdir=terraform init
+      - run: terraform -chdir=terraform plan
+      - if: github.event_name == 'push'
+        run: terraform -chdir=terraform apply -auto-approve

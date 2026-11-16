@@ -1,2 +1,4 @@
 .scratch
 site/
+submissions/capstone/code/**/terraform/.terraform/
+submissions/capstone/code/**/terraform/*.tfstate*

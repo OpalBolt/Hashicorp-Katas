@@ -37,6 +37,28 @@ Stop the containers and remove this project's container data:
 mise run stop
 ```
 
+## Capstone customer environment
+
+The capstone includes a fictional Mossvale Supply environment with Terraform,
+Vault, and PostgreSQL.
+
+Start it with:
+
+```bash
+mise run customer-start
+```
+
+Reset its containers and runtime data with:
+
+```bash
+mise run customer-reset
+```
+
+The reset task does not remove files from the customer directory.
+
+The customer Compose project uses loopback-only ports and a separate project
+name. To run a copy, set `MOSSVALE_DIR` to that copy's directory.
+
 Serve the guide locally:
 
 ```bash

@@ -25,3 +25,18 @@ run = "docker compose up --detach"
 [tasks.stop]
 description = "Stop the containers and remove their data"
 run = "docker compose down --volumes"
+
+[tasks.customer-start]
+description = "Start the Mossvale Supply customer environment"
+run = """sh -eu -c '
+dir="${MOSSVALE_DIR:-submissions/capstone/code/mossvale-supply}"
+docker compose --project-name mossvale-supply --project-directory "$dir" -f "$dir/compose.yml" up --detach
+'"""
+
+[tasks.customer-reset]
+description = "Reset and start the Mossvale Supply customer environment"
+run = """sh -eu -c '
+dir="${MOSSVALE_DIR:-submissions/capstone/code/mossvale-supply}"
+docker compose --project-name mossvale-supply --project-directory "$dir" -f "$dir/compose.yml" down --volumes --remove-orphans
+docker compose --project-name mossvale-supply --project-directory "$dir" -f "$dir/compose.yml" up --detach
+'"""
