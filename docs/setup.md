@@ -98,7 +98,7 @@ export AWS_REGION=us-east-1
 export AWS_ENDPOINT_URL=http://localhost:4566
 ```
 
-`AWS_ENDPOINT_URL` sends the AWS provider and AWS CLI to Floci. For example:
+`AWS_ENDPOINT_URL` points AWS requests at Floci. For example, with the AWS CLI:
 
 ```bash
 aws s3 ls
@@ -111,8 +111,22 @@ This lists buckets in Floci, not in AWS. You can browse resources in the
     Close the shell or unset these variables before working with a real AWS
     account. Never put a real access key in `submissions/`.
 
-These variables cover credentials and the endpoint only. Terraform workflow
-asks you to pin the provider and decide which other provider settings the
-local AWS target needs. Use the
-[Floci Terraform guide](https://floci.io/floci/getting-started/terraform/)
-when a resource or the S3 backend does not behave as expected.
+### Configure the Terraform AWS provider
+
+Floci uses the standard `hashicorp/aws` provider, not a separate provider.
+It needs provider settings beyond the shell variables above.
+Configure these before the first Terraform plan, not only when troubleshooting.
+
+Use the [Floci Terraform guide](https://floci.io/floci/getting-started/terraform/)
+as the configuration reference:
+
+- Skip credential validation, EC2 metadata checks, and account ID lookup with
+  `skip_credentials_validation`, `skip_metadata_api_check`, and
+  `skip_requesting_account_id`.
+- Enable path-style S3 requests with `s3_use_path_style`.
+- Set an endpoint override to `http://localhost:4566` for every AWS service
+  your configuration uses.
+
+Write the provider configuration yourself and pin its version in Terraform 01.
+If you later use an S3 backend, configure it separately.
+AWS provider settings do not configure Terraform's backend.
