@@ -38,6 +38,20 @@ Copy the previous slice's `code/` into the new slice, then extend it.
 Keep each slice's evidence and answers in its own folder.
 Slices that start a new tool track can start with an empty `code/` folder.
 
+## Foundations scaffolds
+
+A scaffold is an intentionally incomplete starting structure with blanks for the
+learner to complete. Scaffolds are allowed only in foundations slices (`00`).
+They must not provide the completed answer. Slices `01` and later contain no
+solutions or scaffolds.
+
+For a scaffolded task, `Done when` and `Evidence` apply to the learner's
+completed artifact, not merely to filled blanks. The grader checks every
+`Done when` line and Evidence requirement. Evidence may come from the
+learner's own work or from an execution when the task can be run; source
+artifacts are valid evidence for tasks that are checked as text, such as a
+diagram in Markdown.
+
 ## Evidence format
 
 Create one Markdown file per task at `evidence/task-NN.md`.
