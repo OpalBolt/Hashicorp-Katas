@@ -1,6 +1,6 @@
 services:
   vault:
-    image: hashicorp/vault:1.18
+    image: docker.io/hashicorp/vault:1.18
     command: server -dev
     cap_add:
       - IPC_LOCK
@@ -16,7 +16,7 @@ services:
       retries: 15
 
   vault-seed:
-    image: hashicorp/vault:1.18
+    image: docker.io/hashicorp/vault:1.18
     entrypoint:
       - /bin/sh
       - /vault/seed.sh
@@ -30,7 +30,7 @@ services:
       - ./vault/seed.sh:/vault/seed.sh:ro
 
   postgres:
-    image: postgres:16-alpine
+    image: docker.io/library/postgres:16-alpine
     environment:
       POSTGRES_DB: mossvale
       POSTGRES_USER: mossvale_app

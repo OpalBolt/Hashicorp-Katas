@@ -24,11 +24,11 @@ run = "mkdocs serve"
 
 [tasks.start]
 description = "Start the Floci, Floci UI, and PostgreSQL containers"
-run = "docker compose up --detach"
+run = "sh scripts/container.sh compose up --detach"
 
 [tasks.stop]
 description = "Stop the containers and remove their data"
-run = "docker compose down --volumes"
+run = "sh scripts/container.sh compose down --volumes"
 
 [tasks.customer-start]
 description = "Start the Mossvale Supply customer environment"

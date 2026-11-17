@@ -20,9 +20,8 @@ if [ -e "$dir" ] && [ ! -d "$dir" ]; then
 fi
 
 compose() {
-  docker compose \
+  sh "$repo_root/scripts/container.sh" compose \
     --project-name "$project" \
-    --project-directory "$dir" \
     -f "$dir/compose.yml" "$@"
 }
 

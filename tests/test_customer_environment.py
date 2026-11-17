@@ -16,6 +16,7 @@ class CustomerEnvironmentTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         (self.root / "scripts").mkdir()
         shutil.copy(ROOT / "scripts/mossvale-customer.sh", self.root / "scripts")
+        shutil.copy(ROOT / "scripts/container.sh", self.root / "scripts")
         shutil.copytree(
             ROOT / "customers/mossvale-supply",
             self.root / "customers/mossvale-supply",
@@ -26,14 +27,17 @@ class CustomerEnvironmentTests(unittest.TestCase):
         self.log = self.root / "commands.log"
         bin_dir = self.root / "bin"
         bin_dir.mkdir()
-        self.write_command(
-            bin_dir / "docker",
-            """#!/bin/sh
-printf 'docker %s\\n' "$*" >> "$TEST_LOG"
+        engine = """#!/bin/sh
+printf '%s %s\\n' "$(basename "$0")" "$*" >> "$TEST_LOG"
 case " $* " in
   *" down "*) [ "${FAIL_DOWN:-0}" != 1 ] ;;
 esac
-""",
+"""
+        self.write_command(bin_dir / "podman", engine)
+        self.write_command(bin_dir / "docker", engine)
+        self.write_command(
+            bin_dir / "sudo",
+            '#!/bin/sh\nprintf \'sudo %s\\n\' "$*" >> "$TEST_LOG"\nexec "$@"\n',
         )
         self.write_command(
             bin_dir / "terraform",
@@ -52,6 +56,7 @@ esac
         self.env = os.environ.copy()
         self.env["PATH"] = f"{bin_dir}{os.pathsep}{self.env['PATH']}"
         self.env["TEST_LOG"] = str(self.log)
+        self.env.pop("CONTAINER_ENGINE", None)
 
     def write_command(self, path, content):
         path.write_text(content)
@@ -77,7 +82,19 @@ esac
         self.assertEqual(self.run_customer("start").returncode, 0)
         self.assertEqual(note.read_text(), "learner work")
         self.assertFalse(state.exists())
-        self.assertEqual(self.log.read_text().count("terraform "), 2)
+        self.assertEqual(
+            sum(line.startswith("terraform ") for line in self.log.read_text().splitlines()),
+            2,
+        )
+        self.assertIn("podman compose ", self.log.read_text())
+
+    def test_docker_fallback_keeps_terraform_unprivileged(self):
+        result = self.run_customer("start", CONTAINER_ENGINE="docker")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        commands = self.log.read_text()
+        self.assertIn("sudo docker compose ", commands)
+        self.assertNotIn("sudo terraform ", commands)
 
     def test_reset_preserves_edits_and_restores_the_baseline(self):
         self.assertEqual(self.run_customer("start").returncode, 0)
@@ -107,7 +124,7 @@ esac
         result = self.run_customer("start")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Initialization did not finish", result.stderr)
-        self.assertNotIn("docker ", self.log.read_text())
+        self.assertNotIn("podman ", self.log.read_text())
 
     def test_failed_copy_can_be_reset_without_losing_the_partial_copy(self):
         copy_command = self.root / "bin/cp"

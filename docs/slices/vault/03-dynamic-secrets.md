@@ -44,7 +44,7 @@ credentials on demand twice.
 - Work only in `submissions/vault/03-dynamic-secrets/`.
 - Extend the copied Vault server work.
 - Use the repository PostgreSQL service as the test database.
-- Make Vault and PostgreSQL reachable on one Docker network.
+- Make Vault and PostgreSQL reachable on one container network.
 - Use a database secrets engine and a dynamic role.
 - Set a bounded lease duration and max TTL.
 - Use fictitious database names, roles, and values.

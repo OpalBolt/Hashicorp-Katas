@@ -14,7 +14,7 @@ Terraform configurations are made of blocks. Knowing what each block does helps
 you read a configuration before you run it and choose the right place for each
 value.
 
-This foundations slice needs only Terraform. It does not need Docker, AWS, or a
+This foundations slice needs only Terraform. It does not need containers, AWS, or a
 cloud account.
 No cloud setup is needed.
 

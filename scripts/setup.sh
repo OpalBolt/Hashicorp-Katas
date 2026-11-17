@@ -1,11 +1,23 @@
 #!/bin/sh
 set -eu
 
-docker compose up --detach
+repo_root=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 
-services=$(docker compose ps --services --status running)
+container() {
+    sh "$repo_root/scripts/container.sh" "$@"
+}
+
+container compose up --detach
+
+containers=$(container compose ps -q)
+services=
+for id in $containers; do
+    service=$(container inspect --format '{{.State.Running}} {{index .Config.Labels "com.docker.compose.service"}}' "$id")
+    services="${services}
+$service"
+done
 for service in floci floci-ui postgres; do
-    printf '%s\n' "$services" | grep -Fx "$service" >/dev/null ||
+    printf '%s\n' "$services" | grep -Fx "true $service" >/dev/null ||
         { printf 'Service %s is not running\n' "$service" >&2; exit 1; }
 done
 
@@ -29,7 +41,7 @@ check_http floci-ui http://127.0.0.1:4500/
 
 attempt=1
 while [ "$attempt" -le 30 ]; do
-    if docker compose exec --no-TTY postgres pg_isready -U training -d training >/dev/null 2>&1; then
+    if container compose exec -T postgres pg_isready -U training -d training >/dev/null 2>&1; then
         exit 0
     fi
     sleep 1

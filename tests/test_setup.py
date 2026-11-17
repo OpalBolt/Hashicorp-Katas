@@ -16,28 +16,41 @@ class SetupTests(unittest.TestCase):
         self.bin = self.root / "bin"
         self.bin.mkdir()
         self.log = self.root / "commands.log"
-        self.write_command(
-            "docker",
-            """#!/bin/sh
-printf 'docker %s\\n' "$*" >> "$TEST_LOG"
+        engine = """#!/bin/sh
+printf '%s %s\\n' "$(basename "$0")" "$*" >> "$TEST_LOG"
+if [ "$(basename "$0")" = podman ] && [ "$1" = compose ]; then
+  printf 'provider %s\\n' "${PODMAN_COMPOSE_PROVIDER:-unset}" >> "$TEST_LOG"
+fi
 case "$*" in
-  "compose ps --services --status running")
+  "compose ps -q")
     if [ "${MISSING_POSTGRES:-0}" = 1 ]; then
-      printf 'floci\\nfloci-ui\\n'
+      printf 'floci-id\\nfloci-ui-id\\n'
     else
-      printf 'floci\\nfloci-ui\\npostgres\\n'
+      printf 'floci-id\\nfloci-ui-id\\npostgres-id\\n'
     fi
     ;;
-  "compose exec --no-TTY postgres pg_isready -U training -d training") exit "${FAIL_POSTGRES:-0}" ;;
+  inspect*)
+    [ "${FAIL_INSPECT:-0}" != 1 ] || exit 1
+    for arg do id=$arg; done
+    case "$id" in
+      floci-id) printf 'true floci\\n' ;;
+      floci-ui-id) printf 'true floci-ui\\n' ;;
+      postgres-id) printf '%s postgres\\n' "${POSTGRES_RUNNING:-true}" ;;
+    esac
+    ;;
+  "compose exec -T postgres pg_isready -U training -d training") exit "${FAIL_POSTGRES:-0}" ;;
 esac
-""",
-        )
+"""
+        self.write_command("podman", engine)
+        self.write_command("docker", engine)
+        self.write_command("sudo", "#!/bin/sh\nprintf 'sudo %s\\n' \"$*\" >> \"$TEST_LOG\"\nexec \"$@\"\n")
         self.write_command("curl", "#!/bin/sh\nprintf 'curl %s\\n' \"$*\" >> \"$TEST_LOG\"\n")
         self.env = {
             **os.environ,
             "PATH": f"{self.bin}{os.pathsep}{os.environ['PATH']}",
             "TEST_LOG": str(self.log),
         }
+        self.env.pop("CONTAINER_ENGINE", None)
 
     def write_command(self, name, content):
         path = self.bin / name
@@ -58,8 +71,10 @@ esac
 
         self.assertEqual(result.returncode, 0, result.stderr)
         commands = self.log.read_text()
-        self.assertIn("docker compose up --detach", commands)
-        self.assertIn("docker compose exec --no-TTY postgres pg_isready", commands)
+        self.assertIn("podman compose up --detach", commands)
+        self.assertIn("podman compose exec -T postgres pg_isready", commands)
+        self.assertIn("provider podman-compose", commands)
+        self.assertNotIn("docker ", commands)
         self.assertNotIn("seed", commands.lower())
 
     def test_setup_reports_a_missing_service(self):
@@ -67,6 +82,33 @@ esac
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Service postgres is not running", result.stderr)
+
+    def test_setup_reports_a_stopped_service(self):
+        result = self.run_setup(POSTGRES_RUNNING="false")
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Service postgres is not running", result.stderr)
+
+    def test_setup_propagates_inspection_failure(self):
+        result = self.run_setup(FAIL_INSPECT="1")
+
+        self.assertNotEqual(result.returncode, 0)
+
+    def test_docker_fallback_uses_sudo(self):
+        result = self.run_setup(CONTAINER_ENGINE="docker")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        commands = self.log.read_text()
+        self.assertIn("sudo docker compose up --detach", commands)
+        self.assertIn("sudo docker inspect", commands)
+        self.assertNotIn("podman ", commands)
+
+    def test_unknown_engine_fails_without_starting_services(self):
+        result = self.run_setup(CONTAINER_ENGINE="other")
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Unknown container engine", result.stderr)
+        self.assertFalse(self.log.exists())
 
 
 if __name__ == "__main__":

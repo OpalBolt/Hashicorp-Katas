@@ -4,15 +4,17 @@ This repository contains the Terraform and Vault training guide.
 
 ## Prerequisites
 
-Install these two tools:
+Install these tools:
 
-- [Docker](https://docs.docker.com/engine/install/)
+- [Podman](https://podman.io/docs/installation)
+- [podman-compose](https://github.com/containers/podman-compose) 1.3.0 or later
 - [mise](https://mise.jdx.dev/installing-mise.html)
 
-Docker Compose runs the local AWS emulator, its web console, and the
+Podman Compose runs the local AWS emulator, its web console, and the
 PostgreSQL database. The Vault
 slices ask you to build the Vault server separately. Mise installs the pinned
 Terraform, Vault CLI, AWS CLI, Python, and MkDocs tools.
+For Docker instead, see the [Docker fallback](docs/setup.md#docker-fallback).
 
 ## Start the guide
 

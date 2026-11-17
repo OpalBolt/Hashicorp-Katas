@@ -9,7 +9,7 @@ It gives you goals, reasons, constraints, and checks. It does not give you solut
 
 ## Who this is for
 
-- You know Docker and have some CI/CD experience.
+- You know containers and have some CI/CD experience.
 - You have used Terraform before, but not in depth.
 - You are new to Vault.
 - Your clients already use HashiCorp products. You need hands-on skill to give useful advice.
@@ -18,9 +18,9 @@ AWS is the cloud target. The ideas also apply to other clouds.
 
 ## Start here
 
-Start with Terraform 00. It needs only Terraform and no Docker, AWS, or Floci.
+Start with Terraform 00. It needs only Terraform and no containers or AWS.
 Complete the [local setup](setup.md) before Terraform 01 and the later slices.
-It covers Docker, the local AWS target, test credentials, and `mise run setup`.
+It covers Podman, the local AWS target, test credentials, and `mise run setup`.
 
 ## Work pattern
 
