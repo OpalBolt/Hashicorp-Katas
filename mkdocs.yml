@@ -1,5 +1,6 @@
 site_name: Terraform and Vault training
 site_description: Hands-on Terraform and Vault practice for consulting work
+site_url: https://opalbolt.github.io/Hashicorp-Katas/
 docs_dir: docs
 theme:
   name: material
