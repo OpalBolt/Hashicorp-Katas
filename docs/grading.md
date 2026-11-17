@@ -13,12 +13,25 @@ Use one folder for each slice:
 
 ```text
 submissions/
-  01-workflow/
-    code/
-    evidence/
-      task-01.md
-      task-02.md
-    answers.md
+  terraform/
+    01-workflow/
+      code/
+      evidence/
+        task-01.md
+        task-02.md
+      answers.md
+    02-state/
+    03-modules/
+  vault/
+    01-vault-first-contact/
+    02-vault-server/
+    03-dynamic-secrets/
+    04-pki-transit/
+  terraform-vault/
+    01-terraform-vault/
+    02-ci/
+  adversary/
+    01-advisory/
 ```
 
 Copy the previous slice's `code/` into the new slice, then extend it.

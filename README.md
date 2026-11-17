@@ -28,9 +28,9 @@ Start the supporting containers:
 mise run start
 ```
 
-Floci is the local AWS emulator used by slices 01–03 and answers on
+Floci is the local AWS emulator used by Terraform slices 01–03 and answers on
 `localhost:4566`. Floci UI shows the resources in Floci at
-<http://localhost:4500>. PostgreSQL supports the dynamic-secrets work in slice 06.
+<http://localhost:4500>. PostgreSQL supports the dynamic-secrets work in Vault 03.
 The compose file uses test-only database values and does not include Vault.
 Before you run Terraform or the AWS CLI against Floci, set the shell
 variables in the guide's "Connect to Floci" section on the home page.

@@ -4,7 +4,7 @@ tags:
   - Vault
 ---
 
-# 07 — PKI and transit
+# Vault 04 — PKI and transit
 
 ## Why
 
@@ -16,8 +16,8 @@ Applications that hold encryption keys can expose those keys through logs,
 backups, memory, or a compromised host. Vault can perform encryption without
 giving the application the key.
 
-Start this slice by copying your `submissions/06-dynamic-secrets/code/` folder
-to `submissions/07-pki-transit/code/`. Extend the copied work in the new
+Start this slice by copying your `submissions/vault/03-dynamic-secrets/code/` folder
+to `submissions/vault/04-pki-transit/code/`. Extend the copied work in the new
 folder. Keep the Vault server work usable for the later integration slice. Use
 fictitious test values. Redact keys, tokens, certificates, plaintext, and
 secret values from evidence.
@@ -43,8 +43,8 @@ intermediate CA for service certificates.
 
 #### Constraints
 
-- Work only in `submissions/07-pki-transit/`.
-- Extend the copied Vault server work from slice 06.
+- Work only in `submissions/vault/04-pki-transit/`.
+- Extend the copied Vault server work from Vault 03.
 - Use a test-only root CA and intermediate CA.
 - Keep the root CA separate from the issuing CA.
 - Use fictitious names and values.
@@ -191,7 +191,7 @@ bounded lifetime.
 
 ## Explain
 
-Answer these questions in `submissions/07-pki-transit/answers.md`.
+Answer these questions in `submissions/vault/04-pki-transit/answers.md`.
 
 ### Explain 1
 

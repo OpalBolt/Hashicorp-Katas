@@ -30,7 +30,7 @@ AWS is the cloud target. The ideas also apply to other clouds.
 
 With a real AWS account, you would create an access key and export it. Floci
 accepts any key, so you set test values and an endpoint instead. Run this in
-each shell that you use for slices 01–03. Your CI job in slice 09 needs the
+each shell that you use for Terraform slices 01–03. Your CI job in Terraform + Vault 02 needs the
 same values:
 
 ```bash
@@ -67,7 +67,7 @@ when a resource or the S3 backend does not behave as expected.
 There is no deadline. Complete a slice after its prerequisites are done.
 You can stop and resume at any time. Your work lives in `submissions/`.
 The guide uses one folder per slice. Start a new slice by copying the previous slice's work,
-then extend it. Slices 01 and 04 start fresh because they begin separate tool tracks.
+then extend it. Terraform 01 and Vault 01 start fresh because they begin separate tool tracks.
 
 ## Tracks
 
@@ -80,45 +80,45 @@ tags at the top, and the navigation groups the slices by track.
 
     ---
 
-    Slices 01–03. Workflow, state, drift, HCL, and modules against local AWS.
+    Terraform 01–03. Workflow, state, drift, HCL, and modules against local AWS.
 
 -   :simple-vault:{ .lg .middle .track-vault } **Vault**
 
     ---
 
-    Slices 04–07. Dev mode, a real server, dynamic secrets, PKI, and transit.
+    Vault 01–04. Dev mode, a real server, dynamic secrets, PKI, and transit.
 
 -   :simple-hashicorp:{ .lg .middle .track-terraform } **Terraform + Vault**
 
     ---
 
-    Slices 08–09. Both tools together, then CI/CD with no stored secrets.
+    Terraform + Vault 01–02. Both tools together, then CI/CD with no stored secrets.
 
--   :material-briefcase-outline:{ .lg .middle .track-advisory } **Advisory**
+-   :material-briefcase-outline:{ .lg .middle .track-advisory } **Adversary**
 
     ---
 
-    Slice 10 and the capstone. Licensing, Enterprise fit, and client advice.
+    Adversary 01 and the capstone. Licensing, Enterprise fit, and client advice.
 
 </div>
 
-## Slice order
+## Recommended topic order
 
-Complete the slices in this order the first time. Each row lists the required earlier work.
+Complete the topics in this order the first time. Each row lists the required earlier work.
 
-| # | Slice | Track | Prerequisites |
+| # | Slice | Topic | Prerequisites |
 |---|---|---|---|
-| 01 | Local AWS and Terraform workflow | :simple-terraform:{ .track-terraform } Terraform | none |
-| 02 | State and drift | :simple-terraform:{ .track-terraform } Terraform | 01 |
-| 03 | HCL and modules | :simple-terraform:{ .track-terraform } Terraform | 02 |
-| 04 | Vault first contact | :simple-vault:{ .track-vault } Vault | none |
-| 05 | Vault as a real server | :simple-vault:{ .track-vault } Vault | 04 |
-| 06 | Dynamic secrets and rotation | :simple-vault:{ .track-vault } Vault | 05 |
-| 07 | PKI and transit | :simple-vault:{ .track-vault } Vault | 06 |
-| 08 | Terraform with Vault | :simple-hashicorp: Terraform + Vault | 03, 07 |
-| 09 | CI/CD with no stored secrets | :simple-githubactions:{ .track-ci } Terraform + Vault, CI | 08 |
-| 10 | Advisory: licensing and Enterprise | :material-briefcase-outline:{ .track-advisory } Advisory | 08 |
-| Capstone | Client scenarios | :material-school-outline:{ .track-capstone } All tracks | 07, 09, 10 |
+| Terraform 01 | Terraform workflow | :simple-terraform:{ .track-terraform } Terraform | none |
+| Terraform 02 | State and drift | :simple-terraform:{ .track-terraform } Terraform | Terraform 01 |
+| Terraform 03 | HCL and modules | :simple-terraform:{ .track-terraform } Terraform | Terraform 02 |
+| Vault 01 | Vault first contact | :simple-vault:{ .track-vault } Vault | none |
+| Vault 02 | Vault as a real server | :simple-vault:{ .track-vault } Vault | Vault 01 |
+| Vault 03 | Dynamic secrets and rotation | :simple-vault:{ .track-vault } Vault | Vault 02 |
+| Vault 04 | PKI and transit | :simple-vault:{ .track-vault } Vault | Vault 03 |
+| Terraform + Vault 01 | Terraform with Vault | :simple-hashicorp: Terraform + Vault | Terraform 03, Vault 04 |
+| Terraform + Vault 02 | CI/CD with no stored secrets | :simple-githubactions:{ .track-ci } Terraform + Vault, CI | Terraform + Vault 01 |
+| Adversary 01 | Advisory: licensing and Enterprise | :material-briefcase-outline:{ .track-advisory } Adversary | Terraform + Vault 01 |
+| Capstone | Client scenarios | :material-school-outline:{ .track-capstone } All tracks | Vault 04, Terraform + Vault 02, Adversary 01 |
 
 The capstone has a written diagnosis stage and a build stage.
 The build stage uses the provided synthetic customer environment.

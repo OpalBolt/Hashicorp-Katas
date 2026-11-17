@@ -4,7 +4,7 @@ tags:
   - Vault
 ---
 
-# 06 — Dynamic secrets and rotation
+# Vault 03 — Dynamic secrets and rotation
 
 ## Why
 
@@ -13,8 +13,8 @@ credential limits the time and access an attacker gets. Vault can create a
 database user for each request, track its lease, and revoke it when the work
 ends.
 
-Start this slice by copying your `submissions/05-vault-server/code/` folder to
-`submissions/06-dynamic-secrets/code/`. Extend the copied work in the new
+Start this slice by copying your `submissions/vault/02-vault-server/code/` folder to
+`submissions/vault/03-dynamic-secrets/code/`. Extend the copied work in the new
 folder. Keep the Vault server work from the previous slice. Use fictitious test
 values. Redact credentials, tokens, passwords, and secret values from evidence.
 
@@ -39,7 +39,7 @@ credentials on demand twice.
 
 #### Constraints
 
-- Work only in `submissions/06-dynamic-secrets/`.
+- Work only in `submissions/vault/03-dynamic-secrets/`.
 - Extend the copied Vault server work.
 - Use the repository PostgreSQL service as the test database.
 - Make Vault and PostgreSQL reachable on one Docker network.
@@ -136,7 +136,7 @@ working.
 
 ## Explain
 
-Answer these questions in `submissions/06-dynamic-secrets/answers.md`.
+Answer these questions in `submissions/vault/03-dynamic-secrets/answers.md`.
 
 ### Explain 1
 

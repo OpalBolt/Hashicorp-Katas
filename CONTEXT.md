@@ -5,8 +5,17 @@ Terms used in this guide.
 **Slice**
 One topic unit. It has Why, Concepts, Tasks, and Explain.
 
+**Topic**
+A group of related slices, such as Terraform or Vault.
+
+**Foundations slice**
+The `00` slice that teaches the basic concepts for a topic.
+
+**Scaffold**
+Guided starter material with blanks. Only foundations slices may use one.
+
 **Topic slice**
-One of the ten learning units before the capstone.
+One learning unit inside a topic. This guide has ten topic slices before the capstone.
 
 **Capstone**
 The final work. It has a written diagnosis stage and a build stage.

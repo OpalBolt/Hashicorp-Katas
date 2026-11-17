@@ -5,7 +5,7 @@ tags:
   - Terraform
   - Vault
   - CI
-  - Advisory
+  - Adversary
 ---
 
 # Capstone — Mossvale Supply written scenarios

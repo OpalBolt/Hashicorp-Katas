@@ -61,17 +61,17 @@ nav:
   - How grading works: grading.md
   - Tracks: tracks.md
   - Terraform:
-      - "01 — Local AWS and Terraform workflow": slices/01-workflow.md
-      - "02 — State and drift": slices/02-state.md
-      - "03 — HCL and modules": slices/03-modules.md
+      - "Terraform 01 — Terraform workflow": slices/terraform/01-workflow.md
+      - "Terraform 02 — Terraform state and drift": slices/terraform/02-state.md
+      - "Terraform 03 — Terraform HCL and modules": slices/terraform/03-modules.md
   - Vault:
-      - "04 — Vault first contact": slices/04-vault-first-contact.md
-      - "05 — Vault as a real server": slices/05-vault-server.md
-      - "06 — Dynamic secrets and rotation": slices/06-dynamic-secrets.md
-      - "07 — PKI and transit": slices/07-pki-transit.md
+      - "Vault 01 — Vault first contact": slices/vault/01-vault-first-contact.md
+      - "Vault 02 — Vault as a real server": slices/vault/02-vault-server.md
+      - "Vault 03 — Vault dynamic secrets and rotation": slices/vault/03-dynamic-secrets.md
+      - "Vault 04 — Vault PKI and transit": slices/vault/04-pki-transit.md
   - Terraform + Vault:
-      - "08 — Terraform with Vault": slices/08-terraform-vault.md
-      - "09 — CI/CD with no stored secrets": slices/09-ci.md
-  - Advisory:
-      - "10 — Licensing and Enterprise": slices/10-advisory.md
+      - "Terraform + Vault 01 — Terraform with Vault": slices/terraform-vault/01-terraform-vault.md
+      - "Terraform + Vault 02 — CI/CD with no stored secrets": slices/terraform-vault/02-ci.md
+  - Adversary:
+      - "Adversary 01 — Licensing and Enterprise": slices/adversary/01-advisory.md
   - Capstone: capstone.md

@@ -5,7 +5,7 @@ tags:
   - Vault
 ---
 
-# 08 — Terraform with Vault
+# Terraform + Vault 01 — Terraform with Vault
 
 ## Why
 
@@ -15,10 +15,10 @@ Terraform state, a saved plan, provider logs, or a managed resource. This
 slice makes that boundary visible before you choose a safer hand-off.
 
 Start by copying the Terraform work from
-`submissions/03-modules/code/` into
-`submissions/08-terraform-vault/code/terraform/`. Copy the Vault work from
-`submissions/07-pki-transit/code/` into
-`submissions/08-terraform-vault/code/vault/`. Keep the two tracks in separate
+`submissions/terraform/03-modules/code/` into
+`submissions/terraform-vault/01-terraform-vault/code/terraform/`. Copy the Vault work from
+`submissions/vault/04-pki-transit/code/` into
+`submissions/terraform-vault/01-terraform-vault/code/vault/`. Keep the two tracks in separate
 paths and extend them in this new folder. Use fictitious test values. Redact
 credentials, tokens, secret values, and private key material from evidence.
 
@@ -41,7 +41,7 @@ and state to find where the value is stored.
 
 #### Constraints
 
-- Work only in `submissions/08-terraform-vault/`.
+- Work only in `submissions/terraform-vault/01-terraform-vault/`.
 - Keep Terraform code under `code/terraform/` and Vault code under `code/vault/`.
 - Start from the copied work; do not replace either track with an unrelated
   example.
@@ -77,7 +77,7 @@ then record the limits of the feature you selected.
 
 #### Constraints
 
-- Continue from Task 01 in `submissions/08-terraform-vault/`.
+- Continue from Task 01 in `submissions/terraform-vault/01-terraform-vault/`.
 - Use a feature supported by the pinned Terraform and provider versions.
 - The secret must still reach its intended destination during the operation.
 - Do not claim that `sensitive` alone, redaction, or deleting a local file
@@ -111,7 +111,7 @@ used for normal changes.
 
 #### Constraints
 
-- Work in the copied tracks under `submissions/08-terraform-vault/`.
+- Work in the copied tracks under `submissions/terraform-vault/01-terraform-vault/`.
 - Manage the policy, auth method, and mount through Terraform resources.
 - Use a least-privilege fictitious policy and a test-only mount.
 - Use short-lived provider credentials for routine Terraform operations.
@@ -178,7 +178,7 @@ bootstrap credential is lost or exposed.
 
 ## Explain
 
-Answer these questions in `submissions/08-terraform-vault/answers.md`.
+Answer these questions in `submissions/terraform-vault/01-terraform-vault/answers.md`.
 
 ### Explain 1
 

@@ -4,7 +4,7 @@ tags:
   - Vault
 ---
 
-# 04 — Vault first contact
+# Vault 01 — Vault first contact
 
 ## Why
 
@@ -13,7 +13,7 @@ reduces the chance that a password reaches source control, CI variables, logs,
 or Terraform state. Vault also controls who can read a secret and records
 when access should stop.
 
-Start this slice in a new folder: `submissions/04-vault-first-contact/`.
+Start this slice in a new folder: `submissions/vault/01-vault-first-contact/`.
 Build the Vault dev-mode container yourself. Do not add a Vault server to the
 repository Compose file. Use fictitious test values only, and redact tokens
 from evidence.
@@ -39,7 +39,7 @@ and confirm that a Vault client can reach it.
 
 #### Constraints
 
-- Work only in `submissions/04-vault-first-contact/`.
+- Work only in `submissions/vault/01-vault-first-contact/`.
 - Build the Vault container and its startup configuration yourself.
 - Do not use the repository Compose file for the Vault server.
 - Use dev mode for local learning only.
@@ -143,7 +143,7 @@ and prove that Vault rejects it afterward.
 
 ## Explain
 
-Answer these questions in `submissions/04-vault-first-contact/answers.md`.
+Answer these questions in `submissions/vault/01-vault-first-contact/answers.md`.
 
 ### Explain 1
 

@@ -4,7 +4,7 @@ tags:
   - Terraform
 ---
 
-# 01 — Local AWS and Terraform workflow
+# Terraform 01 — Terraform workflow
 
 ## Why
 
@@ -12,10 +12,10 @@ Clients need infrastructure changes that they can review before they make them.
 The Terraform workflow shows the proposed change, applies only the intended change, and leaves a record of what exists.
 You will use a local AWS emulator so that you can repeat the workflow without creating cloud resources.
 
-Start this slice in a new folder: `submissions/01-workflow/`.
+Start this slice in a new folder: `submissions/terraform/01-workflow/`.
 
 Use Floci at `localhost:4566`. Set the shell variables in
-[Connect to Floci](../index.md#connect-to-floci) first.
+[Connect to Floci](../../index.md#connect-to-floci) first.
 Write all Terraform configuration yourself.
 
 ## Concepts
@@ -31,13 +31,13 @@ Write all Terraform configuration yourself.
 
 ### Task 01 — Configure a local target
 
-Create a Terraform configuration in `submissions/01-workflow/code/`.
+Create a Terraform configuration in `submissions/terraform/01-workflow/code/`.
 Point its AWS provider at Floci.
 Choose at least two AWS resources that Floci supports and manage them together.
 
 #### Constraints
 
-- Keep Terraform configuration in `submissions/01-workflow/code/`.
+- Keep Terraform configuration in `submissions/terraform/01-workflow/code/`.
 - Use the local Floci endpoint. Do not use a real AWS account.
 - Do not add real cloud credentials or copy a finished configuration.
 - Pin the AWS provider to a chosen version.
@@ -132,7 +132,7 @@ Use Floci documentation, AWS documentation, or a focused local observation to su
 
 ## Explain
 
-Answer these questions in `submissions/01-workflow/answers.md`.
+Answer these questions in `submissions/terraform/01-workflow/answers.md`.
 
 ### Explain 1
 

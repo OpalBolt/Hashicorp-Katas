@@ -4,7 +4,7 @@ tags:
   - Vault
 ---
 
-# 05 — Vault as a real server
+# Vault 02 — Vault as a real server
 
 ## Why
 
@@ -13,8 +13,8 @@ uses temporary storage and convenient startup settings. Operators must own
 the seal process, storage recovery, authentication choices, audit trail,
 server configuration, and TLS decision.
 
-Start this slice by copying your `submissions/04-vault-first-contact/code/`
-folder to `submissions/05-vault-server/code/`. Extend the copied work in the
+Start this slice by copying your `submissions/vault/01-vault-first-contact/code/`
+folder to `submissions/vault/02-vault-server/code/`. Extend the copied work in the
 new folder. Use fictitious test values. Keep unseal shares, credentials,
 tokens, and snapshots out of evidence and commits.
 
@@ -40,7 +40,7 @@ file. Use integrated storage with data on a persistent local volume.
 
 #### Constraints
 
-- Work only in `submissions/05-vault-server/`.
+- Work only in `submissions/vault/02-vault-server/`.
 - Start Vault outside the repository Compose file.
 - Read the server settings from a configuration file.
 - Use integrated storage and a persistent volume.
@@ -185,7 +185,7 @@ or change the record, and restore the snapshot in a safe test instance.
 
 ## Explain
 
-Answer these questions in `submissions/05-vault-server/answers.md`.
+Answer these questions in `submissions/vault/02-vault-server/answers.md`.
 
 ### Explain 1
 

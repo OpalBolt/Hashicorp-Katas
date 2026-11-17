@@ -4,7 +4,7 @@ tags:
   - Terraform
 ---
 
-# 03 — HCL and modules
+# Terraform 03 — HCL and modules
 
 ## Why
 
@@ -12,8 +12,8 @@ Reusable, readable Terraform is easier for a client to review, change, and
 inherit. Clear interfaces make ownership visible and reduce the risk that a
 small environment change affects the wrong resources.
 
-Start this slice in a new folder: `submissions/03-modules/`.
-Copy `submissions/02-state/code/` into its `code/` folder and extend that work.
+Start this slice in a new folder: `submissions/terraform/03-modules/`.
+Copy `submissions/terraform/02-state/code/` into its `code/` folder and extend that work.
 Keep the local Floci resources and remote state from the previous slice
 working while you add isolated environment state.
 
@@ -35,13 +35,13 @@ configuration and state ready for the Terraform and Vault slice that follows.
 
 ### Task 01 — Build from a map
 
-Copy the previous slice's code into `submissions/03-modules/code/`. Extend it
+Copy the previous slice's code into `submissions/terraform/03-modules/code/`. Extend it
 so one resource type is created from a map of environment-specific or
 component-specific values.
 
 #### Constraints
 
-- Work only in `submissions/03-modules/code/`.
+- Work only in `submissions/terraform/03-modules/code/`.
 - Start from the previous slice's code. Do not copy a finished solution.
 - Keep the existing Floci resources and remote state working.
 - Use a map as the source for repeated resources. Do not duplicate one block
@@ -191,7 +191,7 @@ module behavior without relying on a real cloud account.
 #### Constraints
 
 - Keep the test with the module or its test configuration in
-  `submissions/03-modules/code/`.
+  `submissions/terraform/03-modules/code/`.
 - Test a behavior introduced by the module, not only Terraform syntax.
 - Use local provider behavior or supported test doubles.
 - Do not use real credentials, client data, or a real cloud account.
@@ -214,7 +214,7 @@ module behavior without relying on a real cloud account.
 
 ## Explain
 
-Answer these questions in `submissions/03-modules/answers.md`.
+Answer these questions in `submissions/terraform/03-modules/answers.md`.
 
 ### Explain 1
 

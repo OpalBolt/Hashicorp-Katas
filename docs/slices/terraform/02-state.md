@@ -4,13 +4,13 @@ tags:
   - Terraform
 ---
 
-# 02 — State and drift
+# Terraform 02 — State and drift
 
 ## Why
 
 Terraform state connects configuration to real resources. A lost state file can make a team lose track of ownership and recreate resources. A locked state can stop planned work until someone resolves the operation that holds the lock. State can contain secrets, so a leaked state file can expose client credentials. Parallel applies can race, overwrite state, or produce changes that no one reviewed.
 
-Start this slice in a new folder: `submissions/02-state/`.
+Start this slice in a new folder: `submissions/terraform/02-state/`.
 Copy the previous slice's `code/` folder into it and extend that work. The previous slice destroyed its resources, so recreate your local setup before these exercises.
 
 Use Floci at `localhost:4566`. Use fictitious test values only. Keep the configuration and state that the next slice will need.
@@ -29,11 +29,11 @@ Use Floci at `localhost:4566`. Use fictitious test values only. Keep the configu
 
 ### Task 01 — Continue the previous slice
 
-Copy the previous slice's code into `submissions/02-state/code/` and recreate its local resources in Floci. Extend the configuration in this new folder.
+Copy the previous slice's code into `submissions/terraform/02-state/code/` and recreate its local resources in Floci. Extend the configuration in this new folder.
 
 #### Constraints
 
-- Work only in `submissions/02-state/code/`.
+- Work only in `submissions/terraform/02-state/code/`.
 - Use Floci. Do not use a real AWS account or real credentials.
 - Start from the previous slice's code. Do not copy a finished solution.
 - Use fictitious values for names, tokens, and other test data.
@@ -204,7 +204,7 @@ Put a fictitious secret-like test value into a managed configuration, then find 
 
 ## Explain
 
-Answer these questions in `submissions/02-state/answers.md`.
+Answer these questions in `submissions/terraform/02-state/answers.md`.
 
 ### Explain 1
 

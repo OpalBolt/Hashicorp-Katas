@@ -1,10 +1,10 @@
 ---
 icon: material/briefcase-outline
 tags:
-  - Advisory
+  - Adversary
 ---
 
-# 10 — Advisory: licensing and Enterprise
+# Adversary 01 — Advisory: licensing and Enterprise
 
 ## Why
 
@@ -15,8 +15,8 @@ infrastructure, compliance, migration, and growth. This slice makes the
 learner research current terms and turn them into questions, evidence, and
 review material rather than making an unsupported product recommendation.
 
-Start by copying `submissions/08-terraform-vault/code/` into
-`submissions/10-advisory/code/`. Keep the copied work separate from the
+Start by copying `submissions/terraform-vault/01-terraform-vault/code/` into
+`submissions/adversary/01-advisory/code/`. Keep the copied work separate from the
 advisory evidence. Use fictitious client details and redact credentials,
 tokens, secret values, and private key material.
 
@@ -41,8 +41,8 @@ cite every material claim.
 
 #### Constraints
 
-- Work only in `submissions/10-advisory/`.
-- Start from the copied code from slice 08. Do not modify it to create
+- Work only in `submissions/adversary/01-advisory/`.
+- Start from the copied code from Terraform + Vault 01. Do not modify it to create
   advisory conclusions.
 - Use current official Terraform and Vault sources, including the source
   title, URL, publisher, and access date.
@@ -176,7 +176,7 @@ operation.
 
 ## Explain
 
-Answer these questions in `submissions/10-advisory/answers.md`.
+Answer these questions in `submissions/adversary/01-advisory/answers.md`.
 
 ### Explain 1
 
