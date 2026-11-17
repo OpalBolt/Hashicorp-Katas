@@ -14,7 +14,11 @@ request to the mount that owns the path. This model explains Vault without
 requiring a running server.
 
 This slice needs no Vault server, cloud account, or repository Compose setup.
-Start the task in `submissions/vault/00-foundations/`.
+Use the [Vault 00 diagram preview](00-foundations-preview.md) while editing:
+run `mise run serve`, open the preview page in the site, and edit that Markdown
+file. When it is complete, copy its Mermaid block to
+`submissions/vault/00-foundations/diagram.md`. Keep that submitted source for
+grading; the preview page is only a working copy.
 
 ## Concepts
 
@@ -47,16 +51,16 @@ flowchart LR
 sequenceDiagram
     participant C as Client
     participant A as Auth method
-    participant T as Token
+    participant V as Vault
     participant P as Policy check
     participant M as Mount
     participant S as Secret
     C->>A: Authenticate
     A-->>C: Issue token
-    C->>T: Send request with token
-    T->>P: Check path and capability
-    P-->>T: Allow or deny
-    T->>M: Route allowed path
+    C->>V: Send request with token
+    V->>P: Check path and capability
+    P-->>V: Allow or deny
+    V->>M: Route allowed path
     M->>S: Perform operation
     S-->>C: Return result
 ```
@@ -74,9 +78,10 @@ flowchart TD
 
 ### Task 01 — Complete a Vault request diagram
 
-Create `submissions/vault/00-foundations/diagram.md`. Copy the scaffold below
-into that file and replace every `???` with a clear label. Keep the diagram in
-your Markdown source so it can be checked without a Vault server.
+Edit the scaffold in the [Vault 00 diagram preview](00-foundations-preview.md)
+and replace every `???` with a clear label. Copy the completed Mermaid block to
+`submissions/vault/00-foundations/diagram.md`. The submitted Markdown source can
+be checked without a Vault server.
 
 ```mermaid
 flowchart LR
@@ -88,14 +93,14 @@ flowchart LR
     secret["???"]
     client -->|"authenticate"| auth
     auth -->|"issues"| token
-    token -->|"sends request"| policy
+    client -->|"sends request with token"| policy
     policy -->|"allows path"| mount
     mount --> secret
 ```
 
 #### Constraints
 
-- Work only in `submissions/vault/00-foundations/`.
+- Keep the submitted diagram in `submissions/vault/00-foundations/`.
 - Use one Mermaid diagram in `diagram.md`.
 - Replace every `???` with a label that matches the Vault model.
 - Do not add a Vault server, cloud setup, tokens, or real secrets.

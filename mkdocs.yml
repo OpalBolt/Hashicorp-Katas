@@ -72,6 +72,7 @@ nav:
       - "Terraform 03 — Terraform HCL and modules": slices/terraform/03-modules.md
   - Vault:
       - "Vault 00 — Foundations": slices/vault/00-foundations.md
+      - "Vault 00 — Diagram preview": slices/vault/00-foundations-preview.md
       - "Vault 01 — Vault first contact": slices/vault/01-vault-first-contact.md
       - "Vault 02 — Vault as a real server": slices/vault/02-vault-server.md
       - "Vault 03 — Vault dynamic secrets and rotation": slices/vault/03-dynamic-secrets.md
