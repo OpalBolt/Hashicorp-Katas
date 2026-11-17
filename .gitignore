@@ -1,5 +1,8 @@
 .scratch
 site/
+submissions/terraform/00-block-types/**/.terraform/
+submissions/terraform/00-block-types/**/*.tfstate*
+submissions/terraform/00-block-types/example/release-note.txt
 submissions/capstone/code/**/terraform/.terraform/
 submissions/capstone/code/**/terraform/*.tfstate*
 submissions/capstone/code/mossvale-supply/.mossvale-initializing

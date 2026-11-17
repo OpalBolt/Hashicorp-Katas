@@ -18,8 +18,8 @@ This foundations slice needs only Terraform. It does not need containers, AWS, o
 cloud account.
 No cloud setup is needed.
 
-Start this slice in a new folder:
-`submissions/terraform/00-block-types/`.
+Use the provided `submissions/terraform/00-block-types/` folder.
+Its `example/` and `code/` folders keep the example and your task separate.
 
 ## Concepts
 
@@ -50,11 +50,31 @@ Use these rules when two choices look similar:
 - Choose **`variable`** when a caller supplies the value. Choose **`locals`**
   when the configuration derives the value from its own inputs and resources.
 
-### Read-only annotated example
+### Run an annotated example
 
-This unrelated release-note configuration is for reading only. Do not copy it
-into the task folder. Notice how the blocks connect without making every value
-an input.
+This example creates a release note from an existing template. Run it in
+`submissions/terraform/00-block-types/example/`, not in the task's `code/` folder.
+
+The folder contains `release-template.txt`:
+
+```text
+Release RELEASE_NAME is ready for review.
+```
+
+The included `versions.tf` selects the local provider:
+
+```hcl
+terraform {
+  required_providers {
+    local = {
+      source  = "hashicorp/local"
+      version = "2.5.3"
+    }
+  }
+}
+```
+
+The included `main.tf` contains the five block types:
 
 ```hcl
 variable "release_name" {
@@ -82,6 +102,35 @@ output "release_note_path" {
   # The release job can consume this result.
   value = local_file.release_note.filename
 }
+```
+
+The values flow through the blocks like this:
+
+```mermaid
+flowchart LR
+    input["variable: release_name"] --> derived["locals: note"]
+    template["release-template.txt"] --> lookup["data: local_file.template"]
+    lookup --> derived
+    derived --> managed["resource: local_file.release_note"]
+    managed --> file["release-note.txt"]
+    managed --> result["output: release_note_path"]
+```
+
+The resource writes the file. The output exposes its path, not its contents.
+
+Run these commands from the repository root. Initialization downloads the local
+provider. Review the proposed file creation, then enter `yes` at the apply prompt.
+
+```bash
+terraform -chdir=submissions/terraform/00-block-types/example init
+terraform -chdir=submissions/terraform/00-block-types/example apply -var='release_name=training-01'
+cat submissions/terraform/00-block-types/example/release-note.txt
+```
+
+Terraform prints the generated file's path. The file contains:
+
+```text
+Release training-01 is ready for review.
 ```
 
 ## Tasks
