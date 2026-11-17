@@ -146,13 +146,36 @@ Answer these questions in `submissions/vault/01-vault-first-contact/answers.md`.
 
 ### Explain 1
 
-Why does Vault deny access by default when a policy does not grant a
-capability?
+**Situation:** A token has one policy. That policy grants `read` on `secret/data/app` and nothing else. The token tries to write to `secret/data/app` and to read `secret/data/billing`.
+
+**Question:** What happens to each request, and why is Vault designed this way?
+
+**A solid answer covers:**
+
+- The result of each request, and the reason.
+- What "deny by default" means for paths the policy does not name.
+- Why deny by default is safer than allow by default when someone adds new secrets.
 
 ### Explain 2
 
-What is the difference between a Vault token and a secret?
+**Situation:** You find that a token has leaked. You revoke it.
+
+**Question:** What does revocation stop, and what can it not undo?
+
+**A solid answer covers:**
+
+- What happens to later requests that use the revoked token.
+- What happens to secrets the attacker already read.
+- What else you must do after you revoke the token.
 
 ### Explain 3
 
-Why should a team avoid using the root token for daily work?
+**Situation:** A small team keeps the root token from their first setup in a password manager. They use it for daily work because it is easier.
+
+**Question:** What risks does this create, and what should the team do instead?
+
+**A solid answer covers:**
+
+- What the root token can do and how long it lasts.
+- What the audit log can and cannot tell the team about who did what.
+- A safer way to do daily work, and when root access is still needed.

@@ -94,6 +94,10 @@ Do not submit raw state, saved plans, tokens, or private keys.
 
 ## Explain answers
 
+Each Explain question gives a situation, asks one question, and lists what a
+solid answer covers. The list names the points to address, not the answer.
+Answer in your own words. Use the situation, not a definition from the docs.
+
 Write one answer for each question in `answers.md`:
 
 ```markdown

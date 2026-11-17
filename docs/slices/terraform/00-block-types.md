@@ -313,23 +313,40 @@ Keep the generated report separate from `source.txt`.
 
 ## Explain
 
-Answer these questions in
-`submissions/terraform/00-block-types/answers.md`.
+Answer these questions in `submissions/terraform/00-block-types/answers.md`.
 
 ### Explain 1
 
-An object already exists in the working folder, and Terraform should include
-its contents in a generated file but must not manage the existing object's
-lifecycle. Should the configuration use `data` or `resource`? Why?
+**Situation:** Your configuration reads `source.txt` with a `data "local_file"` block. A teammate changes it to a `resource "local_file"` block with the same filename. Later, someone runs `terraform destroy`.
+
+**Question:** What happens to `source.txt` in each version of the configuration?
+
+**A solid answer covers:**
+
+- What Terraform does with an object it reads.
+- What Terraform does with an object it manages, at apply and at destroy.
+- Why this difference matters for files or resources that other people own.
 
 ### Explain 2
 
-A release job must provide a project name, while the report filename is
-derived from that name inside the configuration. Which value belongs in a
-`variable`, and which belongs in `locals`? Why?
+**Situation:** A release job runs your configuration once for each project and passes in the project name. A teammate suggests that the job should also pass in the report filename, "for flexibility".
+
+**Question:** Should the report filename be a `variable`, or should it stay in `locals`? Explain your choice.
+
+**A solid answer covers:**
+
+- Who supplies each value, and who should decide it.
+- One problem that can happen if the caller controls the filename.
+- A situation where a separate filename variable would be the better choice.
 
 ### Explain 3
 
-The generated report exists after apply, but another automation step needs its
-path. Which block publishes that path, and what is missing if the block is
-omitted?
+**Situation:** After apply, a later step in the release job must upload the generated report. A teammate wants that step to read the report path from `terraform.tfstate` with a script.
+
+**Question:** Why is an `output` block a better way to give the job that path?
+
+**A solid answer covers:**
+
+- What an `output` gives the caller.
+- Why reading the state file directly is fragile or unsafe.
+- What the job would have to do if no output exists.

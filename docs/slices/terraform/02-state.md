@@ -210,12 +210,36 @@ Answer these questions in `submissions/terraform/02-state/answers.md`.
 
 ### Explain 1
 
-Why is Terraform state sensitive, even when a configuration marks an input as sensitive?
+**Situation:** A configuration marks a database password input as `sensitive`. The plan shows `(sensitive value)` instead of the password. The team stores state in a bucket that every developer can read.
+
+**Question:** Is the password protected? Who can read it?
+
+**A solid answer covers:**
+
+- Where Terraform stores the password value.
+- What the `sensitive` marking changes and what it does not change.
+- Which controls protect state, and who they should limit.
 
 ### Explain 2
 
-How can a team rename a Terraform resource safely without replacing the real resource?
+**Situation:** You rename `aws_s3_bucket.logs` to `aws_s3_bucket.audit_logs` in the configuration. You change nothing else.
+
+**Question:** What does the next plan propose, and how do you keep the same bucket?
+
+**A solid answer covers:**
+
+- How Terraform connects a block in configuration to a real resource.
+- Why the plan proposes that action, and the risk if you apply it.
+- How you tell Terraform about the rename, and how you check the plan before you apply.
 
 ### Explain 3
 
-What should a team do after someone changes a managed resource by hand?
+**Situation:** During an incident, an on-call engineer changes a setting on a managed bucket directly in the cloud console. The next day, someone runs `terraform plan`.
+
+**Question:** What does the plan propose, and how should the team decide what to do?
+
+**A solid answer covers:**
+
+- What Terraform does with a difference between configuration and the real resource.
+- How the team decides whether to keep or undo the manual change.
+- What the team must change in each case so the next plan is clean.

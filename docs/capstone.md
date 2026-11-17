@@ -197,7 +197,9 @@ Never edit the baseline. Keep authored task artifacts in
 `submissions/capstone/code/`. Keep runtime captures in
 `submissions/capstone/evidence/`, with task numbers in their filenames.
 Follow the [evidence format](grading.md#evidence-format).
-Keep your build-stage answers in `submissions/capstone/answers.md`.
+Keep your build-stage answers in `submissions/capstone/answers.md`. Give each
+task Explain answer a heading that matches its question, such as
+`## Task 05 Explain 1`.
 
 Record before and after results. Redact passwords, tokens, and other secret
 values. If a check fails, keep the failure and explain what it means. Do not
@@ -235,11 +237,55 @@ results in `evidence/` files named with the `task-05-` prefix.
 
 #### Explain
 
-- What did you change, and which part of your written recommendation did it
-  implement?
-- Which evidence proves that ownership and environment boundaries improved?
-- What did you leave unchanged, and why?
-- What risk remains if the team applies this setup outside the local copy?
+Answer from your own change and evidence. Point to evidence by filename.
+
+##### Task 05 Explain 1
+
+**Situation:** A Mossvale engineer reads your change but has not read your Task 01 diagnosis. They want to know why each part of the change exists.
+
+**Question:** What did you change, and which step of your Task 01 recommendation does each change carry out?
+
+**A solid answer covers:**
+
+- Each configuration, structure, or state change you made.
+- The Task 01 step or cause that each change addresses.
+- Any Task 01 step you did not build.
+
+##### Task 05 Explain 2
+
+**Situation:** Before your change, a development edit also appeared in the production plan. Nobody could say which state owned each resource. A reviewer asks you to prove that this is now fixed.
+
+**Question:** Which evidence shows that ownership and the environment boundary are now clear?
+
+**A solid answer covers:**
+
+- The plan or state output you rely on.
+- What that output shows for development and for production.
+- What the same check showed before your change.
+
+##### Task 05 Explain 3
+
+**Situation:** You found more problems than you fixed. The team asks why you left some of the setup as it was.
+
+**Question:** What did you leave unchanged, and why?
+
+**A solid answer covers:**
+
+- At least one thing you chose not to change.
+- The risk or missing evidence that made you stop there.
+- What the team must confirm before it continues.
+
+##### Task 05 Explain 4
+
+**Situation:** The team plans to repeat your change in the real development and production accounts. Those accounts hold real resources and their own existing state.
+
+**Question:** What could go wrong in the real accounts that your local copy did not show?
+
+**A solid answer covers:**
+
+- One difference between the local copy and the real accounts.
+- How that difference could cause a replacement or a change in the wrong environment.
+- The check the team should run before the first real apply.
 
 **Concept pointer:** Terraform state ownership.
 
@@ -277,12 +323,55 @@ Keep raw secret values outside the repository.
 
 #### Explain
 
-- What changed, and why did you choose that order?
-- Which result proves that the service can recover without relying on one
-  operator credential?
-- What did you choose not to change, and why?
-- What would a client still need to verify before using this design in
-  production?
+Answer from your own change and evidence. Point to evidence by filename.
+
+##### Task 06 Explain 1
+
+**Situation:** Your build changed how the Vault server runs, who can access it, and how the database password reaches the service. You had to do these changes in some order.
+
+**Question:** What did you change, and why did you do it in that order?
+
+**A solid answer covers:**
+
+- Each change, in the order you made it.
+- What would break or become riskier if two of the steps were swapped.
+- Where your order differs from your Task 02 recommendation, and why.
+
+##### Task 06 Explain 2
+
+**Situation:** Before your change, the server lost its data when the container was replaced. Operators used one powerful credential for both setup and routine checks.
+
+**Question:** Which result shows that the service now recovers without depending on that one operator credential?
+
+**A solid answer covers:**
+
+- The recovery event you tested.
+- Which identity or credential the service and the operators used after recovery.
+- How routine access now differs from bootstrap access.
+
+##### Task 06 Explain 3
+
+**Situation:** Some of the Vault problems from Task 02 are still present in your working copy.
+
+**Question:** What did you choose not to change, and why?
+
+**A solid answer covers:**
+
+- At least one thing you left unchanged.
+- Why changing it now would add risk or would need a real client Vault.
+- What must be true before the team changes it.
+
+##### Task 06 Explain 4
+
+**Situation:** The client wants to use your design on its production Vault. Your local server is a single training instance with temporary values.
+
+**Question:** What must the client still verify before it relies on this design in production?
+
+**A solid answer covers:**
+
+- At least one Vault behavior you could not test locally.
+- Why your local result does not prove that behavior.
+- Who could confirm it, or what evidence would.
 
 **Concept pointer:** Vault secret lifecycle.
 
@@ -320,11 +409,55 @@ allowed and rejected path results, permission checks, and redacted logs in
 
 #### Explain
 
-- What changed at each trust boundary, and why did you change it in that
-  order?
-- How do the tests prove both access and rejection?
-- What did you choose not to change, and why?
-- What risk remains if a reviewer, action, or repository setting changes?
+Answer from your own change and evidence. Point to evidence by filename.
+
+##### Task 07 Explain 1
+
+**Situation:** The original workflow planned and applied in one place, with a long-lived credential and broad permissions. Your build changed some of the trust boundaries in that workflow.
+
+**Question:** What did you change at each trust boundary, and why did you change them in that order?
+
+**A solid answer covers:**
+
+- The change you made at each boundary you touched.
+- What would have been exposed or broken if you had used a different order.
+- How the plan stayed reviewable while you made the changes.
+
+##### Task 07 Explain 2
+
+**Situation:** A reviewer says: "A green workflow run only proves that the allowed path works."
+
+**Question:** How do your tests prove that the allowed path works and that the rejected path is blocked?
+
+**A solid answer covers:**
+
+- The allowed test, and what access it received.
+- The rejected branch or repository test, and what it did not receive.
+- What a masked value in the logs proves, and what it does not prove.
+
+##### Task 07 Explain 3
+
+**Situation:** You kept some parts of the original workflow, such as an action, a permission, or a repository setting.
+
+**Question:** What did you choose not to change, and why?
+
+**A solid answer covers:**
+
+- At least one part you kept.
+- Why keeping it is acceptable for now.
+- What would make you change it later.
+
+##### Task 07 Explain 4
+
+**Situation:** Six months later, someone updates a third-party action or changes a repository setting. Nobody reruns your tests.
+
+**Question:** Which protection could stop working, and how would the team notice?
+
+**A solid answer covers:**
+
+- Which part of your protection depends on that action or setting.
+- What an attacker or a mistake could then reach.
+- A review step or check that would catch the change.
 
 **Concept pointer:** CI trust boundaries.
 
@@ -362,12 +495,56 @@ submission.
 
 #### Explain
 
-- What did you build locally, and how does it support your written
-  recommendation?
-- Which requirement remains unproven, and what evidence would prove it?
-- What did you choose not to change, and why?
-- How would staffing, recovery targets, or support requirements change your
-  recommendation?
+Answer from your own change and evidence. Point to evidence by filename.
+
+##### Task 08 Explain 1
+
+**Situation:** Your Task 04 recommendation said which controls the Community setup can support. Your local build now demonstrates some of them.
+
+**Question:** What did you build locally, and how does it support your recommendation?
+
+**A solid answer covers:**
+
+- Each control you built, and the evidence that shows it.
+- The Task 04 claim that each control supports.
+- What the local build does not show.
+
+##### Task 08 Explain 2
+
+**Situation:** A Mossvale manager reads your decision record and asks: "So do we need Enterprise or not?" At least one requirement is still unproven.
+
+**Question:** Which requirement is still unproven, and what evidence would settle it?
+
+**A solid answer covers:**
+
+- The requirement, and why the local build cannot prove it.
+- The source or owner who can provide the missing evidence.
+- How each possible result would change your recommendation.
+
+##### Task 08 Explain 3
+
+**Situation:** You did not build everything you discussed in Task 04.
+
+**Question:** What did you choose not to change in the local build, and why?
+
+**A solid answer covers:**
+
+- At least one item you left out.
+- Whether you left it out because it needs a paid or hosted product, or for another reason.
+- How your record makes clear that the item is not implemented.
+
+##### Task 08 Explain 4
+
+**Situation:** The client now tells you three facts. It will have two operators. It must recover from an outage within one hour. It wants vendor support at night.
+
+**Question:** How do these facts change your recommendation?
+
+**A solid answer covers:**
+
+- What two operators can realistically run and recover.
+- Which designs or products can meet the one-hour recovery target.
+- Whether the support need changes the choice between Community, Enterprise, and hosted.
+- What you would still verify before you commit to a recommendation.
 
 **Concept pointer:** Product fit evidence.
 
@@ -378,16 +555,36 @@ scenario responses.
 
 ### Explain 1
 
-How should a consultant distinguish a symptom, a root-cause hypothesis, and
-evidence before recommending a Terraform or Vault change?
+**Situation:** A client says: "Terraform keeps wanting to change production." You can see the complaint, but you do not yet know why it happens.
+
+**Question:** How do you separate the symptom, a root-cause hypothesis, and the evidence before you recommend a change?
+
+**A solid answer covers:**
+
+- A short definition of each, using an example from your stage 1 work.
+- Which evidence would confirm or reject your hypothesis.
+- The risk of recommending a change based on the symptom alone.
 
 ### Explain 2
 
-Why should the order of remediation be part of a customer recommendation,
-rather than a list of independent technical improvements?
+**Situation:** Your stage 1 work contains several recommendations for Terraform, Vault, and CI.
+
+**Question:** Why should the order of the changes be part of your recommendation?
+
+**A solid answer covers:**
+
+- One example from your stage 1 work where the wrong order causes harm or wasted work.
+- How dependencies between changes decide the order.
+- How a clear order helps the client plan and review the work.
 
 ### Explain 3
 
-How should a consultant present an Enterprise or hosted-product
-recommendation when current official sources or client requirements are
-incomplete?
+**Situation:** A client asks whether they should buy an Enterprise or hosted product. They have not stated their recovery targets, and you cannot confirm the current price.
+
+**Question:** How do you present your recommendation?
+
+**A solid answer covers:**
+
+- What you know, what you do not know, and how you mark each.
+- Which client facts or sources would change the recommendation.
+- A Community-compatible option the client can use while the open questions are answered.

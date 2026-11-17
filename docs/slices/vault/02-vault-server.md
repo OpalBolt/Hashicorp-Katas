@@ -191,14 +191,36 @@ Answer these questions in `submissions/vault/02-vault-server/answers.md`.
 
 ### Explain 1
 
-Why does Vault start sealed, and what risk does unseal control reduce?
+**Situation:** A Vault server restarts after a host update at 03:00. After the restart, applications get errors from Vault. The unseal keys are split between three people.
+
+**Question:** Why can Vault not serve requests after the restart, and what risk does the key split reduce?
+
+**A solid answer covers:**
+
+- What the sealed state protects.
+- What must happen before Vault serves requests again.
+- What splitting the unseal keys protects against, and what it costs in availability.
 
 ### Explain 2
 
-How can AppRole reduce the need for a long-lived application secret, and
-which credentials or delivery paths still need protection?
+**Situation:** An application keeps a long-lived Vault token in its configuration file. You move the application to AppRole login.
+
+**Question:** What gets better, and what does the application still need to protect?
+
+**A solid answer covers:**
+
+- How the application gets a token with AppRole, and how long that token lives.
+- Which AppRole credential is now the sensitive one.
+- How that credential reaches the application, and how you limit its risk.
 
 ### Explain 3
 
-What happens when an enabled audit device cannot write a request record, and
-why must an operator decide how to handle that failure?
+**Situation:** Vault writes its only audit log to a file. The disk that holds the file becomes full.
+
+**Question:** What happens to client requests, and why does Vault behave that way?
+
+**A solid answer covers:**
+
+- What Vault does when it cannot write an audit record.
+- Why Vault chooses that behavior.
+- What the operator must plan for, and one way to reduce the risk.

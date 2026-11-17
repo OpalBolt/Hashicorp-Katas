@@ -142,13 +142,36 @@ Answer these questions in `submissions/vault/03-dynamic-secrets/answers.md`.
 
 ### Explain 1
 
-Why can a short lease reduce risk more than a strong long-lived password?
+**Situation:** Team A shares one strong 40-character database password between all its services and changes it once a year. Team B gets a dynamic database credential from Vault for each service, with a one-hour lease. On Monday, both teams leak a credential in a log.
+
+**Question:** Compare what an attacker can do with each leaked credential.
+
+**A solid answer covers:**
+
+- How long each credential works after the leak.
+- How many systems or users each credential exposes.
+- How easily each team can trace and stop the misuse.
 
 ### Explain 2
 
-What happens to a dynamic database credential when its lease reaches its end,
-and how does renewal change that result?
+**Situation:** An application gets a dynamic database credential with a one-hour TTL and a 24-hour max TTL. It renews the lease every 30 minutes.
+
+**Question:** What happens to the credential if the application stops renewing? What happens at 24 hours, even with renewal?
+
+**A solid answer covers:**
+
+- What Vault does when the lease ends.
+- What renewal can extend, and where it stops.
+- What the application must do to keep working.
 
 ### Explain 3
 
-What risk does credential rotation leave unchanged?
+**Situation:** A static role rotates the password of a database user every 24 hours. An attacker copied the current password one hour ago.
+
+**Question:** What does the next rotation fix, and what risk stays the same?
+
+**A solid answer covers:**
+
+- What the attacker can do before the next rotation.
+- What rotation does not change, such as the user's database permissions or existing sessions.
+- Who can still read the new password, and how you limit that.

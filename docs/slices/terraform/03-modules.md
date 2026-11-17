@@ -220,14 +220,36 @@ Answer these questions in `submissions/terraform/03-modules/answers.md`.
 
 ### Explain 1
 
-When should a repeated Terraform resource use `count`, and when should it use
-`for_each`?
+**Situation:** You create three buckets with `count` from the list `["dev", "test", "prod"]`. Later, you remove `"dev"` from the list.
+
+**Question:** What does the plan propose for the `test` and `prod` buckets? How would `for_each` change that?
+
+**A solid answer covers:**
+
+- How `count` and `for_each` each identify resource instances.
+- Why removing one item affects the other instances with `count`.
+- When `count` is still a good choice.
 
 ### Explain 2
 
-What do sensitive values protect in Terraform, and what do they not protect?
+**Situation:** A child module returns a connection string that includes a sensitive password. Terraform reports an error at the root output. A teammate wraps the value in `nonsensitive()` to stop the error. The password now appears in the CI log.
+
+**Question:** What was the sensitive marking protecting, and what did the teammate's change expose?
+
+**A solid answer covers:**
+
+- How Terraform tracks sensitive values as they pass between modules and outputs.
+- Where sensitive values stay visible even before the teammate's change.
+- A safer way to give the caller what it needs.
 
 ### Explain 3
 
-Why are workspaces a risky boundary for production and development
-environments?
+**Situation:** A team keeps development and production in one folder with one backend. They switch between them with `terraform workspace select`. An engineer tests a change in `dev` and forgets to switch back before the next apply.
+
+**Question:** What can go wrong, and why are separate state locations a stronger boundary?
+
+**A solid answer covers:**
+
+- What workspaces share: code, backend, and credentials.
+- What a mistake in workspace selection can do to production.
+- What separate state locations add, such as access control and visible environment values.

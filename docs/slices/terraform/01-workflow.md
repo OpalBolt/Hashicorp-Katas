@@ -138,12 +138,36 @@ Answer these questions in `submissions/terraform/01-workflow/answers.md`.
 
 ### Explain 1
 
-Why does Terraform have a plan phase instead of applying every configuration change immediately?
+**Situation:** A teammate changes one attribute in the configuration and wants to run `terraform apply -auto-approve`. They say the Git diff already shows what will change.
+
+**Question:** What can the plan show that the Git diff cannot?
+
+**A solid answer covers:**
+
+- The difference between a change to configuration and a change to real resources.
+- At least one example where a small code change causes a larger real change.
+- What the reviewer should look for in the plan before approving it.
 
 ### Explain 2
 
-Why should a team pin Terraform provider versions?
+**Situation:** Your configuration has no version constraint for the AWS provider, and the dependency lock file is not committed. It works on your machine today. Six months later, a new teammate clones the repository and runs `terraform init`.
+
+**Question:** What can be different on the new teammate's machine, and how can it change the plan?
+
+**A solid answer covers:**
+
+- Which provider version the teammate gets, and why.
+- How a different provider version can change plan or apply results.
+- What the version constraint and the lock file each control.
 
 ### Explain 3
 
-What does a successful local emulator run fail to prove about real AWS?
+**Situation:** Your configuration applies cleanly against the local AWS target. The client asks: "So this will work in our AWS account?"
+
+**Question:** How do you answer the client honestly?
+
+**A solid answer covers:**
+
+- What the local run does prove.
+- At least two kinds of real AWS behavior that the local run does not prove.
+- One check you would run before production use.

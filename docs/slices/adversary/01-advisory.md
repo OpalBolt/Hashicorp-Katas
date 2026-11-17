@@ -183,15 +183,36 @@ Answer these questions in `submissions/adversary/01-advisory/answers.md`.
 
 ### Explain 1
 
-Which questions should an adviser ask a client before recommending a
-Terraform licence or hosting option?
+**Situation:** A client asks: "Should we stay on Community Terraform, or move to HCP Terraform or Terraform Enterprise?"
+
+**Question:** Which questions do you ask before you recommend an option, and how does each answer change your recommendation?
+
+**A solid answer covers:**
+
+- At least four questions about the client's needs, such as team size, compliance, policy control, and operating capacity.
+- How each answer moves the recommendation toward or away from an option.
+- What the licence terms allow for the client's planned use.
 
 ### Explain 2
 
-Which questions should an adviser ask a client before recommending Vault
-Enterprise, and when can its cost be justified?
+**Situation:** A client's security lead says: "We need Vault Enterprise for namespaces and replication."
+
+**Question:** How do you test whether those features solve a real client problem, and when is the cost justified?
+
+**A solid answer covers:**
+
+- The client problem each feature would solve.
+- Whether a Community setup or a design change could solve the same problem.
+- The conditions under which the cost is justified.
 
 ### Explain 3
 
-How should an adviser handle a licence, pricing, or feature claim that cannot
-be confirmed in a current official source?
+**Situation:** An old sales slide says a feature is included in a licence tier. You cannot find that claim in current official sources. The client meeting is tomorrow.
+
+**Question:** What do you tell the client, and what do you record?
+
+**A solid answer covers:**
+
+- How you present a claim you cannot confirm.
+- What you record: the source, its date, an owner, and the next check.
+- How the unconfirmed claim affects the decision.

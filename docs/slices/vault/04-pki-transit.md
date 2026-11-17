@@ -197,13 +197,36 @@ Answer these questions in `submissions/vault/04-pki-transit/answers.md`.
 
 ### Explain 1
 
-Why should the root CA stay separate from the CA that issues service
-certificates?
+**Situation:** Two designs issue service certificates. In design A, the root CA signs every service certificate. In design B, the root CA signs an intermediate CA, and the intermediate signs service certificates. In both designs, an attacker steals the key that signs service certificates.
+
+**Question:** Compare the damage and the recovery in each design.
+
+**A solid answer covers:**
+
+- What the attacker can do with the stolen key.
+- What the team must replace or revoke to recover in each design.
+- Why the root CA should be used rarely and kept separate.
 
 ### Explain 2
 
-What does transit let an application avoid storing?
+**Situation:** An application stores customer ID numbers in a database. Today it encrypts them with a key from its own configuration file. You move the application to the transit secrets engine.
+
+**Question:** What does the application no longer store, and what can an attacker still do?
+
+**A solid answer covers:**
+
+- Where the key lives after the change, and what the database stores.
+- What an attacker gets from a database copy alone.
+- What an attacker can do with the application's Vault token, and what limits it.
 
 ### Explain 3
 
-What does key rotation change for new and old ciphertext?
+**Situation:** You rotate a transit key from version 1 to version 2. The database holds one million rows that version 1 encrypted.
+
+**Question:** Can the application still read the old rows? What must you do to stop relying on version 1?
+
+**A solid answer covers:**
+
+- Which key version encrypts new data and which decrypts old data.
+- How you update old ciphertext to the new version.
+- When you can block version 1, and what breaks if you block it too early.

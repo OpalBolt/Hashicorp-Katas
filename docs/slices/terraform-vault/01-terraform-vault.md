@@ -185,15 +185,36 @@ Answer these questions in `submissions/terraform-vault/01-terraform-vault/answer
 
 ### Explain 1
 
-Why is marking a value `sensitive` not enough to keep a Vault secret safe in
-Terraform?
+**Situation:** A Vault policy lets only the deploy role read a database password. Terraform reads that password with a data source and marks the related output `sensitive`. The plan hides the value. Every developer can read the Terraform state bucket.
+
+**Question:** After apply, does the Vault policy still limit who can read the password?
+
+**A solid answer covers:**
+
+- Where the password value lands after plan and apply.
+- What the `sensitive` marking changes and what it does not change.
+- Who can now read the password without asking Vault.
 
 ### Explain 2
 
-Which Terraform feature can keep a supported secret hand-off out of state and
-saved plans, and what are the limits of that protection?
+**Situation:** You change the configuration. It now reads the password with an ephemeral resource and passes it to a write-only argument.
+
+**Question:** What does Terraform now keep out of state and saved plans, and what risks remain?
+
+**A solid answer covers:**
+
+- Which Terraform artifacts no longer contain the value.
+- Where the value can still appear or be stored.
+- Which limits apply, such as provider support and how Terraform detects a changed value.
 
 ### Explain 3
 
-Who owns the Vault configuration code after Terraform manages a policy, auth
-method, or mount, and how should that ownership affect manual changes?
+**Situation:** Terraform manages a Vault policy. During an incident, an administrator runs `vault policy write` to grant one team extra access. Nobody changes the Terraform code.
+
+**Question:** What happens at the next apply, and how should the team handle manual changes?
+
+**A solid answer covers:**
+
+- What Terraform does with the manual change.
+- Who owns the policy once Terraform manages it.
+- A process for emergency changes that keeps code and Vault in agreement.

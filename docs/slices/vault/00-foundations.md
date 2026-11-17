@@ -123,20 +123,40 @@ flowchart LR
 
 ## Explain
 
-Answer these questions in
-`submissions/vault/00-foundations/answers.md`.
+Answer these questions in `submissions/vault/00-foundations/answers.md`.
 
 ### Explain 1
 
-What does an auth method do, and how is its job different from the policy check
-that follows?
+**Situation:** An application logs in to Vault and receives a token. Its next request, a read of `secret/data/payments`, gets `permission denied`.
+
+**Question:** Did the login fail? Which step denied the request, and what do you check first?
+
+**A solid answer covers:**
+
+- What the auth method decided, and what it did not decide.
+- Which check denied the read.
+- What you inspect to find the cause.
 
 ### Explain 2
 
-A request targets `secret/data/app`. Which part of that path tells Vault which
-mount receives the request, and which path does the policy need to match?
+**Situation:** A KV version 2 secrets engine is mounted at `secret/`. A policy grants `read` on `secret/app`. A client runs `vault kv get secret/app` and gets `permission denied`.
+
+**Question:** Why is the request denied, and which path must the policy match?
+
+**A solid answer covers:**
+
+- Which part of the request path selects the mount.
+- The full API path that the request uses.
+- Why the CLI command and the policy path look different.
 
 ### Explain 3
 
-Why can a token allow a client to request a secret without being the secret
-itself?
+**Situation:** A Vault token appears in a CI log. A teammate says: "No problem. The token is not the database password."
+
+**Question:** Is the teammate right? What can someone do with the leaked token?
+
+**A solid answer covers:**
+
+- What a token is and how Vault uses it.
+- What decides the damage a leaked token can do.
+- What limits that damage, and what you do now.
