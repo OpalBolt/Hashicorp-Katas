@@ -4,8 +4,8 @@ This repository contains the Terraform and Vault training guide.
 
 ## Grade your work
 
-Save captured output and findings in each slice's `evidence/` folder.
-No evidence template is required.
+Keep code and authored task artifacts in each slice's `code/` folder.
+Save only transient run captures in `evidence/`. No evidence template is required.
 See [How grading works](docs/grading.md) for capture examples and submission rules.
 
 The harness-independent grader lives at `.agents/skills/grader/SKILL.md`.

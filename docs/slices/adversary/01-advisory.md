@@ -18,8 +18,9 @@ learner research current terms and turn them into questions, evidence, and
 review material rather than making an unsupported product recommendation.
 
 Start by copying `submissions/terraform-vault/01-terraform-vault/code/` into
-`submissions/adversary/01-advisory/code/`. Keep the copied work separate from the
-advisory evidence. Use fictitious client details and redact credentials,
+`submissions/adversary/01-advisory/code/`. Keep the copied work separate from
+your research and checklists. Save authored task artifacts as Markdown files
+in `code/`. Use fictitious client details and redact credentials,
 tokens, secret values, and private key material.
 
 ## Concepts

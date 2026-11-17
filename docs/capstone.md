@@ -193,7 +193,8 @@ submissions/capstone/code/mossvale-supply/ your working copy
 ```
 
 Use the customer start and reset tasks in `customers/mossvale-supply/README.md`.
-Never edit the baseline. Keep captures and findings in
+Never edit the baseline. Keep authored task artifacts in
+`submissions/capstone/code/`. Keep runtime captures in
 `submissions/capstone/evidence/`, with task numbers in their filenames.
 Follow the [evidence format](grading.md#evidence-format).
 Keep your build-stage answers in `submissions/capstone/answers.md`.
@@ -228,9 +229,9 @@ assuming that a refactor makes existing resources safe.
 
 #### Evidence to produce
 
-Record the commands, redacted plan output, relevant state or configuration
-excerpts, and the before-and-after comparison in `evidence/` files named
-with the `task-05-` prefix.
+Keep final configuration and task notes in `code/`. Capture commands,
+redacted plan output, relevant state checks, and before-and-after runtime
+results in `evidence/` files named with the `task-05-` prefix.
 
 #### Explain
 
@@ -270,8 +271,8 @@ boundary, and secret handling.
 
 #### Evidence to produce
 
-Record redacted before and after status, recovery, access, and secret-handling
-results in `evidence/` files named with the `task-06-` prefix.
+Capture redacted before and after status, recovery, access, and
+secret-handling results in `evidence/` files named with the `task-06-` prefix.
 Keep raw secret values outside the repository.
 
 #### Explain
@@ -313,9 +314,9 @@ observable without exposing credentials.
 
 #### Evidence to produce
 
-Record before and after workflow excerpts, allowed and rejected path results,
-permission checks, and redacted log output in `evidence/` files named
-with the `task-07-` prefix.
+Keep the before-and-after workflow excerpts and task notes in `code/`. Capture
+allowed and rejected path results, permission checks, and redacted logs in
+`evidence/` files named with the `task-07-` prefix.
 
 #### Explain
 
@@ -354,9 +355,10 @@ prove and what requires current client or vendor evidence.
 
 #### Evidence to produce
 
-Record the local before and after result, the decision record, dated official
-sources, and unresolved questions in `evidence/` files named with the
-`task-08-` prefix. Do not copy license text or secret values into the submission.
+Keep the decision record, dated official sources, and unresolved questions
+in `code/`. Capture local before and after results in `evidence/` files named
+with the `task-08-` prefix. Do not copy license text or secret values into the
+submission.
 
 #### Explain
 

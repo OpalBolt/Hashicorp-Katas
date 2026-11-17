@@ -34,15 +34,17 @@ Include every requested slice even when its submission is missing.
 4. Evaluate each task and Explain answer using `docs/grading.md`.
 5. Finish the slice only after every task, requirement, and Explain question has a reported result.
 
-Accept plain captured output and existing Markdown write-ups under the evidence contract.
+Read source code and authored task artifacts in `code/` first.
+Inspect `evidence/` for transient output from the learner's runs.
 Infer task mappings from filenames and contents rather than requiring a manifest.
 When a mapping remains unclear, report the exact unproven requirement.
 Distinguish empty templates and supplied examples from learner-completed work.
-For text-only tasks, inspect the artifact itself.
-For executable tasks, inspect learner-run evidence as well as relevant source files.
-Source inspection alone cannot prove a successful run.
+For text-only tasks, inspect the authored artifact itself.
+For runtime tasks, inspect relevant source files and the learner's run captures.
+Source inspection alone cannot prove a successful run or historical event.
 For historical steps, use the relevant before and after captures.
 A later intentional change or teardown does not invalidate a proven earlier result.
+Treat `evidence/` as a run-capture folder, not as the source for final code or written deliverables.
 
 Check constraints and required evidence as well as `Done when` lines.
 Identify contradictions and unsupported claims explicitly.

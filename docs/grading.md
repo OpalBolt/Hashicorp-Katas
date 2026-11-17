@@ -4,8 +4,9 @@ icon: material/clipboard-check-outline
 
 # How grading works
 
-The grading skill checks your work against the slice file. It checks both the tasks and your written Explain answers.
-It uses your files and runs checks when it can.
+The grading skill checks your work against the slice file, including its tasks
+and Explain questions. It reads your source artifacts and run captures without
+running your configuration.
 
 ## Submission layout
 
@@ -18,8 +19,8 @@ submissions/
     01-workflow/
       code/
       evidence/
-        task-01-init.txt
         task-01-plan.txt
+        task-01-apply.txt
       answers.md
     02-state/
     03-modules/
@@ -37,7 +38,9 @@ submissions/
 ```
 
 Copy the previous slice's `code/` into the new slice, then extend it.
-Keep each slice's evidence and answers in its own folder.
+Keep each slice's artifacts, run captures, and answers in its own folder.
+Keep final code and authored task artifacts, including Markdown findings,
+in `code/`. Keep only transient run captures in `evidence/`.
 Slices that start a new tool track can start with an empty `code/` folder.
 
 ## Foundations scaffolds
@@ -49,17 +52,17 @@ solutions or scaffolds.
 
 For a scaffolded task, `Done when` and `Evidence` apply to the learner's
 completed artifact, not merely to filled blanks. The grader checks every
-`Done when` line and Evidence requirement. Evidence may come from the
-learner's own work or from an execution when the task can be run; source
-artifacts are valid evidence for tasks that are checked as text, such as a
-diagram in Markdown.
+`Done when` line against the files in `code/` and any required run captures.
+For text-only tasks, the authored artifact itself can prove the requirement,
+such as a diagram in Markdown.
 
 ## Evidence format
 
-Save command output, logs, screenshots, and written findings in `evidence/`.
+Save command output, logs, and screenshots from a run in `evidence/`.
 No template, per-check write-up, or file conversion is required.
-Use descriptive filenames with the task number, such as `task-01-init.txt`
-or `task-02-before.json`. One file can support several checks.
+Use descriptive filenames with the task number, such as `task-01-plan.txt`
+or `task-02-before.json`. One capture can support several checks.
+Keep authored findings and other task artifacts in `code/`.
 
 Capture output with `>` or `tee`, or move an existing capture into `evidence/`.
 These examples show capture syntax only. Replace `your-check` with your own
@@ -76,14 +79,14 @@ Use distinct filenames for before and after results.
 In Bash, `set -o pipefail` prevents `tee` from hiding a command failure.
 
 Keep enough context to identify the command, working folder, and relevant
-environment. Add a short note only when the capture does not show that context.
-The grader maps files to the task's checks. You do not need to repeat each
-`Done when` line.
+environment. Put any context the capture omits in a short Markdown file in
+`code/`. The grader maps files to the task's checks. You do not need to repeat
+each `Done when` line.
 
-Executable tasks require evidence from your own run.
-For text-only tasks, the source artifact itself is valid evidence, including a
-diagram in Markdown. Keep source files in `code/` when the task requires them.
-Existing `task-NN.md` write-ups remain valid, but they are optional.
+Executable tasks require captures from your own run when the task asks for
+runtime proof. The grader reads source and authored artifacts in `code/` first.
+It uses `evidence/` to verify results that source files cannot prove, such as
+an apply, a denied request, or an earlier state of a resource.
 
 Review output before you capture or share it. Redact secrets and any values
 the task excludes. Keep raw sensitive captures outside the repository.
@@ -108,8 +111,8 @@ Answer:
 The grading skill:
 
 1. Reads the slice file, submission folder, and relevant source files.
-2. Checks every `Done when` line against evidence.
-3. Runs safe checks when the environment supports them.
+2. Checks every `Done when` line against source files and required run captures.
+3. Reports checks it cannot verify without running your configuration.
 4. Reports each task as `PASS`, `PARTIAL`, or `FAIL`.
 5. Names the exact unmet line and explains why it is unmet.
 6. Judges each Explain answer as `solid`, `shallow`, or `wrong`.

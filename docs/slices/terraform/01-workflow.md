@@ -128,7 +128,7 @@ Use emulator documentation, AWS documentation, or a focused local observation to
 
 #### Evidence to produce
 
-- A short written finding in the task evidence.
+- A short written finding in `code/task-04-finding.md`.
 - The source link or local observation that supports it.
 - The distinction between the local result and the unverified real-world result.
 
