@@ -72,9 +72,12 @@ Use the task number from the slice file. Keep the sections in this order:
 ```
 
 Write the observed result under `Result`.
-Point `Source` to a command, output file, log, or screenshot.
+Point `Source` to a command, output file, log, screenshot, or learner-created
+source artifact. Executable tasks require evidence from the learner's own run;
+for text-only tasks, the source artifact itself is valid evidence, including a
+diagram in Markdown.
 Use one `Done when` section for every line in the task.
-Evidence must come from your own run. Do not paste real secrets or tokens.
+Do not paste real secrets or tokens.
 
 Write one answer for each question in `answers.md`:
 
