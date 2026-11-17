@@ -2,6 +2,24 @@
 
 This repository contains the Terraform and Vault training guide.
 
+## Grade your work
+
+Save captured output and findings in each slice's `evidence/` folder.
+No evidence template is required.
+See [How grading works](docs/grading.md) for capture examples and submission rules.
+
+The harness-independent grader lives at `.agents/skills/grader/SKILL.md`.
+In an AI harness with repository access, use this prompt:
+
+```text
+Read .agents/skills/grader/SKILL.md and follow it.
+Grade the terraform track in submissions/terraform/.
+```
+
+Use `vault`, `terraform-vault`, or `adversary` for another track.
+You can also name one slice or the capstone.
+Harnesses that discover `.agents/skills/` can load `grader` directly.
+
 ## Prerequisites
 
 Install these tools:

@@ -18,8 +18,8 @@ submissions/
     01-workflow/
       code/
       evidence/
-        task-01.md
-        task-02.md
+        task-01-init.txt
+        task-01-plan.txt
       answers.md
     02-state/
     03-modules/
@@ -56,30 +56,40 @@ diagram in Markdown.
 
 ## Evidence format
 
-Create one Markdown file per task at `evidence/task-NN.md`.
-Use the task number from the slice file. Keep the sections in this order:
+Save command output, logs, screenshots, and written findings in `evidence/`.
+No template, per-check write-up, or file conversion is required.
+Use descriptive filenames with the task number, such as `task-01-init.txt`
+or `task-02-before.json`. One file can support several checks.
 
-```markdown
-# Task NN evidence
+Capture output with `>` or `tee`, or move an existing capture into `evidence/`.
+These examples show capture syntax only. Replace `your-check` with your own
+command. Run from the slice's submission folder after creating `evidence/`.
 
-## Done when 1
-- Result:
-- Source:
-
-## Done when 2
-- Result:
-- Source:
-
-## Notes
+```bash
+your-check > evidence/task-01-check.txt 2>&1
+your-check 2>&1 | tee evidence/task-01-check.txt
 ```
 
-Write the observed result under `Result`.
-Point `Source` to a command, output file, log, screenshot, or learner-created
-source artifact. Executable tasks require evidence from the learner's own run;
-for text-only tasks, the source artifact itself is valid evidence, including a
-diagram in Markdown.
-Use one `Done when` section for every line in the task.
-Do not paste real secrets or tokens.
+These are alternatives. `>` and `tee` overwrite an existing file.
+Use distinct filenames for before and after results.
+`2>&1` includes error output. Check the original command's exit status.
+In Bash, `set -o pipefail` prevents `tee` from hiding a command failure.
+
+Keep enough context to identify the command, working folder, and relevant
+environment. Add a short note only when the capture does not show that context.
+The grader maps files to the task's checks. You do not need to repeat each
+`Done when` line.
+
+Executable tasks require evidence from your own run.
+For text-only tasks, the source artifact itself is valid evidence, including a
+diagram in Markdown. Keep source files in `code/` when the task requires them.
+Existing `task-NN.md` write-ups remain valid, but they are optional.
+
+Review output before you capture or share it. Redact secrets and any values
+the task excludes. Keep raw sensitive captures outside the repository.
+Do not submit raw state, saved plans, tokens, or private keys.
+
+## Explain answers
 
 Write one answer for each question in `answers.md`:
 
@@ -107,6 +117,27 @@ The grading skill:
 
 Evidence does not turn a failed check into a pass.
 The grader may reject evidence that does not prove the claim.
+
+## Use the grader
+
+The portable skill lives at `.agents/skills/grader/SKILL.md`.
+Open an AI harness with access to this repository and your submission files.
+If the harness discovers `.agents/skills/`, ask it to use `grader`.
+Otherwise, ask it to read the skill file directly and follow its instructions.
+Automatic discovery depends on the harness.
+
+For example:
+
+```text
+Read .agents/skills/grader/SKILL.md and follow it.
+Grade the terraform track in submissions/terraform/.
+```
+
+Replace `terraform` with `vault`, `terraform-vault`, or `adversary`.
+You can also request one slice, such as `terraform/01-workflow`, or the capstone.
+Track grading covers the numbered slices listed in the guide, not preview pages.
+The grader reports missing work instead of silently skipping it.
+It reports results in the conversation and leaves your submission unchanged.
 
 ## Hints
 

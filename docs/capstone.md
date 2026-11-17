@@ -32,10 +32,6 @@ submissions/
   capstone/
     code/
     evidence/
-      task-01.md
-      task-02.md
-      task-03.md
-      task-04.md
     answers.md
 ```
 
@@ -197,9 +193,10 @@ submissions/capstone/code/mossvale-supply/ your working copy
 ```
 
 Use the customer start and reset tasks in `customers/mossvale-supply/README.md`.
-Never edit the baseline. Keep evidence in
-`submissions/capstone/evidence/task-05.md` through `task-08.md`, and keep
-your build-stage answers in `submissions/capstone/answers.md`.
+Never edit the baseline. Keep captures and findings in
+`submissions/capstone/evidence/`, with task numbers in their filenames.
+Follow the [evidence format](grading.md#evidence-format).
+Keep your build-stage answers in `submissions/capstone/answers.md`.
 
 Record before and after results. Redact passwords, tokens, and other secret
 values. If a check fails, keep the failure and explain what it means. Do not
@@ -232,7 +229,8 @@ assuming that a refactor makes existing resources safe.
 #### Evidence to produce
 
 Record the commands, redacted plan output, relevant state or configuration
-excerpts, and the before-and-after comparison in `evidence/task-05.md`.
+excerpts, and the before-and-after comparison in `evidence/` files named
+with the `task-05-` prefix.
 
 #### Explain
 
@@ -273,8 +271,8 @@ boundary, and secret handling.
 #### Evidence to produce
 
 Record redacted before and after status, recovery, access, and secret-handling
-results in `evidence/task-06.md`. Keep raw secret values outside the
-repository.
+results in `evidence/` files named with the `task-06-` prefix.
+Keep raw secret values outside the repository.
 
 #### Explain
 
@@ -316,7 +314,8 @@ observable without exposing credentials.
 #### Evidence to produce
 
 Record before and after workflow excerpts, allowed and rejected path results,
-permission checks, and redacted log output in `evidence/task-07.md`.
+permission checks, and redacted log output in `evidence/` files named
+with the `task-07-` prefix.
 
 #### Explain
 
@@ -356,8 +355,8 @@ prove and what requires current client or vendor evidence.
 #### Evidence to produce
 
 Record the local before and after result, the decision record, dated official
-sources, and unresolved questions in `evidence/task-08.md`. Do not copy
-license text or secret values into the submission.
+sources, and unresolved questions in `evidence/` files named with the
+`task-08-` prefix. Do not copy license text or secret values into the submission.
 
 #### Explain
 

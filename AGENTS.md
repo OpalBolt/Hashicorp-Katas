@@ -11,6 +11,7 @@ This is a Terraform and Vault learning guide built with Markdown, MkDocs Materia
 
 ## Artifacts
 - Specs/tickets/maps: `.scratch/` (local Markdown, untracked)
+- Grading a track, slice, or capstone: load `.agents/skills/grader/SKILL.md`.
 
 ## Boundaries
 ### ✅ Always
