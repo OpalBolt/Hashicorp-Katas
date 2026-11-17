@@ -47,7 +47,11 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
@@ -67,6 +71,7 @@ nav:
       - "Terraform 02 — Terraform state and drift": slices/terraform/02-state.md
       - "Terraform 03 — Terraform HCL and modules": slices/terraform/03-modules.md
   - Vault:
+      - "Vault 00 — Foundations": slices/vault/00-foundations.md
       - "Vault 01 — Vault first contact": slices/vault/01-vault-first-contact.md
       - "Vault 02 — Vault as a real server": slices/vault/02-vault-server.md
       - "Vault 03 — Vault dynamic secrets and rotation": slices/vault/03-dynamic-secrets.md

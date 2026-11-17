@@ -13,6 +13,8 @@ reduces the chance that a password reaches source control, CI variables, logs,
 or Terraform state. Vault also controls who can read a secret and records
 when access should stop.
 
+Prerequisite: [Vault 00 — Foundations](00-foundations.md).
+
 Start this slice in a new folder: `submissions/vault/01-vault-first-contact/`.
 Build the Vault dev-mode container yourself. Do not add a Vault server to the
 repository Compose file. Use fictitious test values only, and redact tokens
@@ -21,12 +23,9 @@ from evidence.
 ## Concepts
 
 - dev mode
-- secrets engine
 - KV versions
-- token
 - TTL
 - revocation
-- policy
 - capabilities
 - root token
 
