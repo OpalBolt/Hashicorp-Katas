@@ -133,6 +133,95 @@ Terraform prints the generated file's path. The file contains:
 Release training-01 is ready for review.
 ```
 
+### Files Terraform creates
+
+Terraform needs more than configuration files to manage resources. `init` prepares
+the working folder. `apply` records what Terraform manages and creates the
+resources described by your configuration.
+
+For this example, the files have different purposes:
+
+| File or folder | When it appears | Purpose | Commit to Git? |
+|---|---|---|---|
+| `.terraform/` | `terraform init` | Stores downloaded providers and modules, plus working metadata such as backend settings. | No. Run `terraform init` to recreate it. |
+| `.terraform.lock.hcl` | `terraform init` selects providers | Records the selected provider versions and package checksums for repeatable installation. | Yes. Review and commit intended changes. |
+| `terraform.tfstate` | `terraform apply` saves local state | Maps resource addresses to managed objects and records their attributes and outputs. | No. Keep it locally while you manage these resources. |
+| `terraform.tfstate.backup` | A later operation replaces existing local state | Holds the previous state snapshot for recovery. | No. Protect it like the current state. |
+| `.terraform.tfstate.lock.info` | A local operation holds a state lock | Identifies the operation that holds the lock. Terraform normally removes it afterward. | No. Do not remove it while an operation runs. |
+| `release-note.txt` | This example's `terraform apply` | Is the file created by the `local_file` resource, not a Terraform internal file. | No for this example. Other generated files depend on the configuration. |
+
+With `-chdir`, these files appear in the selected folder, not the repository root.
+Hidden files start with a dot. Enable hidden-file display in your file browser
+to see `.terraform/` and `.terraform.lock.hcl`.
+
+The dependency lock file and the state lock serve different purposes.
+`.terraform.lock.hcl` records provider choices. The temporary state lock prevents
+conflicting operations against the same state.
+
+#### Keep state, not just configuration
+
+State is Terraform's record of which objects it manages. It is not a disposable
+cache. Deleting state does not delete the resources.
+Without that record, a later apply can propose duplicate resources or fail
+because objects already exist.
+
+Keep local state and its backups until the resources are destroyed or the state
+is safely migrated. Do not edit state by hand.
+The [state and drift slice](02-state.md) covers remote state and locking in
+more detail.
+
+!!! warning "State and plans can contain secrets"
+    Local state, backups, and saved plans can contain passwords, tokens, and resource data.
+    Marking a value `sensitive` hides normal output, but does not remove it from state.
+    Do not commit these files or paste their raw contents into evidence.
+    `.gitignore` does not encrypt files or stop Git from tracking files already committed.
+
+#### What belongs in Git
+
+Commit your `.tf` files, `.terraform.lock.hcl`, and non-secret source files such as
+`release-template.txt`. Keep the dependency lock file even when you pin a provider
+version in `versions.tf`. Its checksums also verify downloaded provider packages.
+
+The repository ignores `.terraform/`, local state, common saved-plan names, local
+`.tfvars` files, and `.env` files across all slices. A saved plan can have any name.
+Use a `.tfplan` extension so the ignore rule catches it.
+Use example variable files such as `training.tfvars.example` for fictional values
+that belong in Git. The supplied Mossvale customer fixture is an explicit exception.
+
+From the repository root, inspect what Git sees:
+
+```bash
+git status --short --untracked-files=all
+git status --short --ignored submissions/terraform/00-block-types/example/
+git check-ignore -v submissions/terraform/00-block-types/example/terraform.tfstate
+```
+
+In short status output, `??` means untracked and `!!` means ignored.
+The dependency lock file should remain visible to Git.
+Ignoring a file keeps it out of ordinary Git additions, not out of your working folder.
+
+#### Clean up the example safely
+
+Deleting `.terraform/` removes downloaded dependencies and working metadata, not
+the managed resources. Reinitialize afterward. Do not delete it during an operation.
+For remote backends, keep the backend settings available before reinitializing.
+
+To remove the generated release note, let Terraform destroy this example's resource.
+Run this command from the repository root:
+
+```bash
+terraform -chdir=submissions/terraform/00-block-types/example destroy -var='release_name=training-01'
+```
+
+Review the proposed deletion before entering `yes`.
+Terraform removes `release-note.txt` and updates state. State files can remain
+after destroy, but the state no longer tracks that resource.
+The template, configuration, and dependency lock file remain.
+Run the earlier apply command again to recreate the example.
+
+For reference, see HashiCorp's [working directory guide](https://developer.hashicorp.com/terraform/cli/init)
+and [dependency lock file guide](https://developer.hashicorp.com/terraform/language/files/dependency-lock).
+
 ## Tasks
 
 ### Task 01 — Build a five-block local report

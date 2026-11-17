@@ -1,11 +1,57 @@
-.scratch
-site/
-submissions/terraform/00-block-types/**/.terraform/
-submissions/terraform/00-block-types/**/*.tfstate*
-submissions/terraform/00-block-types/example/release-note.txt
-submissions/capstone/code/**/terraform/.terraform/
-submissions/capstone/code/**/terraform/*.tfstate*
-submissions/capstone/code/mossvale-supply/.mossvale-initializing
-submissions/capstone/.mossvale-initializing
-submissions/capstone/.mossvale-reset-backups/
+# Local notes and generated documentation
+/.scratch/
+/site/
+
+# Terraform working data and state, in every configuration folder
+.terraform/
+*.tfstate
+*.tfstate.*
+# Keep .terraform.lock.hcl versioned; it records provider versions and checksums.
+
+# Saved plans and crash reports can contain sensitive values
+*.tfplan
+tfplan
+tfplan.*
+plan.out
+crash.log
+crash.*.log
+
+# Local variable values and configuration overrides
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+!*.tfvars.json.example
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# This customer fixture deliberately contains fictional training values.
+!/customers/mossvale-supply/terraform/terraform.tfvars
+
+# Local credentials and environment files
 .env
+.env.*
+!.env.example
+!.env.template
+.vault-token
+.terraformrc
+terraform.rc
+credentials.tfrc.json
+
+# Generated training artifacts and reset backups
+/submissions/terraform/00-block-types/example/release-note.txt
+/submissions/capstone/code/mossvale-supply/.mossvale-initializing
+/submissions/capstone/.mossvale-initializing
+/submissions/capstone/.mossvale-reset-backups/
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+
+# Editor and operating-system files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
