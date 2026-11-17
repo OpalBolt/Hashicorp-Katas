@@ -42,6 +42,9 @@ The five block types in this slice are linked to their official references:
 | [`locals`](https://developer.hashicorp.com/terraform/language/block/locals) | Gives a name to a value derived inside the configuration. | It keeps repeated expressions consistent and readable. | The configuration repeats expressions, making changes easier to miss or apply inconsistently. |
 | [`output`](https://developer.hashicorp.com/terraform/language/block/output) | Publishes a value after Terraform evaluates the configuration. | It gives people, parent modules, and automation a supported result to consume. | The value may exist in state but is not presented as a useful result to the caller. |
 
+An output's `value` is an expression. It can produce a string, number, boolean,
+or collection. The expression can be a literal or a reference to another value.
+
 Use these rules when two choices look similar:
 
 - Choose **`resource`** when Terraform should create, update, or delete the
@@ -235,7 +238,8 @@ file.
 
 Use this scaffold as the starting structure. Replace every `???` with your own
 choice before running Terraform. The scaffold is intentionally incomplete; it
-is not a finished answer.
+is not a finished answer. The unquoted `???` in the output is a placeholder for
+an expression, not valid Terraform syntax.
 
 ```hcl
 # versions.tf — this installation metadata is provided for the local provider.
@@ -271,7 +275,7 @@ resource "local_file" "report" {
 }
 
 output "report_path" {
-  value = "???"
+  value = ???
 }
 ```
 
