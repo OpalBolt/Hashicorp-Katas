@@ -32,15 +32,15 @@ Its `example/` and `code/` folders keep the example and your task separate.
   `resource "local_file" "report"`.
 - An **argument** assigns a value inside a block, such as `content = "hello"`.
 
-The five block types in this slice are:
+The five block types in this slice are linked to their official references:
 
 | Block type | What it does | Why it exists | What breaks when it is missing |
 |---|---|---|---|
-| `resource` | Manages an object through its lifecycle. | It tells Terraform what to create, change, or delete. | Terraform has nothing to manage, so the intended object is not created or updated. |
-| `data` | Reads an object that already exists outside this configuration. | It lets the configuration use existing information without managing that object's lifecycle. | Terraform cannot obtain that external value, or you have to hard-code a value that can go stale. |
-| `variable` | Accepts a value from the person or system calling the configuration. | It keeps environment- or caller-specific input out of the configuration. | Callers cannot provide the input cleanly; you must edit the configuration or hard-code it. |
-| `locals` | Gives a name to a value derived inside the configuration. | It keeps repeated expressions consistent and readable. | The configuration repeats expressions, making changes easier to miss or apply inconsistently. |
-| `output` | Publishes a value after Terraform evaluates the configuration. | It gives people, parent modules, and automation a supported result to consume. | The value may exist in state but is not presented as a useful result to the caller. |
+| [`resource`](https://developer.hashicorp.com/terraform/language/block/resource) | Manages an object through its lifecycle. | It tells Terraform what to create, change, or delete. | Terraform has nothing to manage, so the intended object is not created or updated. |
+| [`data`](https://developer.hashicorp.com/terraform/language/block/data) | Reads an object that already exists outside this configuration. | It lets the configuration use existing information without managing that object's lifecycle. | Terraform cannot obtain that external value, or you have to hard-code a value that can go stale. |
+| [`variable`](https://developer.hashicorp.com/terraform/language/block/variable) | Accepts a value from the person or system calling the configuration. | It keeps environment- or caller-specific input out of the configuration. | Callers cannot provide the input cleanly; you must edit the configuration or hard-code it. |
+| [`locals`](https://developer.hashicorp.com/terraform/language/block/locals) | Gives a name to a value derived inside the configuration. | It keeps repeated expressions consistent and readable. | The configuration repeats expressions, making changes easier to miss or apply inconsistently. |
+| [`output`](https://developer.hashicorp.com/terraform/language/block/output) | Publishes a value after Terraform evaluates the configuration. | It gives people, parent modules, and automation a supported result to consume. | The value may exist in state but is not presented as a useful result to the caller. |
 
 Use these rules when two choices look similar:
 
@@ -61,7 +61,8 @@ The folder contains `release-template.txt`:
 Release RELEASE_NAME is ready for review.
 ```
 
-The included `versions.tf` selects the local provider:
+The included `versions.tf` selects the local provider in a
+[`terraform` block](https://developer.hashicorp.com/terraform/language/block/terraform):
 
 ```hcl
 terraform {
