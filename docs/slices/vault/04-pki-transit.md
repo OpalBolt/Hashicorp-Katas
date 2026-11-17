@@ -74,6 +74,9 @@ intermediate CA for service certificates.
 Use the intermediate CA to issue a certificate for a fictitious service. Give
 the certificate a short TTL and include the service identity it needs.
 
+A name such as `inventory.training.test` gives the certificate a concrete identity.
+You do not need a running web service for the certificate checks in this slice.
+
 #### Constraints
 
 - Use the intermediate CA from Task 01.
@@ -131,6 +134,9 @@ root CA. Check the service identity during verification.
 
 Use the transit engine to encrypt and decrypt a test value. Rotate the transit
 key, then decrypt data created before the rotation.
+
+One named transit key and a small fictitious text value are enough.
+The test client can represent the application. You do not need a separate application build.
 
 #### Constraints
 

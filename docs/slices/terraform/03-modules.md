@@ -21,6 +21,7 @@ working while you add isolated environment state.
 
 Use the local AWS target at `localhost:4566`. Use fictitious test values only. Keep the
 configuration and state ready for the Terraform and Vault slice that follows.
+Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-without-duplicate-logs).
 
 ## Concepts
 
@@ -41,6 +42,9 @@ Copy the previous slice's code into `submissions/terraform/03-modules/code/`. Ex
 so one resource type is created from a map of environment-specific or
 component-specific values.
 
+S3 objects for two fictional components are one option.
+Reuse the bucket from Terraform 02 rather than adding an unrelated service.
+
 #### Constraints
 
 - Work only in `submissions/terraform/03-modules/code/`.
@@ -59,9 +63,9 @@ component-specific values.
 
 #### Evidence to produce
 
-- The copied and extended configuration files.
+- The copied and extended configuration files and `.terraform.lock.hcl`.
 - The map and the resource declaration that consumes it.
-- Initialization, plan, and apply output.
+- The plan for the resources derived from the map.
 - A local AWS check and state inspection for the created resources.
 
 ### Task 02 — Validate inputs and select a repetition method
@@ -100,6 +104,9 @@ Use a data source to read an existing resource or service in the local AWS
 environment. Use the result in the configuration without taking ownership of
 the existing object.
 
+An existing S3 bucket is a suitable lookup target.
+Keep its ownership separate from the resources that use the lookup result.
+
 #### Constraints
 
 - The object must exist before the data source reads it.
@@ -119,7 +126,7 @@ the existing object.
 #### Evidence to produce
 
 - The data source configuration and the object it reads.
-- Initialization and plan output for the read.
+- Plan output for the read.
 - A safe output or state inspection showing the consumed value without
   exposing secrets.
 - A local AWS check that distinguishes the existing object from managed objects.
@@ -128,6 +135,9 @@ the existing object.
 
 Move the reusable resource logic into a child module with a small, clear
 interface. Call the module twice with different inputs.
+
+A bucket with its text object is a small resource group to package together.
+Choose what callers supply and which identifiers they need back.
 
 #### Constraints
 
@@ -150,7 +160,7 @@ interface. Call the module twice with different inputs.
 
 - The child module files and its input and output declarations.
 - The root module calls and their distinct inputs.
-- Initialization, plan, and apply output.
+- The plan for both module instances.
 - State and local AWS checks for both module instances.
 - A safe inspection showing the module output was consumed.
 
@@ -159,6 +169,9 @@ interface. Call the module twice with different inputs.
 Represent at least two environments with separate state locations. Keep the
 resources from the prior tasks available while proving that an environment
 change cannot silently use the other environment's state.
+
+Development and test are enough. Keep names distinct in the shared local AWS target,
+not just in Terraform state.
 
 #### Constraints
 
@@ -180,7 +193,6 @@ change cannot silently use the other environment's state.
 #### Evidence to produce
 
 - The environment layout and state configuration.
-- Initialization output for each environment.
 - State inspections that identify the separate state locations without
   exposing secrets.
 - Plans for both environments and a local AWS check of their distinct resources.

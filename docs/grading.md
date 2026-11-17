@@ -20,7 +20,7 @@ submissions/
       code/
       evidence/
         task-01-plan.txt
-        task-01-apply.txt
+        task-01-resources.txt
       answers.md
     02-state/
     03-modules/
@@ -86,7 +86,29 @@ each `Done when` line.
 Executable tasks require captures from your own run when the task asks for
 runtime proof. The grader reads source and authored artifacts in `code/` first.
 It uses `evidence/` to verify results that source files cannot prove, such as
-an apply, a denied request, or an earlier state of a resource.
+created resources, a denied request, or an earlier state of a resource.
+
+### Terraform evidence without duplicate logs
+
+You do not need separate initialization or apply logs for routine resource
+creation and updates. Submit the configuration and `.terraform.lock.hcl`.
+Capture the safe state or target checks requested by the task to show the
+resulting resources or changed values. One capture can support several checks.
+A successful plan also demonstrates that the working folder was initialized.
+The lock file records the selected provider version.
+
+The presence of a `.tfstate` file alone does not prove a successful apply.
+An apply can save partial state before failing. State can also remain after
+destroy or become stale when resources change outside Terraform.
+Keep raw state locally or in its backend, not in the submission.
+Capture only the relevant addresses, identifiers, or attributes, with secrets
+removed.
+
+Keep plans when a task asks you to review proposed actions. Keep captures of
+historical events that final state cannot prove, such as migration, locking,
+import, or destroy. Keep failure results and before-and-after checks when
+requested. Later tasks may change or remove resources, so capture each result
+while it is available.
 
 Review output before you capture or share it. Redact secrets and any values
 the task excludes. Keep raw sensitive captures outside the repository.

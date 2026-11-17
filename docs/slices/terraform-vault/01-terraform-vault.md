@@ -24,6 +24,7 @@ Start by copying the Terraform work from
 `submissions/terraform-vault/01-terraform-vault/code/vault/`. Keep the two tracks in separate
 paths and extend them in this new folder. Use fictitious test values. Redact
 credentials, tokens, secret values, and private key material from evidence.
+Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-without-duplicate-logs).
 
 ## Concepts
 
@@ -41,6 +42,9 @@ credentials, tokens, secret values, and private key material from evidence.
 Use the copied Terraform and Vault work. Read a fictitious secret from Vault
 with Terraform and pass its value into a managed resource. Inspect the plan
 and state to find where the value is stored.
+
+A KV test secret and the existing S3 text object form a small hand-off to investigate.
+Use only a made-up value. The object can expose its contents as well as Terraform state.
 
 #### Constraints
 
@@ -67,8 +71,8 @@ and state to find where the value is stored.
 
 #### Evidence to produce
 
-- The redacted data-source and resource configuration.
-- Redacted initialization and plan output.
+- The redacted data-source and resource configuration, plus `.terraform.lock.hcl`.
+- Redacted plan output.
 - A redacted state inspection naming the exposed path or attribute.
 - A short note explaining where the leak occurred.
 
@@ -77,6 +81,10 @@ and state to find where the value is stored.
 Replace the state-exposing hand-off with a supported ephemeral resource or
 write-only argument. Prove what is absent from state and from a saved plan,
 then record the limits of the feature you selected.
+
+Check the pinned providers' documentation before choosing a destination.
+It may differ from the S3 object in Task 01 because not every argument accepts
+ephemeral values or offers a write-only alternative.
 
 #### Constraints
 
@@ -102,7 +110,7 @@ then record the limits of the feature you selected.
 #### Evidence to produce
 
 - The redacted configuration using the selected supported feature.
-- Redacted apply or plan output showing the operation succeeded.
+- A redacted destination check showing that the secret reached its intended destination.
 - Redacted state and saved-plan inspections proving absence.
 - A short limitation note backed by the version or provider behavior tested.
 
@@ -111,6 +119,10 @@ then record the limits of the feature you selected.
 Use Terraform to manage one Vault policy, one authentication method, and one
 secrets mount. Keep the bootstrap path separate from the provider credentials
 used for normal changes.
+
+A dedicated KV mount, an AppRole auth method, and a policy for one test path
+fit the earlier Vault work. Keep these objects distinct from the existing setup
+unless you explicitly bring them under Terraform ownership.
 
 #### Constraints
 
@@ -137,7 +149,7 @@ used for normal changes.
 #### Evidence to produce
 
 - Redacted Terraform resources and provider configuration.
-- Redacted plan and apply output for the three objects.
+- Redacted proposed and follow-up plan output for the three objects.
 - Redacted Vault inspections for the policy, auth method, and mount.
 - A note identifying the provider credential lifetime and storage boundary.
 

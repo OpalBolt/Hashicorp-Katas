@@ -19,6 +19,8 @@ Start this slice in a new folder: `submissions/terraform/01-workflow/`.
 Use the local AWS target at `localhost:4566`. Set the shell variables in
 [Local setup](../../setup.md) first.
 Write all Terraform configuration yourself.
+Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-without-duplicate-logs).
+You do not need separate initialization or apply logs.
 
 ## Concepts
 
@@ -62,6 +64,9 @@ Manage these two resources together:
 
 Terraform 02 copies this configuration, so later slices continue from this bucket.
 
+**Optional:** For brownie points, choose and manage extra AWS resources that
+the local target supports. These are not required to pass the slice.
+
 #### Constraints
 
 - Keep Terraform configuration in `submissions/terraform/01-workflow/code/`.
@@ -78,15 +83,16 @@ Terraform 02 copies this configuration, so later slices continue from this bucke
 
 #### Evidence to produce
 
-- The configuration files and provider version constraint.
-- Initialization output.
+- The configuration files, provider version constraint, and `.terraform.lock.hcl`.
 - The plan output before creation.
-- Apply output and a check of the resources in the local AWS target.
+- A safe state inspection and a local AWS check showing the bucket and object.
 
 ### Task 02 — Change one resource through the workflow
 
 Change one meaningful attribute of a managed resource.
 Use the plan to inspect the proposed change before you apply it.
+Bucket tags or the text object's contents are small changes to explore.
+Choose the value and work out the expected action yourself.
 
 #### Constraints
 
@@ -106,8 +112,7 @@ Use the plan to inspect the proposed change before you apply it.
 
 - The changed configuration.
 - The plan output before the apply.
-- Apply output.
-- A check that shows the changed value.
+- A safe state inspection or a local AWS check showing the changed value.
 
 ### Task 03 — Remove the local resources
 

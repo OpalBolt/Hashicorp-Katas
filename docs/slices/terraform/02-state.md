@@ -16,6 +16,7 @@ Start this slice in a new folder: `submissions/terraform/02-state/`.
 Copy the previous slice's `code/` folder into it and extend that work. The previous slice destroyed its resources, so recreate your local setup before these exercises.
 
 Use the local AWS target at `localhost:4566`. Use fictitious test values only. Keep the configuration and state that the next slice will need.
+Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-without-duplicate-logs).
 
 ## Concepts
 
@@ -32,6 +33,7 @@ Use the local AWS target at `localhost:4566`. Use fictitious test values only. K
 ### Task 01 — Continue the previous slice
 
 Copy the previous slice's code into `submissions/terraform/02-state/code/` and recreate its local resources in the local AWS target. Extend the configuration in this new folder.
+Continue with the S3 bucket and text object from Terraform 01.
 
 #### Constraints
 
@@ -49,14 +51,18 @@ Copy the previous slice's code into `submissions/terraform/02-state/code/` and r
 
 #### Evidence to produce
 
-- The copied and extended configuration files.
-- Initialization and apply output.
-- A local AWS check of the recreated resources.
+- The copied and extended configuration files and `.terraform.lock.hcl`.
+- A safe state inspection and a local AWS check of the recreated resources.
 - The working folder and state location.
 
 ### Task 02 — Move state to a remote backend
 
 Move the working state to a remote backend provided by the local AWS target. Keep the same managed resources.
+
+Look at the [S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3).
+It needs a bucket for state storage, separate from the bucket used in the exercises.
+Keep that backend bucket's lifecycle independent of the resources whose state it stores.
+Check locking support in both the backend and the local AWS target.
 
 #### Constraints
 
@@ -75,7 +81,7 @@ Move the working state to a remote backend provided by the local AWS target. Kee
 #### Evidence to produce
 
 - The backend configuration.
-- Initialization and migration output.
+- Migration output.
 - The remote backend object or a safe inspection of it.
 - A state inspection that does not expose secret values.
 
@@ -107,6 +113,7 @@ Use two concurrent Terraform operations against the same remote state. Make the 
 ### Task 04 — Create and repair drift
 
 Change a managed resource directly in the local AWS target, outside Terraform. Use Terraform to detect and reconcile the drift.
+Bucket tags or object contents give you a small, reversible attribute to investigate.
 
 #### Constraints
 
@@ -126,12 +133,12 @@ Change a managed resource directly in the local AWS target, outside Terraform. U
 
 - The recorded manual change.
 - The plan that detects the drift.
-- Apply output.
 - A local AWS check of the corrected resource.
 
 ### Task 05 — Import a hand-made resource
 
 Create one supported resource directly in the local AWS target. Add matching Terraform configuration and bring the existing resource under management.
+A second S3 bucket is one option. Choose a resource with a documented import identifier.
 
 #### Constraints
 
@@ -176,12 +183,12 @@ Rename one Terraform resource address while keeping the underlying local AWS res
 
 - The configuration before and after the rename.
 - The plan showing the address move.
-- Apply output.
 - A state and local AWS check showing the same resource remains.
 
 ### Task 07 — Find a secret in state
 
 Put a fictitious secret-like test value into a managed configuration, then find where Terraform stores it in state. Redact the value in all evidence.
+The existing text object can hold the test value. You do not need a real credential or another service.
 
 #### Constraints
 

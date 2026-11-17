@@ -306,10 +306,10 @@ Keep the generated report separate from `source.txt`.
 
 #### Evidence to produce
 
-- The completed `.tf` files and `source.txt`.
+- The completed `.tf` files, `.terraform.lock.hcl`, and `source.txt`.
 - `terraform fmt` and `terraform validate` output.
-- Initialization and plan output showing the local provider and one report.
-- Apply output, the printed report path, and the report contents.
+- Plan output showing one report and no cloud resources.
+- A safe state inspection, the printed report path, and the report contents.
 
 ## Explain
 

@@ -39,6 +39,10 @@ Connect the Vault container to the PostgreSQL `postgres` service. Configure a
 database secrets engine and a dynamic role for a test database. Request
 credentials on demand twice.
 
+Use a small fictional application dataset, such as a table of inventory items.
+Choose the database permissions the application needs before defining the role.
+You do not need to build an application to test database access.
+
 #### Constraints
 
 - Work only in `submissions/vault/03-dynamic-secrets/`.

@@ -20,6 +20,10 @@ folder to `submissions/vault/02-vault-server/code/`. Extend the copied work in t
 new folder. Use fictitious test values. Keep unseal shares, credentials,
 tokens, and snapshots out of evidence and commits.
 
+Keep one local Vault server with integrated storage, a persistent volume, and a
+fictitious KV record. Add an AppRole, a policy, and an audit destination as the
+tasks require. Reserve a separate disposable instance or data path for restore tests.
+
 ## Concepts
 
 - seal

@@ -62,6 +62,8 @@ and confirm that a Vault client can reach it.
 
 Enable or use a KV secrets engine. Store a fictitious application secret, update
 it, and inspect its version history.
+Look for KV version 2, which supports the version history this task needs.
+One fictional application's configuration path is enough. Reuse it for the later access tests.
 
 #### Constraints
 

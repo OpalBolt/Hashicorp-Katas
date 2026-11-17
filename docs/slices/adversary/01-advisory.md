@@ -23,6 +23,10 @@ your research and checklists. Save authored task artifacts as Markdown files
 in `code/`. Use fictitious client details and redact credentials,
 tokens, secret values, and private key material.
 
+Use one fictional client throughout the research and checklists.
+The copied Terraform and Vault setup can represent that client's current estate.
+This slice needs written artifacts, not new infrastructure.
+
 ## Concepts
 
 - Terraform licence terms
