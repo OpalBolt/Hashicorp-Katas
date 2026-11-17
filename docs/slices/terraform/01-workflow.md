@@ -6,6 +6,8 @@ tags:
 
 # Terraform 01 — Terraform workflow
 
+Prerequisite: [Terraform 00 — Block types](00-block-types.md).
+
 ## Why
 
 Clients need infrastructure changes that they can review before they make them.

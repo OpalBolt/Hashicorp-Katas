@@ -18,8 +18,9 @@ AWS is the cloud target. The ideas also apply to other clouds.
 
 ## Start here
 
-Complete the [local setup](setup.md) before the Terraform slices. It covers
-Docker, the local AWS target, test credentials, and `mise run setup`.
+Start with Terraform 00. It needs only Terraform and no Docker, AWS, or Floci.
+Complete the [local setup](setup.md) before Terraform 01 and the later slices.
+It covers Docker, the local AWS target, test credentials, and `mise run setup`.
 
 ## Work pattern
 
@@ -39,7 +40,8 @@ tags at the top, and the navigation groups the slices by track.
 
     ---
 
-    Terraform 01–03. Workflow, state, drift, HCL, and modules against local AWS.
+    Terraform 00–03. Block types, then workflow, state, drift, HCL, and modules.
+    Later slices use local AWS.
 
 -   :simple-vault:{ .lg .middle .track-vault } **Vault**
 
@@ -67,7 +69,8 @@ Complete the topics in this order the first time. Each row lists the required ea
 
 | # | Slice | Topic | Prerequisites |
 |---|---|---|---|
-| Terraform 01 | Terraform workflow | :simple-terraform:{ .track-terraform } Terraform | Local setup |
+| Terraform 00 | Block types | :simple-terraform:{ .track-terraform } Terraform | Terraform only |
+| Terraform 01 | Terraform workflow | :simple-terraform:{ .track-terraform } Terraform | Terraform 00, local setup |
 | Terraform 02 | State and drift | :simple-terraform:{ .track-terraform } Terraform | Terraform 01 |
 | Terraform 03 | HCL and modules | :simple-terraform:{ .track-terraform } Terraform | Terraform 02 |
 | Vault 01 | Vault first contact | :simple-vault:{ .track-vault } Vault | none |

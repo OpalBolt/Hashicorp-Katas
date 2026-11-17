@@ -62,6 +62,7 @@ nav:
   - How grading works: grading.md
   - Tracks: tracks.md
   - Terraform:
+      - "Terraform 00 — Block types": slices/terraform/00-block-types.md
       - "Terraform 01 — Terraform workflow": slices/terraform/01-workflow.md
       - "Terraform 02 — Terraform state and drift": slices/terraform/02-state.md
       - "Terraform 03 — Terraform HCL and modules": slices/terraform/03-modules.md
