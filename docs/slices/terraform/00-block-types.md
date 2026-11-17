@@ -12,8 +12,8 @@ Terraform configurations are made of blocks. Knowing what each block does helps
 you read a configuration before you run it and choose the right place for each
 value.
 
-This foundations slice needs only Terraform. It does not need Docker, AWS,
-Floci, or a cloud account.
+This foundations slice needs only Terraform. It does not need Docker, AWS, or a
+cloud account.
 No cloud setup is needed.
 
 Start this slice in a new folder:
@@ -102,7 +102,7 @@ terraform {
   required_providers {
     local = {
       source  = "hashicorp/local"
-      version = "~> 2.5"
+      version = "2.5.3"
     }
   }
 }
