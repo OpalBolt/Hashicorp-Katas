@@ -29,13 +29,38 @@ Write all Terraform configuration yourself.
 - version pinning
 - emulator limits
 
+## Where to find resource information
+
+The [Terraform Registry](https://registry.terraform.io) documents every
+provider and every resource type that the provider offers. Use it as your first
+reference when you write configuration.
+
+1. Open the [AWS provider page](https://registry.terraform.io/providers/hashicorp/aws/latest).
+2. Select **Documentation**. Use the version selector to match the provider
+   version that you pin.
+3. Use the filter on the left to find a resource type, for example `s3_bucket`.
+4. On the resource page, read **Argument Reference** to see which arguments
+   you can set and which are required. Read **Attribute Reference** to see
+   the values that Terraform knows after it creates the resource.
+
+The resource pages describe real AWS. The local AWS target supports a subset of
+services. The [local setup](../../setup.md) page links to the Floci documentation.
+
 ## Tasks
 
 ### Task 01 — Configure a local target
 
 Create a Terraform configuration in `submissions/terraform/01-workflow/code/`.
 Point its AWS provider at the local AWS target.
-Choose at least two AWS resources that the local AWS target supports and manage them together.
+Manage these two resources together:
+
+- An S3 bucket. S3 is the AWS object storage service. A bucket is a named
+  container for files, which AWS calls objects. See
+  [`aws_s3_bucket`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket).
+- A small text object inside that bucket. See
+  [`aws_s3_object`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object).
+
+Terraform 02 copies this configuration, so later slices continue from this bucket.
 
 #### Constraints
 
@@ -47,8 +72,8 @@ Choose at least two AWS resources that the local AWS target supports and manage 
 #### Done when
 
 - Terraform initializes with the chosen provider version.
-- A plan shows the resources that you chose for creation.
-- An apply creates both resources in the local AWS target.
+- A plan shows the bucket and the object for creation.
+- An apply creates the bucket and the object in the local AWS target.
 - The Terraform state and a local AWS check agree about the resources that exist.
 
 #### Evidence to produce
