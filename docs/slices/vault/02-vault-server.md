@@ -6,6 +6,8 @@ tags:
 
 # Vault 02 — Vault as a real server
 
+Prerequisite: [Vault 01 — Vault first contact](01-vault-first-contact.md).
+
 ## Why
 
 Dev mode hides the work that keeps a Vault server safe and recoverable. It

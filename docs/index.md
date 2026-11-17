@@ -47,7 +47,7 @@ tags at the top, and the navigation groups the slices by track.
 
     ---
 
-    Vault 01–04. Dev mode, a real server, dynamic secrets, PKI, and transit.
+    Vault 00–04. Foundations, dev mode, a real server, dynamic secrets, PKI, and transit.
 
 -   :simple-hashicorp:{ .lg .middle .track-terraform } **Terraform + Vault**
 
@@ -69,18 +69,19 @@ Complete the topics in this order the first time. Each row lists the required ea
 
 | # | Slice | Topic | Prerequisites |
 |---|---|---|---|
-| Terraform 00 | Block types | :simple-terraform:{ .track-terraform } Terraform | Terraform only |
-| Terraform 01 | Terraform workflow | :simple-terraform:{ .track-terraform } Terraform | Terraform 00, local setup |
-| Terraform 02 | State and drift | :simple-terraform:{ .track-terraform } Terraform | Terraform 01 |
-| Terraform 03 | HCL and modules | :simple-terraform:{ .track-terraform } Terraform | Terraform 02 |
-| Vault 01 | Vault first contact | :simple-vault:{ .track-vault } Vault | none |
-| Vault 02 | Vault as a real server | :simple-vault:{ .track-vault } Vault | Vault 01 |
-| Vault 03 | Dynamic secrets and rotation | :simple-vault:{ .track-vault } Vault | Vault 02 |
-| Vault 04 | PKI and transit | :simple-vault:{ .track-vault } Vault | Vault 03 |
-| Terraform + Vault 01 | Terraform with Vault | :simple-hashicorp: Terraform + Vault | Terraform 03, Vault 04 |
-| Terraform + Vault 02 | CI/CD with no stored secrets | :simple-githubactions:{ .track-ci } Terraform + Vault, CI | Terraform + Vault 01 |
-| Adversary 01 | Advisory: licensing and Enterprise | :material-briefcase-outline:{ .track-advisory } Adversary | Terraform + Vault 01 |
-| Capstone | Client scenarios | :material-school-outline:{ .track-capstone } All tracks | Vault 04, Terraform + Vault 02, Adversary 01 |
+| [Terraform 00 — Block types](slices/terraform/00-block-types.md) | Block types | :simple-terraform:{ .track-terraform } Terraform | [Terraform tool](setup.md#install-the-tools) |
+| [Terraform 01 — Terraform workflow](slices/terraform/01-workflow.md) | Terraform workflow | :simple-terraform:{ .track-terraform } Terraform | [Terraform 00](slices/terraform/00-block-types.md), [local setup](setup.md) |
+| [Terraform 02 — State and drift](slices/terraform/02-state.md) | State and drift | :simple-terraform:{ .track-terraform } Terraform | [Terraform 01](slices/terraform/01-workflow.md) |
+| [Terraform 03 — HCL and modules](slices/terraform/03-modules.md) | HCL and modules | :simple-terraform:{ .track-terraform } Terraform | [Terraform 02](slices/terraform/02-state.md) |
+| [Vault 00 — Foundations](slices/vault/00-foundations.md) | Foundations | :simple-vault:{ .track-vault } Vault | None |
+| [Vault 01 — Vault first contact](slices/vault/01-vault-first-contact.md) | Vault first contact | :simple-vault:{ .track-vault } Vault | [Vault 00](slices/vault/00-foundations.md) |
+| [Vault 02 — Vault as a real server](slices/vault/02-vault-server.md) | Vault as a real server | :simple-vault:{ .track-vault } Vault | [Vault 01](slices/vault/01-vault-first-contact.md) |
+| [Vault 03 — Dynamic secrets and rotation](slices/vault/03-dynamic-secrets.md) | Dynamic secrets and rotation | :simple-vault:{ .track-vault } Vault | [Vault 02](slices/vault/02-vault-server.md) |
+| [Vault 04 — PKI and transit](slices/vault/04-pki-transit.md) | PKI and transit | :simple-vault:{ .track-vault } Vault | [Vault 03](slices/vault/03-dynamic-secrets.md) |
+| [Terraform + Vault 01 — Terraform with Vault](slices/terraform-vault/01-terraform-vault.md) | Terraform with Vault | :simple-hashicorp: Terraform + Vault | [Terraform 03](slices/terraform/03-modules.md), [Vault 04](slices/vault/04-pki-transit.md) |
+| [Terraform + Vault 02 — CI/CD with no stored secrets](slices/terraform-vault/02-ci.md) | CI/CD with no stored secrets | :simple-githubactions:{ .track-ci } Terraform + Vault, CI | [Terraform + Vault 01](slices/terraform-vault/01-terraform-vault.md) |
+| [Adversary 01 — Advisory: licensing and Enterprise](slices/adversary/01-advisory.md) | Advisory: licensing and Enterprise | :material-briefcase-outline:{ .track-advisory } Adversary | [Terraform + Vault 01](slices/terraform-vault/01-terraform-vault.md) |
+| [Capstone — Client scenarios](capstone.md) | Client scenarios | :material-school-outline:{ .track-capstone } All tracks | [Vault 04](slices/vault/04-pki-transit.md), [Terraform + Vault 02](slices/terraform-vault/02-ci.md), [Adversary 01](slices/adversary/01-advisory.md) |
 
 The capstone has a written diagnosis stage and a build stage.
 The build stage uses the provided synthetic customer environment.

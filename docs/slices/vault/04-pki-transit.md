@@ -6,6 +6,8 @@ tags:
 
 # Vault 04 — PKI and transit
 
+Prerequisite: [Vault 03 — Dynamic secrets and rotation](03-dynamic-secrets.md).
+
 ## Why
 
 Long-lived certificates increase the time available to an attacker after a

@@ -6,7 +6,7 @@ tags:
 
 # Terraform 01 — Terraform workflow
 
-Prerequisite: [Terraform 00 — Block types](00-block-types.md).
+Prerequisites: [Terraform 00 — Block types](00-block-types.md) and [local setup](../../setup.md).
 
 ## Why
 

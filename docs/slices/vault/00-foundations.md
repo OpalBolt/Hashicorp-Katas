@@ -6,6 +6,8 @@ tags:
 
 # Vault 00 — Foundations
 
+Prerequisite: None.
+
 ## Why
 
 Vault sits between clients and sensitive values. A client authenticates, sends

@@ -6,6 +6,8 @@ tags:
 
 # Vault 03 — Dynamic secrets and rotation
 
+Prerequisite: [Vault 02 — Vault as a real server](02-vault-server.md).
+
 ## Why
 
 Static database passwords remain useful to anyone who finds them. A short-lived

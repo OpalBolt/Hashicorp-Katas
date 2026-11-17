@@ -6,6 +6,8 @@ tags:
 
 # Terraform 03 — HCL and modules
 
+Prerequisite: [Terraform 02 — State and drift](02-state.md).
+
 ## Why
 
 Reusable, readable Terraform is easier for a client to review, change, and

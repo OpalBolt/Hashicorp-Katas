@@ -15,7 +15,8 @@ The `00` slice that teaches the basic concepts for a topic.
 Guided starter material with blanks. Only foundations slices may use one.
 
 **Topic slice**
-One learning unit inside a topic. This guide has ten topic slices before the capstone.
+One of 12 learning units grouped into four topics before the capstone. Topic
+slices use numbering local to their topic.
 
 **Capstone**
 The final work. It has a written diagnosis stage and a build stage.
@@ -33,7 +34,9 @@ A list of statements that must all be true for a task to pass.
 Written questions that test understanding, not only working code.
 
 **Evidence**
-Files the learner produces from their own run to prove a Done when line.
+Files or source artifacts the learner produces to prove a Done when line.
+Text-only artifacts, such as a Markdown diagram, are valid evidence when the
+task checks text.
 
 **Submission**
 One slice folder under `submissions/`. It contains code, evidence, and written answers.

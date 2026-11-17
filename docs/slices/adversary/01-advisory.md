@@ -6,6 +6,8 @@ tags:
 
 # Adversary 01 — Advisory: licensing and Enterprise
 
+Prerequisite: [Terraform + Vault 01 — Terraform with Vault](../terraform-vault/01-terraform-vault.md).
+
 ## Why
 
 Clients ask which Terraform and Vault option fits their situation, and

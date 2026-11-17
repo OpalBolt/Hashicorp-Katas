@@ -7,6 +7,9 @@ tags:
 
 # Terraform + Vault 01 — Terraform with Vault
 
+Prerequisites: [Terraform 03 — HCL and modules](../terraform/03-modules.md) and
+[Vault 04 — PKI and transit](../vault/04-pki-transit.md).
+
 ## Why
 
 Terraform and Vault each protect a different part of the workflow. The join

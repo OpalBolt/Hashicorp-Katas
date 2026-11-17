@@ -10,6 +10,10 @@ tags:
 
 # Capstone — Mossvale Supply written scenarios
 
+Prerequisites: [Vault 04 — PKI and transit](slices/vault/04-pki-transit.md),
+[Terraform + Vault 02 — CI/CD with no stored secrets](slices/terraform-vault/02-ci.md),
+and [Adversary 01 — Advisory: licensing and Enterprise](slices/adversary/01-advisory.md).
+
 ## Why
 
 The capstone asks you to advise one fictional customer across Terraform,

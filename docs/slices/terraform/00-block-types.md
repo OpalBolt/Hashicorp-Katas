@@ -6,6 +6,8 @@ tags:
 
 # Terraform 00 — Block types
 
+Prerequisite: [Terraform tool installation](../../setup.md#install-the-tools).
+
 ## Why
 
 Terraform configurations are made of blocks. Knowing what each block does helps

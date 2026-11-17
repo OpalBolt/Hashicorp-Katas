@@ -14,6 +14,7 @@ Use one folder for each slice:
 ```text
 submissions/
   terraform/
+    00-block-types/
     01-workflow/
       code/
       evidence/
@@ -23,6 +24,7 @@ submissions/
     02-state/
     03-modules/
   vault/
+    00-foundations/
     01-vault-first-contact/
     02-vault-server/
     03-dynamic-secrets/

@@ -6,6 +6,8 @@ tags:
 
 # Terraform 02 — State and drift
 
+Prerequisite: [Terraform 01 — Terraform workflow](01-workflow.md).
+
 ## Why
 
 Terraform state connects configuration to real resources. A lost state file can make a team lose track of ownership and recreate resources. A locked state can stop planned work until someone resolves the operation that holds the lock. State can contain secrets, so a leaked state file can expose client credentials. Parallel applies can race, overwrite state, or produce changes that no one reviewed.
