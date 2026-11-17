@@ -22,18 +22,15 @@ From the repository root, install the pinned tools:
 mise install
 ```
 
-Start the supporting containers:
+Install and check the supporting services:
 
 ```bash
-mise run start
+mise run setup
 ```
 
-Floci is the local AWS emulator used by Terraform slices 01–03 and answers on
-`localhost:4566`. Floci UI shows the resources in Floci at
-<http://localhost:4500>. PostgreSQL supports the dynamic-secrets work in Vault 03.
-The compose file uses test-only database values and does not include Vault.
-Before you run Terraform or the AWS CLI against Floci, set the shell
-variables in the guide's "Connect to Floci" section on the home page.
+This starts and checks Floci, Floci UI, and PostgreSQL. It seeds no data.
+Before you run Terraform or the AWS CLI against the local AWS target, set the
+shell variables in the guide's [local setup](docs/setup.md) page.
 
 Stop the containers and remove this project's container data:
 

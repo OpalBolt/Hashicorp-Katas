@@ -13,7 +13,7 @@ Terraform state connects configuration to real resources. A lost state file can 
 Start this slice in a new folder: `submissions/terraform/02-state/`.
 Copy the previous slice's `code/` folder into it and extend that work. The previous slice destroyed its resources, so recreate your local setup before these exercises.
 
-Use Floci at `localhost:4566`. Use fictitious test values only. Keep the configuration and state that the next slice will need.
+Use the local AWS target at `localhost:4566`. Use fictitious test values only. Keep the configuration and state that the next slice will need.
 
 ## Concepts
 
@@ -29,19 +29,19 @@ Use Floci at `localhost:4566`. Use fictitious test values only. Keep the configu
 
 ### Task 01 — Continue the previous slice
 
-Copy the previous slice's code into `submissions/terraform/02-state/code/` and recreate its local resources in Floci. Extend the configuration in this new folder.
+Copy the previous slice's code into `submissions/terraform/02-state/code/` and recreate its local resources in the local AWS target. Extend the configuration in this new folder.
 
 #### Constraints
 
 - Work only in `submissions/terraform/02-state/code/`.
-- Use Floci. Do not use a real AWS account or real credentials.
+- Use the local AWS target. Do not use a real AWS account or real credentials.
 - Start from the previous slice's code. Do not copy a finished solution.
 - Use fictitious values for names, tokens, and other test data.
 
 #### Done when
 
 - The copied configuration initializes successfully in the new folder.
-- The resources from the previous slice exist in Floci again.
+- The resources from the previous slice exist in the local AWS target again.
 - The new folder has its own working state.
 - The configuration remains ready for the state exercises that follow.
 
@@ -49,16 +49,16 @@ Copy the previous slice's code into `submissions/terraform/02-state/code/` and r
 
 - The copied and extended configuration files.
 - Initialization and apply output.
-- A Floci check of the recreated resources.
+- A local AWS check of the recreated resources.
 - The working folder and state location.
 
 ### Task 02 — Move state to a remote backend
 
-Move the working state to a remote backend provided by Floci. Keep the same managed resources.
+Move the working state to a remote backend provided by the local AWS target. Keep the same managed resources.
 
 #### Constraints
 
-- Use a remote backend in the local Floci environment.
+- Use a remote backend in the local AWS environment.
 - Do not use a real cloud account or store real credentials.
 - Migrate the existing state. Do not discard it and create a new empty state.
 - Keep backend access restricted to the test setup.
@@ -86,7 +86,7 @@ Use two concurrent Terraform operations against the same remote state. Make the 
 - Use the same working folder and remote state as Task 02.
 - Do not unlock state while another operation is still running.
 - Do not delete, edit, or replace the lock record by hand.
-- Use only local Floci resources and fictitious values.
+- Use only local AWS resources and fictitious values.
 
 #### Done when
 
@@ -104,12 +104,12 @@ Use two concurrent Terraform operations against the same remote state. Make the 
 
 ### Task 04 — Create and repair drift
 
-Change a managed resource directly in Floci, outside Terraform. Use Terraform to detect and reconcile the drift.
+Change a managed resource directly in the local AWS target, outside Terraform. Use Terraform to detect and reconcile the drift.
 
 #### Constraints
 
 - Change one meaningful, reversible attribute.
-- Make the manual change only in Floci. Do not edit the state file.
+- Make the manual change only in the local AWS target. Do not edit the state file.
 - Do not use real client data.
 - Record the manual change before Terraform checks the resource.
 
@@ -118,23 +118,23 @@ Change a managed resource directly in Floci, outside Terraform. Use Terraform to
 - A Terraform plan identifies the manual change.
 - The plan shows the intended correction.
 - Applying the plan restores the declared configuration.
-- A Floci check confirms the corrected value.
+- A local AWS check confirms the corrected value.
 
 #### Evidence to produce
 
 - The recorded manual change.
 - The plan that detects the drift.
 - Apply output.
-- A Floci check of the corrected resource.
+- A local AWS check of the corrected resource.
 
 ### Task 05 — Import a hand-made resource
 
-Create one supported resource directly in Floci. Add matching Terraform configuration and bring the existing resource under management.
+Create one supported resource directly in the local AWS target. Add matching Terraform configuration and bring the existing resource under management.
 
 #### Constraints
 
 - Create the resource outside Terraform.
-- Use a resource that the configured provider and Floci support.
+- Use a resource that the configured provider and local AWS target support.
 - Do not delete and recreate the hand-made resource to claim the import.
 - Use fictitious test values.
 
@@ -154,7 +154,7 @@ Create one supported resource directly in Floci. Add matching Terraform configur
 
 ### Task 06 — Rename a resource without replacement
 
-Rename one Terraform resource address while keeping the underlying Floci resource.
+Rename one Terraform resource address while keeping the underlying local AWS resource.
 
 #### Constraints
 
@@ -167,7 +167,7 @@ Rename one Terraform resource address while keeping the underlying Floci resourc
 
 - The configuration uses the new resource address.
 - The plan records an address move without destroy and create actions.
-- Applying the change keeps the same Floci resource.
+- Applying the change keeps the same local AWS resource.
 - State uses the new address after the apply.
 
 #### Evidence to produce
@@ -175,7 +175,7 @@ Rename one Terraform resource address while keeping the underlying Floci resourc
 - The configuration before and after the rename.
 - The plan showing the address move.
 - Apply output.
-- A state and Floci check showing the same resource remains.
+- A state and local AWS check showing the same resource remains.
 
 ### Task 07 — Find a secret in state
 

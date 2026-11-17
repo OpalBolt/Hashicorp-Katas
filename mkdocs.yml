@@ -58,6 +58,7 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 nav:
   - Home: index.md
+  - Local setup: setup.md
   - How grading works: grading.md
   - Tracks: tracks.md
   - Terraform:

@@ -14,10 +14,10 @@ small environment change affects the wrong resources.
 
 Start this slice in a new folder: `submissions/terraform/03-modules/`.
 Copy `submissions/terraform/02-state/code/` into its `code/` folder and extend that work.
-Keep the local Floci resources and remote state from the previous slice
+Keep the local AWS resources and remote state from the previous slice
 working while you add isolated environment state.
 
-Use Floci at `localhost:4566`. Use fictitious test values only. Keep the
+Use the local AWS target at `localhost:4566`. Use fictitious test values only. Keep the
 configuration and state ready for the Terraform and Vault slice that follows.
 
 ## Concepts
@@ -43,24 +43,24 @@ component-specific values.
 
 - Work only in `submissions/terraform/03-modules/code/`.
 - Start from the previous slice's code. Do not copy a finished solution.
-- Keep the existing Floci resources and remote state working.
+- Keep the existing local AWS resources and remote state working.
 - Use a map as the source for repeated resources. Do not duplicate one block
   for each map entry.
-- Use only local Floci resources and fictitious values.
+- Use only local AWS resources and fictitious values.
 
 #### Done when
 
 - The copied configuration initializes successfully in the new folder.
 - The map describes at least two resources.
 - Terraform plans and applies the resources derived from the map.
-- The state and a Floci check agree about the resources that exist.
+- The state and a local AWS check agree about the resources that exist.
 
 #### Evidence to produce
 
 - The copied and extended configuration files.
 - The map and the resource declaration that consumes it.
 - Initialization, plan, and apply output.
-- A Floci check and state inspection for the created resources.
+- A local AWS check and state inspection for the created resources.
 
 ### Task 02 — Validate inputs and select a repetition method
 
@@ -74,7 +74,7 @@ identity of the resources.
 - Validate at least one input at the module or root configuration boundary.
 - Use locals for a repeated derived value instead of repeating its expression.
 - Do not hide invalid test input by changing it before validation.
-- Use fictitious values and keep the work local to Floci.
+- Use fictitious values and keep the work local to the local AWS target.
 
 #### Done when
 
@@ -94,7 +94,7 @@ identity of the resources.
 
 ### Task 03 — Read an existing resource
 
-Use a data source to read an existing resource or service in the local Floci
+Use a data source to read an existing resource or service in the local AWS
 environment. Use the result in the configuration without taking ownership of
 the existing object.
 
@@ -103,7 +103,7 @@ the existing object.
 - The object must exist before the data source reads it.
 - Do not create the object with the resource block under test.
 - Do not import the object into state for this task.
-- Use a read-only data source supported by the configured provider and Floci.
+- Use a read-only data source supported by the configured provider and local AWS target.
 - Use fictitious test values only.
 
 #### Done when
@@ -120,7 +120,7 @@ the existing object.
 - Initialization and plan output for the read.
 - A safe output or state inspection showing the consumed value without
   exposing secrets.
-- A Floci check that distinguishes the existing object from managed objects.
+- A local AWS check that distinguishes the existing object from managed objects.
 
 ### Task 04 — Turn the configuration into a module
 
@@ -140,7 +140,7 @@ interface. Call the module twice with different inputs.
 
 - Terraform initializes the root configuration and the child module.
 - Both module instances appear in the plan with distinct addresses.
-- Applying the configuration creates both module instances in Floci.
+- Applying the configuration creates both module instances in the local AWS target.
 - A module output is consumed by the root configuration or recorded in state.
 - A change to one module input does not require copying the module logic.
 
@@ -149,7 +149,7 @@ interface. Call the module twice with different inputs.
 - The child module files and its input and output declarations.
 - The root module calls and their distinct inputs.
 - Initialization, plan, and apply output.
-- State and Floci checks for both module instances.
+- State and local AWS checks for both module instances.
 - A safe inspection showing the module output was consumed.
 
 ### Task 05 — Isolate environment state
@@ -164,7 +164,7 @@ change cannot silently use the other environment's state.
 - Do not use one shared state file for both environments.
 - Do not treat workspaces as the only production isolation boundary.
 - Keep each environment's values explicit and reviewable.
-- Use only local Floci resources and fictitious values.
+- Use only local AWS resources and fictitious values.
 
 #### Done when
 
@@ -173,7 +173,7 @@ change cannot silently use the other environment's state.
   the environments.
 - A plan in one environment does not propose changes to the other
   environment's resources.
-- The existing remote state and local Floci resources remain usable.
+- The existing remote state and local AWS resources remain usable.
 
 #### Evidence to produce
 
@@ -181,7 +181,7 @@ change cannot silently use the other environment's state.
 - Initialization output for each environment.
 - State inspections that identify the separate state locations without
   exposing secrets.
-- Plans for both environments and a Floci check of their distinct resources.
+- Plans for both environments and a local AWS check of their distinct resources.
 
 ### Task 06 — Test the module
 
