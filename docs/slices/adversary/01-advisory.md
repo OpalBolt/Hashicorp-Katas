@@ -38,7 +38,62 @@ This slice needs written artifacts, not new infrastructure.
 - HSM support
 - HCP and Terraform Cloud versus self-run
 
+### From a client problem to an option
+
+```mermaid
+flowchart TD
+  A["Client describes a problem and planned use"] --> L["Verify current licence terms and product availability"]
+  L --> R{"Which requirement needs investigation?"}
+  R -->|No identified Enterprise need| C["Consider Community or another deployment option"]
+  R -->|Tenant separation| N["Consider namespaces"]
+  R -->|Recovery across clusters| D["Consider Vault Enterprise replication"]
+  R -->|Policy governance| P["Consider Sentinel"]
+  R -->|Hardware-backed keys| H["Consider HSM support"]
+  N --> F["Compare Community alternatives, fit, operations, and cost"]
+  D --> F
+  P --> F
+  H --> F
+  C --> F
+  F --> V["Verify feature availability and terms in current official sources"]
+  V --> Q["Record evidence, open questions, and client decision"]
+```
+
+These are candidates to investigate, not automatic recommendations. Verify
+licence terms, feature availability, and client fit against current official
+sources. Vault Enterprise replication connects clusters. Integrated storage
+replicates data among nodes within one cluster. One does not establish the
+other.
+
 ## Tasks
+
+### Warm-up for Task 01 — Check a hosted deployment
+
+The fictional client Cedar plans to offer a paid hosted deployment service.
+Customers submit configurations, and Cedar runs Terraform on their behalf.
+Cedar needs to discuss its planned use at a meeting tomorrow. Check the
+current Terraform licensing position for this use, without making a legal
+conclusion.
+
+#### Starter
+
+`submissions/adversary/01-advisory/warmup/task-01.md`
+
+```text
+Planned use and claim to check: [complete]
+Official source title, URL, publisher, and access date: [complete]
+Claim category and relevant source finding: [complete]
+Uncertainty and question for confirmation: [complete]
+```
+
+#### Done when
+
+- The register identifies the planned use, the claim, and a current official source with its title, URL, publisher, and access date.
+- It categorizes the claim and records what the source says about the planned use, with a citation.
+- It identifies uncertainty and a question for the client or HashiCorp without asserting a legal conclusion.
+
+#### Evidence to produce
+
+- The completed source register at the Starter path.
 
 ### Task 01 — Research current licence terms
 
@@ -76,6 +131,42 @@ cite every material claim.
 - A note listing open questions that require confirmation from HashiCorp or
   the client.
 
+### Warm-up for Task 02 — Compare compliance problems
+
+The fictional client Alder runs two teams on a shared Vault cluster. An audit
+asks for separate team administration. A recovery exercise also requires
+service in a second region within four hours. Alder has not tested either
+requirement or agreed on a budget.
+
+Compare candidate tenancy and cross-cluster recovery capabilities. Do not
+recommend a product. Check current official sources for any capability claim.
+
+#### Starter
+
+`submissions/adversary/01-advisory/warmup/task-02.md`
+
+```text
+Tenancy: feature [complete]; client problem [complete]
+Evidence to confirm fit [complete]; cost or operational consequence [complete]
+What the feature does not solve [complete]
+
+Recovery: feature [complete]; client problem [complete]
+Evidence to confirm fit [complete]; cost or operational consequence [complete]
+What the feature does not solve [complete]
+
+Official sources, URLs, and access dates: [complete]
+```
+
+#### Done when
+
+- Both mappings name a candidate feature and a distinct client problem, with current official citations for capability claims.
+- Each mapping identifies evidence to confirm or reject fit and a cost or operational consequence.
+- Each mapping states what the feature does not solve, without recommending a product.
+
+#### Evidence to produce
+
+- The completed comparison and source citations at the Starter path.
+
 ### Task 02 — Map Enterprise features to client problems
 
 For a fictitious client, map each Enterprise feature in this slice to a real
@@ -110,6 +201,38 @@ client problem and identify the evidence needed before recommending it.
 - A redacted feature-to-problem mapping.
 - Source citations attached to the relevant mappings.
 - A short client-context record showing how each problem was established.
+
+### Warm-up for Task 03 — Review a repository migration
+
+The fictional client Birch plans to move a Terraform repository from a
+developer laptop to a shared execution service. The repository declares
+Terraform 1.4.6, uses an AWS provider, and keeps state on the laptop. One
+operator runs changes manually. The team has not assigned a migration owner
+or estimated the service's monthly cost.
+
+Write a one-page migration review checklist for this repository. Do not use
+this checklist as the graded task artifact.
+
+#### Starter
+
+`submissions/adversary/01-advisory/warmup/task-03.md`
+
+```text
+Review prompts: [complete]
+Evidence or owner for each prompt: [complete]
+Assumptions that could change the migration decision: [complete]
+Recurring-cost questions: [complete]
+```
+
+#### Done when
+
+- The one-page checklist uses review prompts about the migration and names the evidence or owner for each prompt.
+- It identifies assumptions that could change the decision.
+- It asks about recurring costs and who will own them.
+
+#### Evidence to produce
+
+- The completed checklist at the Starter path.
 
 ### Task 03 — Write a Terraform repository review checklist
 
@@ -180,6 +303,36 @@ operation.
 - The one-page Vault setup review checklist.
 - A redacted record showing it was applied to the fictitious setup.
 - The source list and unresolved questions produced during the review.
+
+## Ungraded exercise — Spot the issues in a client setup
+
+The fictional client Elm runs one Vault cluster with three integrated storage
+nodes. All three nodes and the only snapshot copy are in the same region.
+The client has not tested a restore. It needs a second region to take over
+within four hours after a regional outage.
+
+Elm's adviser says the nodes already provide cross-region disaster recovery
+and that buying Enterprise guarantees the requirement. The adviser has not
+checked the edition, current feature terms, recovery procedure, or operating
+cost. A shared Terraform state store is readable by every employee, and
+Terraform reads a Vault secret into state.
+
+### Constraints
+
+- Work offline from the facts above. Do not use a live environment.
+- Distinguish observed issues from claims that need current official sources
+  or client confirmation.
+- Do not include secret values or assert a licence or product conclusion.
+
+### Done when
+
+- The review identifies the recovery and state-access issues and explains their consequences.
+- It distinguishes node replication within one cluster from replication between clusters.
+- It names the evidence, owners, or current official sources needed to assess the adviser's claims and recovery target.
+
+### Evidence to produce
+
+- A value-free review in `submissions/adversary/01-advisory/warmup/spot-setup.md`.
 
 ## Explain
 
