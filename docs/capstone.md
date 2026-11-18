@@ -74,6 +74,11 @@ flowchart TD
     workflow -->|"Plans and can apply"| terraform
 ```
 
+Read the map from the people at the top down to the systems they use. Two
+paths run Terraform: engineers on laptops and the GitHub Actions workflow. The
+repository box groups the configuration, state, settings, and workflow that
+both paths share.
+
 ## Tasks
 
 ### Task 01 — Diagnose Terraform ownership and structure

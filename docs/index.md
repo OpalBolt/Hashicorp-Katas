@@ -89,6 +89,10 @@ flowchart TD
     adv01 --> capstone
 ```
 
+The Terraform and Vault tracks start separately. They join at Terraform + Vault
+01, which needs both Terraform 03 and Vault 04. The capstone comes last and
+needs Vault 04, Terraform + Vault 02, and Adversary 01.
+
 | # | Slice | Topic | Prerequisites |
 |---|---|---|---|
 | [Terraform 00 — Block types](slices/terraform/00-block-types.md) | Block types | :simple-terraform:{ .track-terraform } Terraform | [Terraform tool](setup.md#install-the-tools) |

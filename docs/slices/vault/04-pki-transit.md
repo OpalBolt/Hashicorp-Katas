@@ -45,6 +45,10 @@ flowchart TD
     C --> D["Client verifies identity, lifetime, and chain to the trusted root"]
 ```
 
+The root CA signs only the intermediate CA. The intermediate CA signs the
+service certificates. A client trusts a leaf certificate only when the chain
+leads back to the trusted root.
+
 Clients check revocation only if their verification setup supports and enables
 it. A valid chain alone does not prove that a certificate is not revoked.
 
@@ -61,6 +65,9 @@ flowchart TD
     E --> H["Application stores version 2 ciphertext"]
 ```
 
+Rotation adds a new key version and does not replace the old one. New data
+uses version 2, while old ciphertext still needs version 1 to decrypt.
+
 The key stays in Vault. Blocking an old version prevents its ciphertext from
 decrypting until the version is allowed again or the data is otherwise recovered.
 
@@ -75,6 +82,9 @@ flowchart TD
     D -- No --> F["Unwrap fails"]
     E --> G["Token cannot be reused"]
 ```
+
+The key decision is the check on the token. Vault unwraps the response only
+for an unused token within its TTL. After one unwrap, the token is spent.
 
 Anyone who has the wrapping token can attempt to unwrap it. Protect its
 delivery and investigate an unexpected unwrap failure.
@@ -137,30 +147,6 @@ intermediate CA for service certificates.
 - Redacted issuing configuration and lifetime metadata.
 - A note that identifies where each private key is stored outside the repository.
 
-### Warm-up for Task 02 — Review a signing request
-
-Review a fictional package-signing certificate request offline. Do not issue a
-certificate or include certificate contents or private keys.
-
-#### Starter
-
-```text
-Fictional package signer identity: [complete]
-Identity and SAN decision for the request: [complete]
-Issuing role identity and lifetime constraints: [complete]
-Certificate lifetime compared with issuing CA lifetime: [complete]
-```
-
-#### Done when
-
-- The request names a fictional signer and justifies its identity and SAN decision.
-- The issuing role limits the accepted identity and certificate lifetime.
-- The certificate lifetime is bounded and shorter than the issuing CA lifetime.
-
-#### Evidence to produce
-
-- The completed review in `submissions/vault/04-pki-transit/warmup/signing-request.md`.
-
 ### Task 02 — Issue a short-lived service certificate
 
 Use the intermediate CA to issue a certificate for a fictitious service. Give
@@ -194,37 +180,6 @@ You do not need a running web service for the certificate checks in this slice.
 - Certificate subject, issuer, SAN, and expiry with values minimized or masked.
 - A redacted record of private-key handling.
 
-### Warm-up for Task 03 — Diagnose a monitoring certificate
-
-Complete this offline decision record for a fictional monitoring endpoint.
-The trust store contains only `Cedar Root CA`. It signs `Cedar Monitoring CA`.
-The expected hostname is `metrics.cedar.training.test`.
-
-The presented certificate names `Maple Lab CA` as its issuer and
-`status.cedar.training.test` as its DNS SAN. The presented chain includes
-`Maple Lab CA`, signed by the untrusted, self-signed `Maple Root CA`. Assume
-all signatures and lifetimes are valid. Do not include certificate contents
-or private keys.
-
-#### Starter
-
-```text
-Expected chain from root through issuer to endpoint: [complete]
-Presented issuer compared with expected issuer: [complete]
-Presented hostname compared with expected hostname: [complete]
-Expected chain and identity verification results and reasons: [complete]
-```
-
-#### Done when
-
-- The expected chain identifies the trusted root, intermediate issuer, and endpoint.
-- The record compares the presented issuer and hostname with the expected values.
-- The verification results assess the presented chain and identity and explain each outcome.
-
-#### Evidence to produce
-
-- The completed decision record in `submissions/vault/04-pki-transit/warmup/monitoring-verification.md`.
-
 ### Task 03 — Verify the certificate chain
 
 Verify that the service certificate chains through the intermediate CA to the
@@ -252,31 +207,6 @@ root CA. Check the service identity during verification.
 - Redacted identity-verification output.
 - A redacted failed verification result for an invalid chain or identity.
 - Certificate and issuer metadata without certificate contents.
-
-### Warm-up for Task 04 — Trace a configuration label
-
-Complete this offline key-version timeline for a fictional encrypted
-configuration label. Do not include plaintext, ciphertext, or key material.
-
-#### Starter
-
-```text
-Caller permissions for the label: [complete]
-Encryption and decryption checks before rotation: [complete]
-Key versions before and after rotation: [complete]
-Old ciphertext decryption check after rotation: [complete]
-New encryption version after rotation: [complete]
-```
-
-#### Done when
-
-- The caller permissions cover only the needed transit operations and key.
-- The timeline identifies the pre-rotation checks and the new key version after rotation.
-- The post-rotation checks use the new version for encryption and the allowed old version for decryption.
-
-#### Evidence to produce
-
-- The completed timeline in `submissions/vault/04-pki-transit/warmup/label-key-versions.md`.
 
 ### Task 04 — Encrypt, rotate, and decrypt with transit
 
@@ -313,30 +243,6 @@ The test client can represent the application. You do not need a separate applic
 - Redacted rotation output showing key versions.
 - A redacted check that old ciphertext still decrypts after rotation.
 - A redacted check that new encryption uses the rotated version.
-
-### Warm-up for Task 05 — Plan a bootstrap-note hand-off
-
-Complete this offline hand-off record for a fictional bootstrap note. Do not
-include the note, a token, or any secret value.
-
-#### Starter
-
-```text
-Recipient and channel for only the wrapped response: [complete]
-Wrapping TTL: [complete]
-First unwrap within the TTL: [complete]
-Reuse or expiry failure and response: [complete]
-```
-
-#### Done when
-
-- The record identifies the recipient and a protected channel that sends only the wrapped response.
-- The wrapping TTL is bounded, and the first unwrap occurs within it.
-- The record explains the expected reuse or expiry failure and how the recipient responds.
-
-#### Evidence to produce
-
-- The completed hand-off record in `submissions/vault/04-pki-transit/warmup/bootstrap-handoff.md`.
 
 ### Task 05 — Hand over a secret with response wrapping
 

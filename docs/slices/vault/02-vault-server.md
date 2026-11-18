@@ -49,6 +49,10 @@ flowchart TD
     F --> C
 ```
 
+Initialization happens once and creates the key shares. Every start or seal
+returns the server to the sealed state. The server serves requests only after
+someone supplies enough unseal shares again.
+
 ### AppRole login
 
 ```mermaid
@@ -60,6 +64,10 @@ flowchart TD
     E --> F["Vault checks the token policy"]
     F --> G["Allow or deny the request"]
 ```
+
+The role ID and secret ID arrive by separate paths. Login proves both and
+returns a token with limits. The token policy, not the login, decides whether
+each later request is allowed.
 
 ### Audit before reply
 
@@ -82,34 +90,11 @@ flowchart TD
     I -- No --> K["Return an error; request may have taken effect"]
 ```
 
+Vault writes an audit record before it processes the request and again before
+it replies. If no enabled device can write, Vault returns an error. A failed
+response record can still follow a request that already took effect.
+
 ## Tasks
-
-### Warm-up for Task 01 — Plan persistent storage
-
-Complete this offline diagram for a disposable catalogue service. Its data
-must survive replacing the service process. Stop before initialization or
-unsealing.
-
-#### Starter
-
-```text
-Client -- [connection and listener] --> [service process and startup choice]
-                                          |
-                                          v
-                        [storage configuration, data location, and boundary]
-
-TLS choice and local-learning limitation: [complete]
-```
-
-#### Done when
-
-- The diagram names the startup choice, client connection, and listener.
-- The storage configuration, data location, and boundary show what survives process replacement.
-- The TLS choice and its local-learning limitation are stated.
-
-#### Evidence to produce
-
-- The completed diagram and TLS note in `submissions/vault/02-vault-server/warmup/`.
 
 ### Task 01 — Run Vault from a server configuration
 
@@ -200,37 +185,6 @@ that the same secret is readable after recovery.
 - Redacted restart and recovery output.
 - A post-restart check that identifies the retained test path without its value.
 
-### Warm-up for Task 03 — Check machine access
-
-Design an offline request matrix for a fictional test machine that reads
-service metadata. Assume the machine has authenticated through AppRole and
-received a bounded token. Do not run a login or live requests. Use fictional
-paths, not the health endpoint. Do not include credentials, tokens, or secret
-values.
-
-#### Starter
-
-```text
-Fictional test role and policy relationship: [complete]
-Separate role ID and secret ID delivery assumptions: [complete]
-Secret ID and token lifetime or use limits: [complete]
-
-Fictional authenticated request | Path | Capability | Expected result and reason
-Metadata                       | [complete] | [complete] | [complete]
-Sibling secret                 | [complete] | [complete] | [complete]
-```
-
-#### Done when
-
-- The role and policy relationship and separate credential delivery assumptions are stated.
-- The secret ID and token have bounded lifetimes or uses.
-- Both fictional requests name a path and capability.
-- The matrix explains why the metadata request is allowed and the sibling secret request is denied.
-
-#### Evidence to produce
-
-- The completed design and request matrix in `submissions/vault/02-vault-server/warmup/`.
-
 ### Task 03 — Log in as a machine with AppRole
 
 Enable AppRole for a test machine. Give the role only the policy it needs.
@@ -260,30 +214,6 @@ Log in with the role credentials and use the resulting token for one request.
 - Allowed and denied request results with sensitive fields removed.
 - The configured lifetime or use limits.
 
-### Warm-up for Task 04 — Match an audit event
-
-Complete this offline record for a fictional deployment event and its
-append-only audit entry. Omit request and response values.
-
-#### Starter
-
-```text
-Audit destination: [complete]
-Safe field that matches the event and entry: [complete]
-Redacted event and matching audit entry: [complete]
-Behavior if audit devices cannot write: [complete]
-```
-
-#### Done when
-
-- The record names an append-only destination and a safe correlation field.
-- The redacted event and entry match without request or response values.
-- The failure note states what happens when no enabled audit device can write.
-
-#### Evidence to produce
-
-- The completed record in `submissions/vault/02-vault-server/warmup/`.
-
 ### Task 04 — Enable an audit device
 
 Enable an audit device, make a request as yourself, and find that request in
@@ -311,31 +241,6 @@ the audit log. Identify the request without exposing secret values.
 - The redacted client request result.
 - The matching redacted audit record.
 - A redacted failure test or server log, plus the observed behavior.
-
-### Warm-up for Task 05 — Plan a catalogue restore
-
-Complete this offline restore plan for a fictional catalogue index. Keep the
-original instance available during the test.
-
-#### Starter
-
-```text
-Snapshot metadata, without contents: [complete]
-Disposable restore instance and data boundary: [complete]
-Original record before snapshot: [complete]
-Changed original record after snapshot: [complete]
-Restored record check and original availability check: [complete]
-```
-
-#### Done when
-
-- The plan identifies snapshot metadata and a separate disposable restore boundary.
-- The checks distinguish the original record before the snapshot from its later change.
-- The restore check identifies the earlier record and confirms the original remains available.
-
-#### Evidence to produce
-
-- The completed plan in `submissions/vault/02-vault-server/warmup/`.
 
 ### Task 05 — Snapshot and restore integrated storage
 

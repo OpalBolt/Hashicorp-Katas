@@ -69,10 +69,12 @@ Starters are allowed in any slice. They must not provide the completed answer.
 Slices after the foundations slice (`00`) must not include working examples.
 A working example is not a Starter.
 
-When a task introduces a new skill, a required Warm-up comes before the graded
-Task. The Warm-up uses a Starter and a different mini-problem. It has its own
-concise `Done when` and its own evidence. Grade the Warm-up and the graded Task
-as separate units. The graded Task keeps its existing task number.
+A slice has one required Warm-up. It comes before the graded Task that
+introduces the slice's main new skill. A slice that teaches two unrelated
+skills can have a second Warm-up. The Warm-up uses a Starter and a different
+mini-problem. It has its own concise `Done when` and its own evidence. Grade
+the Warm-up and the graded Task as separate units. The graded Task keeps its
+existing task number.
 
 For a Starter task or Warm-up, `Done when` and `Evidence` apply to the learner's
 completed artifact, not merely to filled blanks or supplied material. The

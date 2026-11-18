@@ -49,9 +49,10 @@ flowchart TD
     H -- No --> J["Investigate the failed revocation"]
 ```
 
-Renewal does not extend a lease beyond its effective max TTL. A failed
-revocation needs investigation; expiration alone does not prove database
-cleanup succeeded.
+Renewal loops back to the TTL decision until the lease reaches its effective
+max TTL. Both expiry and explicit revocation lead to the same revocation
+attempt. A failed revocation needs investigation. Expiration alone does not
+prove database cleanup succeeded.
 
 ### Dynamic and static roles
 
@@ -66,6 +67,10 @@ flowchart TD
     G --> H["Vault rotates the account password on its schedule or on request"]
     H --> I["The database account remains the same"]
 ```
+
+The role type is the key decision. A dynamic role creates a new database user
+for each request. Vault revokes that user when the lease expires or is revoked.
+A static role keeps one existing account and changes only its password.
 
 ## Tasks
 

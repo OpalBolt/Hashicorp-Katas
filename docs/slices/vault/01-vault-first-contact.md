@@ -44,6 +44,10 @@ flowchart TD
     dev_memory -. is not .-> real_storage
 ```
 
+Dev mode keeps data in memory and loses it when the server stops. A real
+server uses reviewed configuration and persistent storage. The dotted edge marks
+the boundary: dev-mode data is never a substitute for real storage.
+
 ### KV v2 versions over time
 
 ```mermaid
@@ -55,158 +59,8 @@ flowchart TD
     version2 --> history
 ```
 
-## Warm-ups
-
-Create each separate practice artifact in
-`submissions/vault/01-vault-first-contact/warmup/`. Keep Warm-up evidence
-separate from graded Task evidence. These are offline exercises; do not copy
-their artifacts into Task answers.
-
-### Warm-up for Task 01 — Repair a disposable service health check
-
-Review a fictional disposable test service whose client address and health
-probe disagree. Record the correction without writing a runnable Vault setup
-or including a token.
-
-**Starter:** `submissions/vault/01-vault-first-contact/warmup/task-01.md`
-
-```markdown
-# Disposable service startup manifest
-
-| Item | Fictional value |
-|---|---|
-| Startup mode | [fill in] |
-| Listener address | [fill in] |
-| Client address | [fill in] |
-| Health probe target | [fill in] |
-
-# Disposable service readiness review
-
-| Item | Current fictional value | Corrected value |
-|---|---|---|
-| Service listener address | `http://127.0.0.1:8200` | [fill in] |
-| Client address | `http://127.0.0.1:8201` | [fill in] |
-| Health probe target | `http://127.0.0.1:8201` | [fill in] |
-
-- Why the client and probe must reach the listener: [fill in]
-- Readiness evidence to collect, with credentials redacted: [fill in]
-```
-
-#### Done when
-
-- The startup manifest identifies a mode and addresses consistent with the
-  corrected review.
-- The corrected listener, client, and health-probe addresses agree.
-- The review explains why the client and probe must reach the listener.
-- The note identifies safe readiness evidence and excludes credentials.
-- The review remains a written exercise, not a server configuration.
-
-#### Evidence
-
-- Save the completed review at the Starter path.
-
-### Warm-up for Task 02 — Track fictional setting versions
-
-Build a version timeline for the fictional feature setting `banner = "blue"`,
-updated to `banner = "green"`. Record metadata only, not setting values in
-evidence.
-
-**Starter:** `submissions/vault/01-vault-first-contact/warmup/task-02.md`
-
-```markdown
-# Feature-setting mount record
-
-| Item | Fictional value |
-|---|---|
-| Mount name | [fill in] |
-| Engine type and version | [fill in] |
-| Setting path | [fill in] |
-
-# Feature-setting version timeline
-
-| Version | Event | Current or prior | Safe metadata to record |
-|---|---|---|---|
-| 1 | [fill in] | [fill in] | [fill in] |
-| 2 | [fill in] | [fill in] | [fill in] |
-
-- Which version is current: [fill in]
-- How evidence avoids disclosing setting values: [fill in]
-```
-
-#### Done when
-
-- The mount record names the fictional mount, versioned engine, and setting path.
-- The timeline records both events and distinguishes the earlier version from
-  the current version.
-- The evidence describes version metadata without reproducing either value.
-- The completed artifact is saved at the Starter path.
-
-#### Evidence
-
-- Save the completed timeline at the Starter path.
-
-### Warm-up for Task 03 — Review document-metadata access
-
-Complete an offline access matrix for a fictional non-root token that may read
-document metadata at one path but must not read its sibling path.
-
-**Starter:** `submissions/vault/01-vault-first-contact/warmup/task-03.md`
-
-```markdown
-# Document-metadata access review
-
-- Fictional policy path: [fill in]
-- Capability required for the allowed read: [fill in]
-- Token lifetime limit: [fill in]
-
-| Request path | Expected result | Why |
-|---|---|---|
-| `secret/metadata/handbook` | [fill in] | [fill in] |
-| `secret/metadata/payroll` | [fill in] | [fill in] |
-```
-
-#### Done when
-
-- The policy path and capability allow only the fictional handbook metadata
-  read.
-- The matrix allows the handbook path and explains why.
-- The matrix denies the sibling payroll path and explains why.
-- The token lifetime is bounded; no server or actual token is used.
-
-#### Evidence
-
-- Save the completed access review at the Starter path.
-
-### Warm-up for Task 04 — Record a temporary credential retirement
-
-Write a redacted incident timeline for retiring a fictional temporary build
-credential. Do not create or include a live token.
-
-**Starter:** `submissions/vault/01-vault-first-contact/warmup/task-04.md`
-
-```markdown
-# Temporary build credential retirement
-
-| Stage | Event or check | Redacted evidence |
-|---|---|---|
-| Before retirement | [fill in] | [fill in] |
-| Retirement | [fill in] | [fill in] |
-| After retirement | [fill in] | [fill in] |
-
-- Follow-up if the credential may have been used: [fill in]
-```
-
-#### Done when
-
-- The retirement event records revocation of the fictional credential.
-- The timeline distinguishes the access check before retirement from the
-  denial check afterward.
-- Evidence identifies the credential only through redacted metadata.
-- Follow-up addresses any possible use before retirement.
-
-#### Evidence
-
-- Save the completed timeline at the Starter path.
+Each write to the same KV v2 path creates a new version. The update makes
+version 2 current. Version 1 stays in the version history as a prior version.
 
 ## Tasks
 
@@ -265,6 +119,42 @@ One fictional application's configuration path is enough. Reuse it for the later
 - The mount and test path.
 - Redacted output for the current and earlier versions.
 - Version metadata that shows the update.
+
+### Warm-up for Task 03 — Review document-metadata access
+
+Complete an offline access matrix for a fictional non-root token that may read
+document metadata at one path but must not read its sibling path.
+
+Work in `submissions/vault/01-vault-first-contact/warmup/`. Keep Warm-up
+evidence separate from graded Task evidence. This is an offline exercise. Do
+not copy its artifact into Task answers.
+
+**Starter:** `submissions/vault/01-vault-first-contact/warmup/task-03.md`
+
+```markdown
+# Document-metadata access review
+
+- Fictional policy path: [fill in]
+- Capability required for the allowed read: [fill in]
+- Token lifetime limit: [fill in]
+
+| Request path               | Expected result | Why       |
+| -------------------------- | --------------- | --------- |
+| `secret/metadata/handbook` | [fill in]       | [fill in] |
+| `secret/metadata/payroll`  | [fill in]       | [fill in] |
+```
+
+#### Done when
+
+- The policy path and capability allow only the fictional handbook metadata
+  read.
+- The matrix allows the handbook path and explains why.
+- The matrix denies the sibling payroll path and explains why.
+- The token lifetime is bounded; no server or actual token is used.
+
+#### Evidence
+
+- Save the completed access review at the Starter path.
 
 ### Task 03 — Limit a token to one read path
 

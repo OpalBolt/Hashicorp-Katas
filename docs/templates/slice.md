@@ -6,10 +6,13 @@
 
 ## Tasks
 
-Use a Warm-up before a Task that introduces a new skill. The Warm-up uses a
+Add one Warm-up before the Task that introduces the slice's main new skill.
+Add a second only if the slice teaches two unrelated skills. The Warm-up uses a
 Starter, either a Scaffold or a Fix-it starter, on a different mini-problem.
 Give it its own concise `Done when` and evidence. Keep the graded Task separate
 and retain its task number.
+
+Follow every Mermaid diagram with a short explanation of what to notice.
 
 ### Warm-up for Task 01 — [new skill]
 

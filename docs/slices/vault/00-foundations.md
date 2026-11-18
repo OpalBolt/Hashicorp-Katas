@@ -45,6 +45,10 @@ flowchart LR
     vault --> secrets[Protected secrets]
 ```
 
+Vault sits between its clients and the secrets it protects. Terraform, CI jobs,
+and applications all ask Vault for access. None of them reach the protected
+secrets directly.
+
 ### How a request flows
 
 ```mermaid
@@ -65,6 +69,10 @@ sequenceDiagram
     S-->>C: Return result
 ```
 
+Read the steps from top to bottom. The client first proves its identity and
+gets a token. Vault checks the token's policies before it routes the request to
+a mount. A denied request stops at the policy check.
+
 ### How tokens and policies relate
 
 ```mermaid
@@ -73,6 +81,10 @@ flowchart TD
     attached --> rule[Path and capability rules]
     rule --> decision[Request allowed or denied]
 ```
+
+A token does not grant access by itself. Its attached policies hold the path
+and capability rules. Vault compares each request with those rules to allow or
+deny it.
 
 ## Warm-ups
 
@@ -95,21 +107,27 @@ Complete the six-node diagram. Replace each `???` and add the missing
 relationships. The policy decision must happen before the renewal.
 
 ```mermaid
-flowchart TD
-    client["???"]
-    token["???"]
-    vault["Vault"]
-    policy["Policy check"]
-    renewal["Renewal operation"]
-    renewed["???"]
+flowchart LR
+    %% ===== YOU EDIT: replace each ??? with a label (keep the quotes) =====
+    blank1["???"]
+    blank2["???"]
+    blank3["???"]
 
-    client -->|"uses"| token
-    client -->|"???"| vault
-    token -->|"???"| vault
-    vault --> policy
-    policy -->|"???"| renewal
-    renewal -->|"???"| renewed
-    renewed -->|"???"| client
+    %% ===== DO NOT TOUCH: fixed nodes =====
+    auth["Auth method"]
+    policy["Policy"]
+    mount["Mount"]
+
+    %% ===== DO NOT TOUCH: request flow =====
+    blank1 -->|"authenticate"| auth
+    auth -->|"issues"| blank2
+    blank1 -->|"sends request"| policy
+    policy -->|"allows path"| mount
+    mount --> blank3
+
+    %% ===== DO NOT TOUCH: styling =====
+    classDef todo stroke-dasharray: 5 5,stroke-width:2px
+    class blank1,blank2,blank3 todo
 ```
 ````
 

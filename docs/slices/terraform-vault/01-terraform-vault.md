@@ -136,33 +136,6 @@ Use only a made-up value. The object can expose its contents as well as Terrafor
 - A redacted state inspection naming the exposed path or attribute.
 - A short note explaining where the leak occurred.
 
-### Warm-up for Task 02 — Compare delivery channels
-
-Compare two fictional channels offline. Channel A stores a setting in a
-deployment record. Channel B passes it for one operation without storing it
-in that record. Neither channel describes the graded destination.
-
-#### Starter
-
-`submissions/terraform-vault/01-terraform-vault/warmup/task-02.md`
-
-```text
-Channel A feature and storage boundary: [complete]
-Channel B feature and storage boundary: [complete]
-Checks for absence from each artifact: [complete]
-Destination boundary and remaining limitation: [complete]
-```
-
-#### Done when
-
-- The comparison identifies how each channel handles the setting and selects a channel for avoiding the deployment record.
-- The checks cover both a saved operation plan and the resulting record without printing a value.
-- The note identifies what the destination may retain and one limit of the selected channel.
-
-#### Evidence to produce
-
-- The completed comparison at the Starter path.
-
 ### Task 02 — Keep a secret out of state and saved plans
 
 Replace the state-exposing hand-off with a supported ephemeral resource or
@@ -200,32 +173,6 @@ ephemeral values or offers a write-only alternative.
 - A redacted destination check showing that the secret reached its intended destination.
 - Redacted state and saved-plan inspections proving absence.
 - A short limitation note backed by the version or provider behavior tested.
-
-### Warm-up for Task 03 — Map configuration ownership
-
-Draw an offline ownership map for a fictional secrets mount managed by IaC.
-Keep its bootstrap authority separate from routine configuration.
-
-#### Starter
-
-`submissions/terraform-vault/01-terraform-vault/warmup/task-03.md`
-
-```text
-Bootstrap owner and authority boundary: [complete]
-IaC owner and managed mount: [complete]
-Authentication and least-privilege policy relationships: [complete]
-Follow-up plan checks: [complete]
-```
-
-#### Done when
-
-- The map distinguishes the bootstrap owner and authority from the IaC owner and managed mount.
-- It connects authentication and a least-privilege policy to the mount's intended access.
-- The follow-up checks identify unexpected recreation or unmanaged changes.
-
-#### Evidence to produce
-
-- The completed ownership map at the Starter path.
 
 ### Task 03 — Manage Vault configuration with Terraform
 
@@ -265,36 +212,6 @@ unless you explicitly bring them under Terraform ownership.
 - Redacted proposed and follow-up plan output for the three objects.
 - Redacted Vault inspections for the policy, auth method, and mount.
 - A note identifying the provider credential lifetime and storage boundary.
-
-### Warm-up for Task 04 — Outline an access handoff
-
-The fictional Parcel Ledger inventory dashboard is not a Vault server. Its
-administrator must hand onboarding access to an operations team. The dashboard
-supports time-limited accounts for routine work.
-
-Write an offline handoff runbook outline for this dashboard. Do not create or
-record a credential.
-
-#### Starter
-
-`submissions/terraform-vault/01-terraform-vault/warmup/task-04.md`
-
-```text
-Responsibilities for sender, recipient, and routine operator: [complete]
-Temporary material location and handoff boundary: [complete]
-How the recipient obtains bounded routine access: [complete]
-Loss or exposure response: [complete]
-```
-
-#### Done when
-
-- The outline assigns each responsibility and describes a protected temporary location and handoff.
-- It describes how the recipient obtains bounded routine access without recording a credential.
-- It gives a response for both lost and exposed onboarding material.
-
-#### Evidence to produce
-
-- The completed runbook outline at the Starter path.
 
 ### Task 04 — Write a safe first-token bootstrap
 

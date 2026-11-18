@@ -48,7 +48,6 @@ flowchart TD
     review --> apply
     apply --> resources["Managed resources"]
     apply --> newstate["Updated state"]
-    newstate --> state
     config --> destroy["terraform destroy<br/>reads: config + plugins + state<br/>writes: removed resources + updated state"]
     init --> destroy
     state --> destroy
@@ -57,11 +56,12 @@ flowchart TD
 ```
 
 `init` reads provider requirements and lock information and prepares provider
-plugins; it does not create managed resources. `plan` reads configuration,
-providers, and state and produces a proposal; it does not write managed
+plugins. It does not create managed resources. `plan` reads configuration,
+providers, and state and produces a proposal. It does not write managed
 resources. `apply` reads the reviewed proposal and state, then writes managed
 resources and updated state. `destroy` reads configuration and state, removes
-the managed resources, and records the resulting state.
+the managed resources, and records the resulting state. The updated state
+becomes the existing state for the next `plan`, `apply`, or `destroy`.
 
 ## Where to find resource information
 
@@ -133,11 +133,11 @@ input from `label`. Copy this incomplete review and replace every `???`:
 
 This is a fictional graph review. It does not create resources.
 
-| Resource | Input expression | Depends directly on |
-|---|---|---|
-| `terraform_data.source` | `"inventory"` | ??? |
-| `terraform_data.label` | ??? | ??? |
-| `terraform_data.release` | `"release-${terraform_data.label.output}"` | ??? |
+| Resource                 | Input expression                           | Depends directly on |
+| ------------------------ | ------------------------------------------ | ------------------- |
+| `terraform_data.source`  | `"inventory"`                              | ???                 |
+| `terraform_data.label`   | ???                                        | ???                 |
+| `terraform_data.release` | `"release-${terraform_data.label.output}"` | ???                 |
 
 ## Ordering
 
@@ -275,13 +275,13 @@ Copy this incomplete evidence table and replace every `???`:
 ```markdown
 # Northstar saved-plan review
 
-| Review item | Entry |
-|---|---|
-| Planned resource action | ??? |
-| Planned filename | ??? |
-| Planned content | ??? |
-| Unexpected action that would stop review | ??? |
-| Evidence to record after apply | ??? |
+| Review item                              | Entry |
+| ---------------------------------------- | ----- |
+| Planned resource action                  | ???   |
+| Planned filename                         | ???   |
+| Planned content                          | ???   |
+| Unexpected action that would stop review | ???   |
+| Evidence to record after apply           | ???   |
 
 ## Decision
 

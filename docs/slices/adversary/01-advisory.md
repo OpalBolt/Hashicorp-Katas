@@ -66,35 +66,6 @@ other.
 
 ## Tasks
 
-### Warm-up for Task 01 — Check a hosted deployment
-
-The fictional client Cedar plans to offer a paid hosted deployment service.
-Customers submit configurations, and Cedar runs Terraform on their behalf.
-Cedar needs to discuss its planned use at a meeting tomorrow. Check the
-current Terraform licensing position for this use, without making a legal
-conclusion.
-
-#### Starter
-
-`submissions/adversary/01-advisory/warmup/task-01.md`
-
-```text
-Planned use and claim to check: [complete]
-Official source title, URL, publisher, and access date: [complete]
-Claim category and relevant source finding: [complete]
-Uncertainty and question for confirmation: [complete]
-```
-
-#### Done when
-
-- The register identifies the planned use, the claim, and a current official source with its title, URL, publisher, and access date.
-- It categorizes the claim and records what the source says about the planned use, with a citation.
-- It identifies uncertainty and a question for the client or HashiCorp without asserting a legal conclusion.
-
-#### Evidence to produce
-
-- The completed source register at the Starter path.
-
 ### Task 01 — Research current licence terms
 
 Research the current Terraform and Vault licence terms, product options, and
@@ -201,38 +172,6 @@ client problem and identify the evidence needed before recommending it.
 - A redacted feature-to-problem mapping.
 - Source citations attached to the relevant mappings.
 - A short client-context record showing how each problem was established.
-
-### Warm-up for Task 03 — Review a repository migration
-
-The fictional client Birch plans to move a Terraform repository from a
-developer laptop to a shared execution service. The repository declares
-Terraform 1.4.6, uses an AWS provider, and keeps state on the laptop. One
-operator runs changes manually. The team has not assigned a migration owner
-or estimated the service's monthly cost.
-
-Write a one-page migration review checklist for this repository. Do not use
-this checklist as the graded task artifact.
-
-#### Starter
-
-`submissions/adversary/01-advisory/warmup/task-03.md`
-
-```text
-Review prompts: [complete]
-Evidence or owner for each prompt: [complete]
-Assumptions that could change the migration decision: [complete]
-Recurring-cost questions: [complete]
-```
-
-#### Done when
-
-- The one-page checklist uses review prompts about the migration and names the evidence or owner for each prompt.
-- It identifies assumptions that could change the decision.
-- It asks about recurring costs and who will own them.
-
-#### Evidence to produce
-
-- The completed checklist at the Starter path.
 
 ### Task 03 — Write a Terraform repository review checklist
 

@@ -37,13 +37,21 @@ Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-wit
 
 ```mermaid
 flowchart TD
-  config[Configuration] --> plan[Terraform plan]
-  state[State: address to object ID] --> plan
-  real[Real resources] -->|refresh| plan
-  plan -->|approved plan| apply[Terraform apply]
-  apply -->|updates resources| real
-  apply -->|writes updated state| state
+  config["Configuration: what you declare"] --> plan["terraform plan"]
+  state["State: maps each address to a real object ID"] --> plan
+  real["Real resources"] --> refresh["Refresh reads current values"]
+  refresh --> plan
+  plan --> review["Reviewed plan"]
+  review --> apply["terraform apply"]
+  apply --> realafter["Real resources changed to match configuration"]
+  apply --> stateafter["Updated state with new IDs and values"]
 ```
+
+Terraform plans from three inputs. Configuration says what you want. State
+says which real object belongs to each resource address. Refresh reads what
+the real objects look like now. Drift is a difference between configuration
+and the refreshed real object. After apply, the updated state becomes the
+state input for the next plan.
 
 ### State locking
 
@@ -56,221 +64,41 @@ sequenceDiagram
   S-->>A: Lock granted
   B->>S: Request lock
   S-->>B: Request fails: lock held
-  Note over B: With -lock-timeout, Terraform retries while waiting and errors if the timeout expires
+  Note over B: With -lock-timeout, B retries until the timeout expires
   A->>S: Write state and release lock
   B->>S: Retry lock request
   S-->>B: Lock granted
   B->>S: Complete operation and release lock
 ```
 
+Only one operation can hold the lock on a shared state. Operation B does not
+wait by default. It fails at once unless you give it a lock timeout. When A
+writes its state and releases the lock, B can start from the state that A
+wrote. The lock prevents two applies from overwriting each other's state.
+
 ### Local and remote backends
 
 ```mermaid
 flowchart TD
-  subgraph local[Local backend]
-    L[One working folder] --> LF[Local state file]
+  subgraph local["Local backend"]
+    L["One working folder"] --> LF["Local state file"]
   end
-  subgraph remote[Remote backend]
-    A[Operator A] --> R[Shared backend]
-    B[Operator B] --> R
-    R --> LOCK[Locking, when supported]
-    R --> STATE[Remote state]
+  LF --> MIGRATE["terraform init migrates existing state"]
+  subgraph remote["Remote backend"]
+    R["Shared backend"]
+    A["Operator A"] --> R
+    B["Operator B"] --> R
+    R --> LOCK["Locking, when supported"]
+    R --> STATE["Remote state"]
   end
-  LF -->|migrate existing state| R
+  MIGRATE --> R
 ```
 
-## Warm-ups
-
-Create each small artifact in
-`submissions/terraform/02-state/warmup/`. Keep Warm-up evidence separate from
-the graded Task evidence. Do not copy a Warm-up artifact into a Task answer.
-
-### Warm-up for Task 02 — Plan a state migration
-
-Use this fictional service-registry scenario: Team Cedar owns a local state
-file at `local-file: ./registry/state.json`. It plans to move the record to
-Team Maple's test-only backend location `test-backend: catalog/registry.tfstate`.
-Use only this scenario. Do not configure a real backend.
-
-**Starter:** `submissions/terraform/02-state/warmup/task-02.md`
-
-```markdown
-# Backend migration note
-
-- Current owner and location: [fill in]
-- Target owner and location: [fill in]
-- Migration risks: [fill in]
-- Checks that ownership stays intact: [fill in]
-```
-
-#### Done when
-
-- The note identifies both locations and who owns each.
-- The risk field names at least two migration risks.
-- The final field lists checks that would show the same objects remain tracked.
-
-#### Evidence
-
-- Save the completed migration note at the Starter path.
-
-### Warm-up for Task 03 — Map a locking timeline
-
-Complete a timeline for two teams updating one shared release manifest. Do not
-configure Terraform. Team Atlas starts an update before Team Birch starts its
-own update to the same manifest.
-
-**Starter:** `submissions/terraform/02-state/warmup/task-03.md`
-
-```markdown
-# Shared manifest timeline
-
-| Step | Team or system | Event | What the other team observes |
-|---|---|---|---|
-| 1 | [fill in] | [fill in] | [fill in] |
-| 2 | [fill in] | [fill in] | [fill in] |
-| 3 | [fill in] | [fill in] | [fill in] |
-| 4 | [fill in] | [fill in] | [fill in] |
-- Check after the lock clears: [fill in]
-```
-
-#### Done when
-
-- Each row identifies an actor and an event.
-- Each row describes what the other team observes.
-- The timeline distinguishes the operation that holds the lock from the
-  operation that cannot proceed.
-- The final check confirms that later work can read the shared manifest.
-
-#### Evidence
-
-- Save the completed timeline at the Starter path.
-
-### Warm-up for Task 04 — Review a feature-flag change
-
-Review a fictional feature flag that someone changed by hand. The declared
-value is `checkout-banner = off`; the hand-edited value is `checkout-banner = on`.
-
-**Starter:** `submissions/terraform/02-state/warmup/task-04.md`
-
-```markdown
-# Feature-flag drift review
-
-| View | Flag value or decision |
-|---|---|
-| Declared value | [fill in] |
-| Value changed by hand | [fill in] |
-| Team decision: keep or undo | [fill in] |
-| Change needed for a clean next plan | [fill in] |
-```
-
-#### Done when
-
-- The table records the declared and manually changed values.
-- The decision explains whether the manual change should remain.
-- The last row states what must change to make the next plan reflect that
-  decision.
-
-#### Evidence
-
-- Save the completed review at the Starter path.
-
-### Warm-up for Task 05 — Plan a DNS-record import
-
-Plan how to bring the existing fictional DNS record `status.example.test`,
-type `TXT`, value `ready`, under management without recreating it.
-
-**Starter:** `submissions/terraform/02-state/warmup/task-05.md`
-
-```markdown
-# Existing DNS record
-
-- Existing record identity: [fill in]
-- Proposed Terraform address: [fill in]
-- Import evidence to collect: [fill in]
-- Plan check for duplicate creation: [fill in]
-```
-
-#### Done when
-
-- The identity distinguishes the existing record from other records.
-- The proposed address identifies one managed object.
-- The evidence and plan check would show that Terraform adopts, rather than
-  duplicates, the record.
-
-#### Evidence
-
-- Save the completed import plan at the Starter path.
-
-### Warm-up for Task 06 — Rename an ownership-ledger entry
-
-Map a renamed report entry for the fictional artifact `quarterly-report` in an
-ownership ledger. Choose old and new ledger addresses for that same artifact.
-
-**Starter:** `submissions/terraform/02-state/warmup/task-06.md`
-
-```markdown
-# Ownership-ledger rename
-
-- Old ledger address: [fill in]
-- New ledger address: [fill in]
-- Evidence both addresses refer to one artifact: [fill in]
-- Plan outcome that would concern you: [fill in]
-```
-
-#### Done when
-
-- The old and new addresses differ.
-- The evidence connects both addresses to the same artifact.
-- The last field describes an outcome that would show a replacement risk.
-
-#### Evidence
-
-- Save the completed rename note at the Starter path.
-
-### Warm-up for Task 07 — Trace a fictional key in state
-
-Trace the fictional API key field through this generic state record. Its value
-is redacted and is not a credential.
-
-**Starter:** `submissions/terraform/02-state/warmup/task-07.md`
-
-```json
-{
-  "resources": [
-    {
-      "type": "example_service",
-      "name": "demo",
-      "instances": [
-        {
-          "attributes": {
-            "id": "demo-id",
-            "api_key": "[REDACTED FICTIONAL VALUE]"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-```markdown
-# Redacted state trace
-
-- State path containing the value: [fill in]
-- Fields to redact from evidence: [fill in]
-- What a sensitive marker changes: [fill in]
-- Access risk that remains: [fill in]
-```
-
-#### Done when
-
-- The path identifies where the value appears without writing the value itself.
-- The redaction field covers sensitive content in both values and metadata.
-- The final fields distinguish display protection from state access control.
-
-#### Evidence
-
-- Save the completed trace at the Starter path with all values redacted.
+A local backend keeps state in one folder on one machine. Only that folder
+knows which objects Terraform manages. A remote backend stores state where
+several operators can reach it, and it can lock state while one of them works.
+Migration copies the existing state to the backend. It does not create new
+resources or a new, empty state.
 
 ## Tasks
 
@@ -298,6 +126,38 @@ Continue with the S3 bucket and text object from Terraform 01.
 - The copied and extended configuration files and `.terraform.lock.hcl`.
 - A safe state inspection and a local AWS check of the recreated resources.
 - The working folder and state location.
+
+### Warm-up — Plan a state migration
+
+Before Task 02, practice planning a state migration on paper. Create the
+artifact in `submissions/terraform/02-state/warmup/`. Keep it separate from
+the graded Task evidence.
+
+Use this fictional service-registry scenario: Team Cedar owns a local state
+file at `local-file: ./registry/state.json`. It plans to move the record to
+Team Maple's test-only backend location `test-backend: catalog/registry.tfstate`.
+Use only this scenario. Do not configure a real backend.
+
+**Starter:** `submissions/terraform/02-state/warmup/task-02.md`
+
+```markdown
+# Backend migration note
+
+- Current owner and location: [fill in]
+- Target owner and location: [fill in]
+- Migration risks: [fill in]
+- Checks that ownership stays intact: [fill in]
+```
+
+#### Done when
+
+- The note identifies both locations and who owns each.
+- The risk field names at least two migration risks.
+- The final field lists checks that would show the same objects remain tracked.
+
+#### Evidence
+
+- Save the completed migration note at the Starter path.
 
 ### Task 02 — Move state to a remote backend
 

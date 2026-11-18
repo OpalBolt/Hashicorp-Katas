@@ -135,7 +135,9 @@ flowchart LR
     managed --> result["output: release_note_path"]
 ```
 
-The resource writes the file. The output exposes its path, not its contents.
+Read the map from left to right. The data source reads the existing template,
+and the local combines it with the variable. The resource writes the file. The
+output exposes its path, not its contents.
 
 Run these commands from the repository root. Initialization downloads the local
 provider. Review the proposed file creation, then enter `yes` at the apply prompt.
@@ -260,13 +262,13 @@ The Northstar team gives Terraform a project name. Terraform reads an existing
 inventory note, derives a dated hand-off label, and publishes that label for
 the release job. Terraform does not create or own the inventory note.
 
-| Part | What it does | Block type | Reason |
-|---|---|---|---|
-| Project name supplied by the release job | Caller input | ??? | ??? |
-| Existing inventory note | Read-only external information | ??? | ??? |
-| Hand-off label derived from the inputs | Named local expression | ??? | ??? |
-| Published hand-off label | Value for the release job | ??? | ??? |
-| Managed hand-off record | Object Terraform would create or update | ??? | ??? |
+| Part                                     | What it does                            | Block type | Reason |
+| ---------------------------------------- | --------------------------------------- | ---------- | ------ |
+| Project name supplied by the release job | Caller input                            | ???        | ???    |
+| Existing inventory note                  | Read-only external information          | ???        | ???    |
+| Hand-off label derived from the inputs   | Named local expression                  | ???        | ???    |
+| Published hand-off label                 | Value for the release job               | ???        | ???    |
+| Managed hand-off record                  | Object Terraform would create or update | ???        | ???    |
 
 Value flow:
 
