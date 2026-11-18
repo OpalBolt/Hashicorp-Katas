@@ -36,7 +36,7 @@ You do not need separate initialization or apply logs.
 The workflow reads and writes different things at each stage:
 
 ```mermaid
-flowchart LR
+flowchart TD
     config["Configuration files"] --> init["terraform init<br/>reads: config + lock<br/>writes: plugins + working data"]
     lock["Provider requirements and lock file"] --> init
     init --> plan["terraform plan<br/>reads: config + plugins + state<br/>writes: proposal or saved plan"]
