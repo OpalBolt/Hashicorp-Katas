@@ -36,7 +36,75 @@ secret values from evidence.
 - key versions
 - response wrapping
 
+### CA chain
+
+```mermaid
+flowchart TD
+    A["Root CA: trust anchor, used rarely"] -->|"Signs"| B["Intermediate CA: issuing CA"]
+    B -->|"Signs"| C["Leaf certificate: service identity"]
+    C --> D["Client verifies identity, lifetime, and chain to the trusted root"]
+```
+
+Clients check revocation only if their verification setup supports and enables
+it. A valid chain alone does not prove that a certificate is not revoked.
+
+### Transit key versions
+
+```mermaid
+flowchart TD
+    A["Application sends plaintext to Vault transit"] --> B["Vault encrypts with key version 1"]
+    B --> C["Application stores version 1 ciphertext"]
+    B --> D["Vault rotates the key to version 2"]
+    D --> E["New encryption uses version 2"]
+    C --> F["Application sends old ciphertext to Vault"]
+    F --> G["Vault decrypts with version 1 if that version remains allowed"]
+    E --> H["Application stores version 2 ciphertext"]
+```
+
+The key stays in Vault. Blocking an old version prevents its ciphertext from
+decrypting until the version is allowed again or the data is otherwise recovered.
+
+### Response wrapping
+
+```mermaid
+flowchart TD
+    A["Sender requests a wrapped response with a TTL"] --> B["Vault returns a single-use wrapping token"]
+    B --> C["Sender delivers the token to the recipient"]
+    C --> D{"Token unused and within TTL?"}
+    D -- Yes --> E["Recipient unwraps the response once"]
+    D -- No --> F["Unwrap fails"]
+    E --> G["Token cannot be reused"]
+```
+
+Anyone who has the wrapping token can attempt to unwrap it. Protect its
+delivery and investigate an unexpected unwrap failure.
+
 ## Tasks
+
+### Warm-up for Task 01 — Draw a metrics trust hierarchy
+
+Complete this offline trust hierarchy for a fictional metrics endpoint. Do not
+create a CA or include key material.
+
+#### Starter
+
+```text
+Root CA role and key-handling boundary: [complete]
+Intermediate CA role and key-handling boundary: [complete]
+Chain from root to metrics endpoint: [complete]
+Bounded issuing lifetime: [complete]
+Key kept offline or used rarely and why: [complete]
+```
+
+#### Done when
+
+- The hierarchy shows the root, intermediate, and endpoint roles and signing relationships.
+- The issuing lifetime is bounded, and the key-handling boundaries distinguish the two CA keys.
+- The record identifies the offline or rarely used key and explains why.
+
+#### Evidence to produce
+
+- The completed hierarchy in `submissions/vault/04-pki-transit/warmup/metrics-trust.md`.
 
 ### Task 01 — Build a root and intermediate CA
 
@@ -68,6 +136,30 @@ intermediate CA for service certificates.
 - Redacted chain relationship output.
 - Redacted issuing configuration and lifetime metadata.
 - A note that identifies where each private key is stored outside the repository.
+
+### Warm-up for Task 02 — Review a signing request
+
+Review a fictional package-signing certificate request offline. Do not issue a
+certificate or include certificate contents or private keys.
+
+#### Starter
+
+```text
+Fictional package signer identity: [complete]
+Identity and SAN decision for the request: [complete]
+Issuing role identity and lifetime constraints: [complete]
+Certificate lifetime compared with issuing CA lifetime: [complete]
+```
+
+#### Done when
+
+- The request names a fictional signer and justifies its identity and SAN decision.
+- The issuing role limits the accepted identity and certificate lifetime.
+- The certificate lifetime is bounded and shorter than the issuing CA lifetime.
+
+#### Evidence to produce
+
+- The completed review in `submissions/vault/04-pki-transit/warmup/signing-request.md`.
 
 ### Task 02 — Issue a short-lived service certificate
 
@@ -102,6 +194,37 @@ You do not need a running web service for the certificate checks in this slice.
 - Certificate subject, issuer, SAN, and expiry with values minimized or masked.
 - A redacted record of private-key handling.
 
+### Warm-up for Task 03 — Diagnose a monitoring certificate
+
+Complete this offline decision record for a fictional monitoring endpoint.
+The trust store contains only `Cedar Root CA`. It signs `Cedar Monitoring CA`.
+The expected hostname is `metrics.cedar.training.test`.
+
+The presented certificate names `Maple Lab CA` as its issuer and
+`status.cedar.training.test` as its DNS SAN. The presented chain includes
+`Maple Lab CA`, signed by the untrusted, self-signed `Maple Root CA`. Assume
+all signatures and lifetimes are valid. Do not include certificate contents
+or private keys.
+
+#### Starter
+
+```text
+Expected chain from root through issuer to endpoint: [complete]
+Presented issuer compared with expected issuer: [complete]
+Presented hostname compared with expected hostname: [complete]
+Expected chain and identity verification results and reasons: [complete]
+```
+
+#### Done when
+
+- The expected chain identifies the trusted root, intermediate issuer, and endpoint.
+- The record compares the presented issuer and hostname with the expected values.
+- The verification results assess the presented chain and identity and explain each outcome.
+
+#### Evidence to produce
+
+- The completed decision record in `submissions/vault/04-pki-transit/warmup/monitoring-verification.md`.
+
 ### Task 03 — Verify the certificate chain
 
 Verify that the service certificate chains through the intermediate CA to the
@@ -129,6 +252,31 @@ root CA. Check the service identity during verification.
 - Redacted identity-verification output.
 - A redacted failed verification result for an invalid chain or identity.
 - Certificate and issuer metadata without certificate contents.
+
+### Warm-up for Task 04 — Trace a configuration label
+
+Complete this offline key-version timeline for a fictional encrypted
+configuration label. Do not include plaintext, ciphertext, or key material.
+
+#### Starter
+
+```text
+Caller permissions for the label: [complete]
+Encryption and decryption checks before rotation: [complete]
+Key versions before and after rotation: [complete]
+Old ciphertext decryption check after rotation: [complete]
+New encryption version after rotation: [complete]
+```
+
+#### Done when
+
+- The caller permissions cover only the needed transit operations and key.
+- The timeline identifies the pre-rotation checks and the new key version after rotation.
+- The post-rotation checks use the new version for encryption and the allowed old version for decryption.
+
+#### Evidence to produce
+
+- The completed timeline in `submissions/vault/04-pki-transit/warmup/label-key-versions.md`.
 
 ### Task 04 — Encrypt, rotate, and decrypt with transit
 
@@ -165,6 +313,30 @@ The test client can represent the application. You do not need a separate applic
 - Redacted rotation output showing key versions.
 - A redacted check that old ciphertext still decrypts after rotation.
 - A redacted check that new encryption uses the rotated version.
+
+### Warm-up for Task 05 — Plan a bootstrap-note hand-off
+
+Complete this offline hand-off record for a fictional bootstrap note. Do not
+include the note, a token, or any secret value.
+
+#### Starter
+
+```text
+Recipient and channel for only the wrapped response: [complete]
+Wrapping TTL: [complete]
+First unwrap within the TTL: [complete]
+Reuse or expiry failure and response: [complete]
+```
+
+#### Done when
+
+- The record identifies the recipient and a protected channel that sends only the wrapped response.
+- The wrapping TTL is bounded, and the first unwrap occurs within it.
+- The record explains the expected reuse or expiry failure and how the recipient responds.
+
+#### Evidence to produce
+
+- The completed hand-off record in `submissions/vault/04-pki-transit/warmup/bootstrap-handoff.md`.
 
 ### Task 05 — Hand over a secret with response wrapping
 
