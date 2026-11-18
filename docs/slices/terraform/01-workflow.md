@@ -332,7 +332,7 @@ inspect the human-readable plan, and apply that exact saved plan.
 #### Evidence to produce
 
 - The reviewed, redacted `terraform show` text for the saved plan.
-- Apply output identifying the saved plan file.
+- A record of the apply command naming the saved plan file and its output.
 - A later no-change plan.
 - A short note identifying the working folder and confirming that the binary
   plan was kept local and ignored.
