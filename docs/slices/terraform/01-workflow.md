@@ -82,31 +82,33 @@ services. The [local setup](../../setup.md) page links to the Floci documentatio
 
 ## Tasks
 
-### Exercise — Predict the plan for a queue change
+### Exercise — Predict the plan for a release change
 
-A team has already applied a local-target configuration. Its state contains
-one queue and one text object in that queue. The configuration change does
-three things:
+A team has already applied a configuration with two `terraform_data` resources.
+State records these values:
 
-- changes the text object's contents from `ready` to `approved`;
-- adds a description to the queue;
-- leaves the provider version and resource names unchanged.
+- `terraform_data.revision` has `input` set to `ready`.
+- `terraform_data.release` has `triggers_replace` set to `v1`.
+
+The proposed configuration changes `input` to `approved` and
+`triggers_replace` to `v2`. The resource addresses do not change.
+For `terraform_data`, changing `input` updates the resource. Changing
+`triggers_replace` requires replacement.
 
 Predict the plan before anyone runs it. Record the expected action for each
-item and one reason a reviewer should reject a plan that proposes an unrelated
-replacement or a resource outside this configuration.
+resource. Identify an unrelated action that a reviewer should investigate.
 
 #### Constraints
 
 - Work from the scenario only; do not run Terraform or contact a cloud account.
-- Record one expected action for the queue and one for the text object.
+- Record one expected action for each `terraform_data` resource.
 - Explain how the existing state helps Terraform distinguish an update from a new resource.
-- Keep the artifact about the fictional queue; do not copy the graded configuration.
+- Keep the artifact about the fictional release; do not copy the graded configuration.
 
 #### Done when
 
 - The artifact records a predicted action for both existing resources.
-- The reasoning explains why the provider version and resource names do not imply replacement.
+- The reasoning connects each changed attribute to the expected action.
 - The review check identifies an unexpected action that would need investigation.
 
 #### Evidence to produce
@@ -122,7 +124,17 @@ deploying anything. Work in
 
 #### Starter
 
-Copy this incomplete manifest and replace every `???`:
+Northstar has already applied two fictional queues to the local target.
+The `dispatch` queue has a delay of zero seconds. The `archive` queue has a
+delay of five seconds.
+
+The new proposal changes the `dispatch` delay to 20 seconds, keeps the
+`archive` queue unchanged, and adds a `metrics` queue. The provider can update
+a queue's delay without replacing it.
+
+The proposal targets the local AWS endpoint at `http://localhost:4566` and uses
+the pinned AWS provider version `5.94.1`. Copy this incomplete manifest and
+replace every `???`:
 
 ```markdown
 # Northstar queue deployment review
@@ -250,6 +262,12 @@ production claim. Work in
 `submissions/terraform/01-workflow/warmup/task-04-emulator-evidence.md`.
 
 #### Starter
+
+In a fictional local run against `http://localhost:4566`, the emulator accepted
+an `aws_s3_object` upload to bucket `northstar-reports` with key `status.txt`,
+returned HTTP 200, and let Terraform read the object back. A teammate claims
+that this proves production AWS will accept the same bucket name and that the
+object will have the same access behavior there.
 
 Copy this incomplete evidence table and replace every `???`:
 

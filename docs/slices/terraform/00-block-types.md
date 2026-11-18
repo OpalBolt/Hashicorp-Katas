@@ -255,15 +255,16 @@ the release job. Terraform does not create or own the inventory note.
 
 Value flow:
 
-??? → ??? → ???
-Existing inventory note → ??? → managed hand-off record
-Managed hand-off record → ???
+Caller input → ??? → Published hand-off label
+Existing inventory note → ??? → Managed hand-off record
+Managed hand-off record → ??? → Release job
 ```
 
 #### Done when
 
 - Every blank names the appropriate block type or relationship.
 - The explanation distinguishes caller input, derived values, read-only data, and managed objects.
+- Every value-flow line has the correct start and end and the appropriate relationship labels between them.
 - The completed artifact is saved as `warmup/task-01-inventory.md`.
 
 #### Evidence to produce
