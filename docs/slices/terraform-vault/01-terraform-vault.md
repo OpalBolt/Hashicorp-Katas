@@ -268,8 +268,12 @@ unless you explicitly bring them under Terraform ownership.
 
 ### Warm-up for Task 04 — Outline an access handoff
 
-Write an offline runbook outline for handing access to a fictional operations
-team. Do not create or record a credential.
+The fictional Parcel Ledger inventory dashboard is not a Vault server. Its
+administrator must hand onboarding access to an operations team. The dashboard
+supports time-limited accounts for routine work.
+
+Write an offline handoff runbook outline for this dashboard. Do not create or
+record a credential.
 
 #### Starter
 
@@ -286,7 +290,7 @@ Loss or exposure response: [complete]
 
 - The outline assigns each responsibility and describes a protected temporary location and handoff.
 - It describes how the recipient obtains bounded routine access without recording a credential.
-- It gives a response for both lost and exposed bootstrap material.
+- It gives a response for both lost and exposed onboarding material.
 
 #### Evidence to produce
 
