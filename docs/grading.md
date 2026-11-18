@@ -62,6 +62,9 @@ A Starter is either:
 - a **Fix-it starter**, a deliberately broken structure for the learner to
   repair
 
+Each Scaffold blank must have a corresponding `Done when` line. A blank can be
+a value, a block, or a whole file.
+
 Starters are allowed in any slice. They must not provide the completed answer.
 Slices after the foundations slice (`00`) must not include working examples.
 A working example is not a Starter.

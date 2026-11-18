@@ -37,6 +37,10 @@ and retain its task number.
 
 - [Requirement]
 
+#### Evidence
+
+- [Graded-task evidence]
+
 ## Explain
 
 Answer these questions in `submissions/<track>/<slice>/answers.md`.
