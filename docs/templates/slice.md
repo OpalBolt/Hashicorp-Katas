@@ -6,6 +6,37 @@
 
 ## Tasks
 
+Use a Warm-up before a Task that introduces a new skill. The Warm-up uses a
+Starter, either a Scaffold or a Fix-it starter, on a different mini-problem.
+Give it its own concise `Done when` and evidence. Keep the graded Task separate
+and retain its task number.
+
+### Warm-up for Task 01 — [new skill]
+
+**Mini-problem:** [Describe a different mini-problem.]
+
+**Starter:** [Describe the Scaffold or Fix-it starter.]
+
+#### Done when
+
+- [Warm-up requirement]
+
+#### Evidence
+
+- [Warm-up evidence]
+
+### Task 01 — [title]
+
+**Goal:** [State the learner's goal.]
+
+#### Constraints
+
+- [Constraint]
+
+#### Done when
+
+- [Requirement]
+
 ## Explain
 
 Answer these questions in `submissions/<track>/<slice>/answers.md`.

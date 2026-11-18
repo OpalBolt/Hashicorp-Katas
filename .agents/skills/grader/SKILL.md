@@ -31,8 +31,14 @@ Include every requested slice even when its submission is missing.
 1. Read the complete task page, including constraints, evidence requirements, and all Explain questions.
 2. Inspect the submission's `code/`, `evidence/`, `answers.md`, and any task-specific artifact locations.
 3. Map submitted artifacts to every `Done when` line and required evidence item.
-4. Evaluate each task and Explain answer using `docs/grading.md`.
-5. Finish the slice only after every task, requirement, and Explain question has a reported result.
+4. If the task page requires a Warm-up, inspect its artifacts under
+   `submissions/<track>/<slice>/warmup/`. Grade the Warm-up against its own
+   `Done when` and evidence requirements.
+5. Evaluate the graded Task and Explain answer separately using
+   `docs/grading.md`. Do not count Warm-up output as graded-task `code/` or
+   `evidence/`.
+6. Finish the slice only after every Warm-up, task, requirement, and Explain
+   question has a reported result.
 
 Read source code and authored task artifacts in `code/` first.
 Inspect `evidence/` for transient output from the learner's runs.
