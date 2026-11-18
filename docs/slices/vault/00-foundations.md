@@ -16,11 +16,9 @@ request to the mount that owns the path. This model explains Vault without
 requiring a running server.
 
 This slice needs no Vault server, cloud account, or repository Compose setup.
-Use the [Vault 00 diagram preview](00-foundations-preview.md) while editing:
-run `mise run serve`, open the preview page in the site, and edit that Markdown
-file. When it is complete, copy its Mermaid block to
-`submissions/vault/00-foundations/diagram.md`. Keep that submitted source for
-grading; the preview page is only a working copy.
+Edit [`submissions/vault/00-foundations/diagram.md`](00-foundations-preview.md)
+while `mise run serve` runs. The site renders that file, so you see changes as
+you save. It is the file graded for this slice.
 
 ## Concepts
 
@@ -80,10 +78,10 @@ flowchart TD
 
 ### Task 01 — Complete a Vault request diagram
 
-Edit the scaffold in the [Vault 00 diagram preview](00-foundations-preview.md)
-and replace every `???` with a clear label. Copy the completed Mermaid block to
-`submissions/vault/00-foundations/diagram.md`. The submitted Markdown source can
-be checked without a Vault server.
+Edit the scaffold in
+[`submissions/vault/00-foundations/diagram.md`](00-foundations-preview.md) and
+replace every `???` with a clear label. The Markdown source can be checked
+without a Vault server.
 
 ```mermaid
 flowchart LR
