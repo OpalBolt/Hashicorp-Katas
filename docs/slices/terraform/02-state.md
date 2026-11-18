@@ -55,9 +55,9 @@ sequenceDiagram
   A->>S: Request lock
   S-->>A: Lock granted
   B->>S: Request lock
-  S-->>B: Lock held, wait or fail
+  S-->>B: Request fails: lock held
+  Note over B: With -lock-timeout, Terraform retries while waiting and errors if the timeout expires
   A->>S: Write state and release lock
-  S-->>B: Lock available
   B->>S: Retry lock request
   S-->>B: Lock granted
   B->>S: Complete operation and release lock
