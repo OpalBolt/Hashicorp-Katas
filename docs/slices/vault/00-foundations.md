@@ -74,6 +74,58 @@ flowchart TD
     rule --> decision[Request allowed or denied]
 ```
 
+## Warm-ups
+
+Create this separate practice artifact in
+`submissions/vault/00-foundations/warmup/`. Keep its evidence separate from the
+graded Task evidence.
+
+### Warm-up for Task 01 — Diagram a token-renewal request
+
+Practice tracing a fictional client's request to renew its own renewable token.
+Assume its policy permits renewal. Show the policy decision before Vault
+renews the token. Do not use a Vault server or real token.
+
+**Starter:** `submissions/vault/00-foundations/warmup/task-01.md`
+
+````markdown
+# Token-renewal request
+
+Complete the six-node diagram. Replace each `???` and add the missing
+relationships. The policy decision must happen before the renewal.
+
+```mermaid
+flowchart TD
+    client["???"]
+    token["???"]
+    vault["Vault"]
+    policy["Policy check"]
+    renewal["Renewal operation"]
+    renewed["???"]
+
+    client -->|"uses"| token
+    client -->|"???"| vault
+    token -->|"???"| vault
+    vault --> policy
+    policy -->|"???"| renewal
+    renewal -->|"???"| renewed
+    renewed -->|"???"| client
+```
+````
+
+#### Done when
+
+- The three node placeholders identify the fictional client, its token,
+  and the renewal result.
+- Every arrow placeholder has a label that fits the request flow.
+- The arrows show the client sending a request with its token, the policy
+  decision before renewal, and the result returned to the client.
+- The diagram uses no live token or server.
+
+#### Evidence
+
+- Save the completed diagram at the Starter path.
+
 ## Tasks
 
 ### Task 01 — Complete a Vault request diagram
