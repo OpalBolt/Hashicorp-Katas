@@ -53,6 +53,21 @@ Use these rules when two choices look similar:
 - Choose **`variable`** when a caller supplies the value. Choose **`locals`**
   when the configuration derives the value from its own inputs and resources.
 
+The five block types can reference one another through expressions. A common
+flow starts with caller input and existing data, derives a value, manages an
+object, and publishes a result:
+
+```mermaid
+flowchart LR
+    variable["variable<br/>caller input"] --> locals["locals<br/>derived value"]
+    data["data<br/>existing information"] --> locals
+    locals --> resource["resource<br/>managed object"]
+    resource --> output["output<br/>published result"]
+```
+
+The arrows are references, not execution commands. Terraform uses them to
+build a dependency graph before it evaluates the configuration.
+
 ### Run an annotated example
 
 This example creates a release note from an existing template. Run it in
@@ -262,9 +277,26 @@ Managed hand-off record → ??? → Release job
 
 #### Done when
 
-- Every blank names the appropriate block type or relationship.
-- The explanation distinguishes caller input, derived values, read-only data, and managed objects.
-- Every value-flow line has the correct start and end and the appropriate relationship labels between them.
+- The project-name Part blank names the block category for caller input.
+- The project-name Reason blank explains where that value originates.
+- The inventory-note Part blank names the block category for read-only
+  external information.
+- The inventory-note Reason blank explains the ownership boundary.
+- The hand-off-label Part blank names the block category for a derived
+  expression.
+- The hand-off-label Reason blank explains where Terraform computes the value.
+- The published-label Part blank names the block category that makes a result
+  available to the caller.
+- The published-label Reason blank explains that purpose.
+- The managed-record Part blank names the block category for an object
+  Terraform owns.
+- The managed-record Reason blank explains its lifecycle role.
+- The first value-flow blank shows the relationship between caller input,
+  derived value, and published result.
+- The second value-flow blank shows the relationship between the external
+  note, derived value, and managed record.
+- The final value-flow blank shows how the managed record's result reaches
+  the release job.
 - The completed artifact is saved as `warmup/task-01-inventory.md`.
 
 #### Evidence to produce

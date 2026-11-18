@@ -12,7 +12,8 @@ Prerequisites: [Terraform 00 — Block types](00-block-types.md) and [local setu
 
 Clients need infrastructure changes that they can review before they make them.
 The Terraform workflow shows the proposed change, applies only the intended change, and leaves a record of what exists.
-You will use a local AWS target so that you can repeat the workflow without creating cloud resources.
+You will use a configured local AWS target so that you can repeat the workflow
+without creating cloud resources.
 
 Start this slice in a new folder: `submissions/terraform/01-workflow/`.
 
@@ -25,32 +26,31 @@ You do not need separate initialization or apply logs.
 ## Concepts
 
 - providers
+- resource references and dependency ordering
 - plan
 - apply
 - destroy
+- saved plans
 - version pinning
-- emulator limits
 
 The workflow reads and writes different things at each stage:
 
 ```mermaid
 flowchart LR
-    config["Configuration files"] --> init["terraform init"]
+    config["Configuration files"] --> init["terraform init<br/>reads: config + lock<br/>writes: plugins + working data"]
     lock["Provider requirements and lock file"] --> init
-    init --> plugins["Provider plugins and working directory"]
-    config --> plan["terraform plan"]
-    plugins --> plan
+    init --> plan["terraform plan<br/>reads: config + plugins + state<br/>writes: proposal or saved plan"]
     state["Existing state"] --> plan
     plan --> review["Reviewed plan"]
-    config --> apply["terraform apply"]
-    plugins --> apply
+    config --> apply["terraform apply<br/>reads: config + plugins + state + reviewed plan<br/>writes: resources + updated state"]
+    init --> apply
     state --> apply
     review --> apply
     apply --> resources["Managed resources"]
     apply --> newstate["Updated state"]
     newstate --> state
-    config --> destroy["terraform destroy"]
-    plugins --> destroy
+    config --> destroy["terraform destroy<br/>reads: config + plugins + state<br/>writes: removed resources + updated state"]
+    init --> destroy
     state --> destroy
     destroy --> resources
     destroy --> newstate
@@ -116,63 +116,61 @@ resource. Identify an unrelated action that a reviewer should investigate.
 Save the prediction and review note as
 `submissions/terraform/01-workflow/code/predict-the-plan.md`.
 
-### Warm-up — Annotate a local-target manifest
+### Warm-up — Trace a dependency graph
 
-Before Task 01, practice provider endpoint and plan review decisions without
+Before Task 01, practice tracing references and dependency ordering without
 deploying anything. Work in
-`submissions/terraform/01-workflow/warmup/task-01-queue-manifest.md`.
+`submissions/terraform/01-workflow/warmup/task-01-dependency-graph.md`.
 
 #### Starter
 
-Northstar has already applied two fictional queues to the local target.
-The `dispatch` queue has a delay of zero seconds. The `archive` queue has a
-delay of five seconds.
-
-The new proposal changes the `dispatch` delay to 20 seconds, keeps the
-`archive` queue unchanged, and adds a `metrics` queue. The provider can update
-a queue's delay without replacing it.
-
-The proposal targets the local AWS endpoint at `http://localhost:4566` and uses
-the pinned AWS provider version `5.94.1`. Copy this incomplete manifest and
-replace every `???`:
+Northstar uses three `terraform_data` resources. `source` contains the string
+`inventory`, `label` derives its input from `source`, and `release` derives its
+input from `label`. Copy this incomplete review and replace every `???`:
 
 ```markdown
-# Northstar queue deployment review
+# Northstar dependency review
 
-This is a fictional deployment proposal. It must stay on the local target.
+This is a fictional graph review. It does not create resources.
 
-| Review item | Your entry |
-|---|---|
-| Provider endpoint | ??? |
-| Provider version constraint | ??? |
-| Resource expected to be created | ??? |
-| Resource expected to be updated | ??? |
-| Resource expected to be unchanged | ??? |
+| Resource | Input expression | Depends directly on |
+|---|---|---|
+| `terraform_data.source` | `"inventory"` | ??? |
+| `terraform_data.label` | ??? | ??? |
+| `terraform_data.release` | `"release-${terraform_data.label.output}"` | ??? |
 
-## Plan-review questions
+## Ordering
 
-1. What evidence would show that the plan uses the local target rather than a real cloud account?
-   Answer: ???
-2. Which plan action would make you stop before apply, and why?
-   Answer: ???
+1. First resource to create: ???
+2. Second resource to create: ???
+3. Last resource to create: ???
+4. Why Terraform can infer this order: ???
+
+## Diagram
+
+`source` → ??? → ???
 ```
 
 #### Done when
 
-- Every blank specifies a safe local endpoint, a pinned version, or a justified review entry.
-- The completed answers distinguish create, update, and no-op actions.
-- The completed artifact is saved as `warmup/task-01-queue-manifest.md`.
+- Every resource row records its input expression and direct dependency
+  accurately.
+- The ordering respects the dependencies in the resource rows.
+- The explanation identifies how Terraform infers dependencies from
+  references.
+- The diagram includes all three resources and accurately represents their
+  dependencies.
+- The completed artifact is saved as `warmup/task-01-dependency-graph.md`.
 
 #### Evidence to produce
 
 Submit the completed Markdown artifact in
-`submissions/terraform/01-workflow/warmup/task-01-queue-manifest.md`.
+`submissions/terraform/01-workflow/warmup/task-01-dependency-graph.md`.
 
-### Task 01 — Configure a local target
+### Task 01 — Reference resources in dependency order
 
 Create a Terraform configuration in `submissions/terraform/01-workflow/code/`.
-Point its AWS provider at the local AWS target.
-Manage these two resources together:
+Use the configured local AWS target and manage these two resources together:
 
 - An S3 bucket. S3 is the AWS object storage service. A bucket is a named
   container for files, which AWS calls objects. See
@@ -180,10 +178,11 @@ Manage these two resources together:
 - A small text object inside that bucket. See
   [`aws_s3_object`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object).
 
-Terraform 02 copies this configuration, so later slices continue from this bucket.
+Set the object's `bucket` argument by referencing the bucket resource, not by
+repeating its name. Terraform must infer that it creates the bucket before the
+object. Use a short, fictional object body.
 
-**Optional:** For brownie points, choose and manage extra AWS resources that
-the local target supports. These are not required to pass the slice.
+Terraform 02 copies this configuration, so later slices continue from this bucket.
 
 #### Constraints
 
@@ -191,6 +190,9 @@ the local target supports. These are not required to pass the slice.
 - Use the local AWS endpoint. Do not use a real AWS account.
 - Do not add real cloud credentials or copy a finished configuration.
 - Pin the AWS provider to a chosen version.
+- Use one `aws_s3_bucket` and one `aws_s3_object`.
+- Reference the bucket resource from the object so the dependency is implicit.
+- Do not add extra resources or make endpoint configuration a separate task.
 
 #### Done when
 
@@ -255,73 +257,85 @@ Destroy the resources from the same working folder and state used in the earlier
 - The resulting state inspection.
 - A local AWS check that shows the resources are absent.
 
-### Warm-up — Separate emulator evidence from production claims
+### Warm-up — Review a saved plan
 
-Before Task 04, practice separating a local observation from an unverified
-production claim. Work in
-`submissions/terraform/01-workflow/warmup/task-04-emulator-evidence.md`.
+Before Task 04, practice separating a local plan review from an apply decision.
+Work in
+`submissions/terraform/01-workflow/warmup/task-04-saved-plan-review.md`.
 
 #### Starter
 
-In a fictional local run against `http://localhost:4566`, the emulator accepted
-an `aws_s3_object` upload to bucket `northstar-reports` with key `status.txt`,
-returned HTTP 200, and let Terraform read the object back. A teammate claims
-that this proves production AWS will accept the same bucket name and that the
-object will have the same access behavior there.
+In a fictional review, Terraform created a saved plan for a local-file release
+note. The plan proposes creating `local_file.release_note` with filename
+`release-note.txt` and content `Release 7 is ready.` It also proposes no other
+resource changes. The reviewer must inspect the plan before applying it.
 
 Copy this incomplete evidence table and replace every `???`:
 
 ```markdown
-# Northstar object-storage emulator review
+# Northstar saved-plan review
 
-| Question | Entry |
+| Review item | Entry |
 |---|---|
-| What the fictional emulator run observed | ??? |
-| Official source to consult | ??? |
-| Production behavior still unverified | ??? |
-| Why confusing the two could harm a client decision | ??? |
-| Check required before production use | ??? |
+| Planned resource action | ??? |
+| Planned filename | ??? |
+| Planned content | ??? |
+| Unexpected action that would stop review | ??? |
+| Evidence to record after apply | ??? |
 
-## Boundary statement
+## Decision
 
-The emulator demonstrates ???, but it does not demonstrate ???.
+Apply the exact saved plan? ???
 ```
 
 #### Done when
 
-- Every blank records a local observation, source, limitation, risk, or follow-up check.
-- The boundary statement clearly separates what was demonstrated from what remains unverified.
-- The completed artifact is saved as `warmup/task-04-emulator-evidence.md`.
+- The review entries match the supplied plan and scenario.
+- The stop condition identifies a plan difference that requires further
+  review.
+- The evidence entry connects the reviewed plan to a post-apply check.
+- The decision follows from the plan review.
+- The completed artifact is saved as `warmup/task-04-saved-plan-review.md`.
 
 #### Evidence to produce
 
 Submit the completed Markdown artifact in
-`submissions/terraform/01-workflow/warmup/task-04-emulator-evidence.md`.
+`submissions/terraform/01-workflow/warmup/task-04-saved-plan-review.md`.
 
-### Task 04 — Find an emulator limit
+### Task 04 — Apply an inspected saved plan
 
-Find one AWS behavior that a successful local emulator run cannot prove about real AWS.
-Use emulator documentation, AWS documentation, or a focused local observation to support your finding.
+After Task 03 destroys the resources, recreate the same bucket and object from
+the current configuration. Save the plan to a local ignored `.tfplan` file,
+inspect the human-readable plan, and apply that exact saved plan.
 
 #### Constraints
 
-- Do not access a real AWS account or use real credentials.
-- Choose a behavior that matters to a client decision.
-- Cite the source of your finding.
-- Separate what the local emulator demonstrated from what remains unverified.
+- Use the same working folder and configured local AWS target as the earlier
+  tasks. Do not use a real AWS account or real credentials.
+- Create the saved plan with `terraform plan -out=<local .tfplan file>`.
+- Inspect the saved plan with `terraform show` before applying it.
+- Apply the exact saved plan file, not a fresh plan and not `-auto-approve`
+  against configuration.
+- Keep the binary plan local and ignored. Do not submit it.
+- Redact any sensitive values from the reviewed text evidence.
 
 #### Done when
 
-- You name one behavior that the emulator does not prove.
-- You cite a source for the limitation or the real AWS behavior.
-- You explain the risk of treating a local result as proof of real AWS behavior.
-- You state one check that would still be needed before production use.
+- The saved plan proposes recreating the bucket and object from the empty
+  post-destroy state.
+- The human-readable saved plan was inspected and contains no unexpected
+  actions or sensitive values in submitted evidence.
+- The exact saved plan is applied successfully.
+- A later plan reports no changes.
+- The binary saved plan remains local and is not submitted.
 
 #### Evidence to produce
 
-- A short written finding in `code/task-04-finding.md`.
-- The source link or local observation that supports it.
-- The distinction between the local result and the unverified real-world result.
+- The reviewed, redacted `terraform show` text for the saved plan.
+- Apply output identifying the saved plan file.
+- A later no-change plan.
+- A short note identifying the working folder and confirming that the binary
+  plan was kept local and ignored.
 
 ## Explain
 
@@ -353,12 +367,16 @@ Answer these questions in `submissions/terraform/01-workflow/answers.md`.
 
 ### Explain 3
 
-**Situation:** Your configuration applies cleanly against the local AWS target. The client asks: "So this will work in our AWS account?"
+**Situation:** Your configuration contains an `aws_s3_object` whose `bucket`
+argument references `aws_s3_bucket.reports.id`. Terraform must create the bucket
+before it can create the object.
 
-**Question:** How do you answer the client honestly?
+**Question:** How does the resource reference create an implicit dependency, and
+why does Terraform need that dependency graph to order operations?
 
 **A solid answer covers:**
 
-- What the local run does prove.
-- At least two kinds of real AWS behavior that the local run does not prove.
-- One check you would run before production use.
+- How the object expression references an attribute of the bucket resource.
+- Why Terraform can infer an edge without a separate `depends_on`.
+- Why the graph prevents Terraform from trying to use the bucket before it
+  exists and also guides destroy ordering.
