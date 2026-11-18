@@ -159,7 +159,7 @@ Official sources, URLs, and access dates: [complete]
 
 #### Done when
 
-- Both mappings name a candidate feature and a distinct client problem, with current official citations for capability claims.
+- Both mappings name a candidate feature and a distinct client problem, with current official citations including URLs and access dates.
 - Each mapping identifies evidence to confirm or reject fit and a cost or operational consequence.
 - Each mapping states what the feature does not solve, without recommending a product.
 
