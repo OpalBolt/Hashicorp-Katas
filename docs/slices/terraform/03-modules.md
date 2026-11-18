@@ -34,6 +34,175 @@ Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-wit
 - environments
 - test
 
+## Diagram
+
+```mermaid
+flowchart TD
+  subgraph dev[Development root]
+    DEV[Development configuration] --> DM[Development module instance]
+    DEV --> DS[Development state location]
+  end
+  subgraph acceptance[Acceptance root]
+    TEST[Acceptance configuration] --> TM[Acceptance module instance]
+    TEST --> TS[Acceptance state location]
+  end
+  DM -. calls .-> MOD[Shared child module]
+  TM -. calls .-> MOD
+  DM --> DR[Development resources]
+  TM --> TR[Acceptance resources]
+```
+
+## Warm-ups
+
+Create each small artifact in
+`submissions/terraform/03-modules/warmup/`. Keep Warm-up evidence separate from
+the graded Task evidence. Do not copy a Warm-up artifact into a Task answer.
+
+### Warm-up for Task 01 — Classify service-owner records
+
+Choose two fictional service owners, stable map keys, and separate
+documentation artifacts. Build a classification table for them.
+
+**Starter:** `submissions/terraform/03-modules/warmup/task-01.md`
+
+```markdown
+# Service-owner map
+
+| Map key | Fictional owner | Documentation artifact | Identity note |
+|---|---|---|---|
+| [fill in] | [fill in] | [fill in] | [fill in] |
+| [fill in] | [fill in] | [fill in] | [fill in] |
+
+- Relationship between the map and repeated records: [fill in]
+```
+
+#### Done when
+
+- Both rows have a distinct key, owner, artifact, and identity note.
+- The final line explains how the map relates to the repeated records.
+- The example uses fictional owners and artifacts.
+
+#### Evidence
+
+- Save the completed table at the Starter path.
+
+### Warm-up for Task 02 — Compare on-call team identities
+
+Choose at least three fictional on-call team names. Compare the list before
+and after one team leaves.
+
+**Starter:** `submissions/terraform/03-modules/warmup/task-02.md`
+
+```markdown
+# On-call team validation
+
+- Validation rule: [fill in]
+- Example input accepted by the rule: [fill in]
+- Example input rejected by the rule: [fill in]
+- Identity behavior when one team leaves: [fill in]
+- Repetition method and reason: [fill in]
+```
+
+#### Done when
+
+- The rule can distinguish an accepted input from a rejected input.
+- Both examples demonstrate the stated rule.
+- The identity note compares behavior before and after one team leaves.
+- The final field justifies a repetition method for these team identities.
+
+#### Evidence
+
+- Save the completed comparison at the Starter path.
+
+### Warm-up for Task 04 — Sketch a report-format interface
+
+Choose two fictional report formats and sketch their interface. Do not define
+cloud or file resources.
+
+**Starter:** `submissions/terraform/03-modules/warmup/task-04.md`
+
+```markdown
+# Report-format interface
+
+- Input supplied by each caller: [fill in]
+- Result each caller needs: [fill in]
+- Responsibility kept inside the shared module: [fill in]
+
+| Caller | Input contract | Result used by caller |
+|---|---|---|
+| Format A | [fill in] | [fill in] |
+| Format B | [fill in] | [fill in] |
+```
+
+#### Done when
+
+- The input and result describe a clear module boundary.
+- The module responsibility does not duplicate caller-specific work.
+- Both callers have distinct, valid contracts.
+
+#### Evidence
+
+- Save the completed interface sketch at the Starter path.
+
+### Warm-up for Task 05 — Compare environment state locations
+
+Choose fictional, separate state-location labels and distinct policy values
+for development and acceptance. Compare their boundaries.
+
+**Starter:** `submissions/terraform/03-modules/warmup/task-05.md`
+
+```markdown
+# Environment state matrix
+
+| Environment | State location | Distinct resource value | Cross-environment safety check |
+|---|---|---|---|
+| Development | [fill in] | [fill in] | [fill in] |
+| Acceptance | [fill in] | [fill in] | [fill in] |
+
+- How to detect an accidental state switch: [fill in]
+```
+
+#### Done when
+
+- Each environment has its own state location.
+- Each row names a distinct resource value and a safety check.
+- The final line describes how to detect a switch to the wrong state.
+
+#### Evidence
+
+- Save the completed matrix at the Starter path.
+
+### Warm-up for Task 06 — Design a local notification contract test
+
+Use the supplied behavior table to design a contract test for a fictional
+local notification module.
+
+**Starter:** `submissions/terraform/03-modules/warmup/task-06.md`
+
+```markdown
+# Local notification contract test
+
+| Input | Expected result |
+|---|---|
+| `enabled = true`, `message = "release ready"` | `status = "sent"` |
+| `enabled = false`, `message = "maintenance"` | `status = "skipped"` |
+
+- Test target: [fill in]
+- Assertion for the supplied cases: [fill in]
+- State-isolation note: [fill in]
+```
+
+#### Done when
+
+- The test target covers both supplied input cases.
+- The assertion checks the supplied result for each case.
+- The final line explains how the test avoids changing another environment's
+  state.
+
+#### Evidence
+
+- Save the completed test design at the Starter path.
+
 ## Tasks
 
 ### Task 01 — Build from a map
@@ -265,3 +434,40 @@ Answer these questions in `submissions/terraform/03-modules/answers.md`.
 - What workspaces share: code, backend, and credentials.
 - What a mistake in workspace selection can do to production.
 - What separate state locations add, such as access control and visible environment values.
+
+## Predict the plan: change a map key
+
+A `for_each` resource has type `terraform_data` and name `artifact`:
+
+```terraform
+resource "terraform_data" "artifact" {
+  for_each = {
+    api    = "blue"
+    worker = "green"
+  }
+
+  input = each.value
+}
+```
+
+Its original instances use the addresses
+`terraform_data.artifact["api"]` and `terraform_data.artifact["worker"]`.
+The next configuration renames the `api` key to `service` and keeps both
+values unchanged. Predict the plan actions for the affected instances.
+
+### Constraints
+
+- Do not run Terraform for this scenario.
+- Keep both map values unchanged.
+- Keep this prediction separate from Task 01 evidence.
+
+### Done when
+
+- The prediction identifies which instance identity changed.
+- It states what action Terraform is likely to propose for that instance.
+- It explains why unchanged map values do not, by themselves, preserve a
+  changed key's identity.
+
+### Evidence to produce
+
+- A short plan prediction with the relevant old and new addresses.
