@@ -37,6 +37,63 @@ tasks require. Reserve a separate disposable instance or data path for restore t
 - server config
 - TLS
 
+### Seal states
+
+```mermaid
+flowchart TD
+    A["New server"] --> B["Initialize: create key shares"]
+    B --> C["Sealed"]
+    C --> D["Supply the required unseal shares"]
+    D --> E["Unsealed: serve requests"]
+    E --> F["Restart or seal"]
+    F --> C
+```
+
+Initialization happens once and creates the key shares. Every start or seal
+returns the server to the sealed state. The server serves requests only after
+someone supplies enough unseal shares again.
+
+### AppRole login
+
+```mermaid
+flowchart TD
+    A["Machine receives role ID and secret ID separately"] --> B["AppRole login"]
+    B --> C["Vault checks the role credentials and limits"]
+    C --> D["Vault issues a bounded token with the role policies"]
+    D --> E["Machine requests a path with the token"]
+    E --> F["Vault checks the token policy"]
+    F --> G["Allow or deny the request"]
+```
+
+The role ID and secret ID arrive by separate paths. Login proves both and
+returns a token with limits. The token policy, not the login, decides whether
+each later request is allowed.
+
+### Audit before reply
+
+This flow applies to auditable requests. Vault exempts endpoints including
+`sys/health` and `sys/unseal` from auditing.
+
+```mermaid
+flowchart TD
+    A["Auditable client request"] --> B{"Any audit devices enabled?"}
+    B -- No --> D["Process request"]
+    B -- Yes --> C["Write request audit record"]
+    C --> E{"At least one enabled device succeeds?"}
+    E -- Yes --> D
+    E -- No --> F["Return an error without processing"]
+    D --> G{"Any audit devices enabled?"}
+    G -- No --> J["Return response"]
+    G -- Yes --> H["Write response audit record"]
+    H --> I{"At least one enabled device succeeds?"}
+    I -- Yes --> J
+    I -- No --> K["Return an error; request may have taken effect"]
+```
+
+Vault writes an audit record before it processes the request and again before
+it replies. If no enabled device can write, Vault returns an error. A failed
+response record can still follow a request that already took effect.
+
 ## Tasks
 
 ### Task 01 — Run Vault from a server configuration
@@ -69,6 +126,31 @@ file. Use integrated storage with data on a persistent local volume.
 - Redacted startup and health output.
 - The storage configuration and persistence check.
 - A short note about the TLS choice.
+
+### Warm-up for Task 02 — Plan archive recovery
+
+Complete this offline recovery record for a fictional protected archive. Do
+not include key material or commands.
+
+#### Starter
+
+```text
+Share count and recovery threshold: [complete]
+State after initialization: [complete]
+State after sufficient shares: [complete]
+State after restart and recovery: [complete]
+Recovery evidence without shares or values: [complete]
+```
+
+#### Done when
+
+- The share count and threshold require more than one share for recovery.
+- The timeline identifies the sealed and recovered states, including after restart.
+- The evidence identifies recovery without exposing shares or protected values.
+
+#### Evidence to produce
+
+- The completed recovery record in `submissions/vault/02-vault-server/warmup/`.
 
 ### Task 02 — Initialize, unseal, and restart the server
 
@@ -188,6 +270,31 @@ or change the record, and restore the snapshot in a safe test instance.
 - The pre-snapshot and changed-record checks without values.
 - Restore output and the post-restore record check.
 - The location and handling statement for the snapshot, without its contents.
+
+### Break it on purpose (ungraded) — Reject a bad server configuration
+
+On a disposable test instance, introduce an invalid storage type in its server
+configuration. Start the test instance and inspect the startup failure. Fix
+the test configuration and check that the error is gone.
+
+#### Constraints
+
+- Use a separate test configuration, listener, and disposable data path.
+- Do not stop, change, or overwrite the working server or its data.
+- Use fictitious values and do not initialize or unseal the test instance.
+- Keep credentials, keys, tokens, and secret values out of evidence.
+
+#### Done when
+
+- The disposable instance rejects the invalid storage type at startup.
+- The corrected test configuration no longer produces that startup error.
+- The working server and its data remain untouched.
+
+#### Evidence to produce
+
+- The invalid setting and redacted startup error.
+- The corrected setting and redacted startup result.
+- A note identifying the separate test listener and data path.
 
 ## Explain
 

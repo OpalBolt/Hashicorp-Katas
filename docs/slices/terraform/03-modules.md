@@ -34,6 +34,29 @@ Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-wit
 - environments
 - test
 
+## Diagram
+
+```mermaid
+flowchart TD
+  subgraph dev[Development root]
+    DEV[Development configuration] --> DM[Development module instance]
+    DEV --> DS[Development state location]
+  end
+  subgraph acceptance[Acceptance root]
+    TEST[Acceptance configuration] --> TM[Acceptance module instance]
+    TEST --> TS[Acceptance state location]
+  end
+  DM -. calls .-> MOD[Shared child module]
+  TM -. calls .-> MOD
+  DM --> DR[Development resources]
+  TM --> TR[Acceptance resources]
+```
+
+Each environment has its own root configuration and its own state location.
+Both roots call the same shared child module, so the resource logic exists once.
+Each module instance creates resources for its own environment only.
+The boundary between the two roots keeps a change in one environment out of the other.
+
 ## Tasks
 
 ### Task 01 — Build from a map
@@ -130,6 +153,39 @@ Keep its ownership separate from the resources that use the lookup result.
 - A safe output or state inspection showing the consumed value without
   exposing secrets.
 - A local AWS check that distinguishes the existing object from managed objects.
+
+### Warm-up for Task 04 — Sketch a report-format interface
+
+Choose two fictional report formats and sketch their interface. Do not define
+cloud or file resources.
+
+Keep this Warm-up evidence in `submissions/terraform/03-modules/warmup/`,
+separate from the graded Task evidence. Do not copy it into a Task answer.
+
+**Starter:** `submissions/terraform/03-modules/warmup/task-04.md`
+
+```markdown
+# Report-format interface
+
+- Input supplied by each caller: [fill in]
+- Result each caller needs: [fill in]
+- Responsibility kept inside the shared module: [fill in]
+
+| Caller   | Input contract | Result used by caller |
+| -------- | -------------- | --------------------- |
+| Format A | [fill in]      | [fill in]             |
+| Format B | [fill in]      | [fill in]             |
+```
+
+#### Done when
+
+- The input and result describe a clear module boundary.
+- The module responsibility does not duplicate caller-specific work.
+- Both callers have distinct, valid contracts.
+
+#### Evidence
+
+- Save the completed interface sketch at the Starter path.
 
 ### Task 04 — Turn the configuration into a module
 
@@ -265,3 +321,40 @@ Answer these questions in `submissions/terraform/03-modules/answers.md`.
 - What workspaces share: code, backend, and credentials.
 - What a mistake in workspace selection can do to production.
 - What separate state locations add, such as access control and visible environment values.
+
+## Predict the plan: change a map key
+
+A `for_each` resource has type `terraform_data` and name `artifact`:
+
+```terraform
+resource "terraform_data" "artifact" {
+  for_each = {
+    api    = "blue"
+    worker = "green"
+  }
+
+  input = each.value
+}
+```
+
+Its original instances use the addresses
+`terraform_data.artifact["api"]` and `terraform_data.artifact["worker"]`.
+The next configuration renames the `api` key to `service` and keeps both
+values unchanged. Predict the plan actions for the affected instances.
+
+### Constraints
+
+- Do not run Terraform for this scenario.
+- Keep both map values unchanged.
+- Keep this prediction separate from Task 01 evidence.
+
+### Done when
+
+- The prediction identifies which instance identity changed.
+- It states what action Terraform is likely to propose for that instance.
+- It explains why unchanged map values do not, by themselves, preserve a
+  changed key's identity.
+
+### Evidence to produce
+
+- A short plan prediction with the relevant old and new addresses.

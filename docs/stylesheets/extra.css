@@ -40,3 +40,135 @@
 .md-typeset .track-ci { color: var(--track-ci); }
 .md-typeset .track-advisory { color: var(--track-advisory); }
 .md-typeset .track-capstone { color: var(--track-capstone); }
+
+.md-typeset h2 {
+  margin-top: 2rem;
+  padding-top: 0.6rem;
+  border-top: 3px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset h3[id^="task-"],
+.md-typeset h3[id^="warm-up"],
+.md-typeset h3[id^="exercise"],
+.md-typeset h3[id^="explain-"] {
+  --block-color: var(--md-primary-fg-color);
+  margin: 2rem 0 0.8rem;
+  padding: 0.6rem 0.9rem;
+  border-left: 0.35rem solid var(--block-color);
+  border-radius: 0.2rem;
+  background-color: color-mix(in srgb, var(--block-color) 12%, transparent);
+}
+
+.md-typeset h3[id^="warm-up"] {
+  --block-color: var(--md-accent-fg-color);
+}
+
+.md-typeset h3[id^="exercise"] {
+  --block-color: var(--md-default-fg-color--light);
+}
+
+.md-typeset h3[id^="explain-"] {
+  --block-color: var(--track-advisory);
+}
+
+.md-typeset h3[id^="warm-up"]::before,
+.md-typeset h3[id^="exercise"]::before {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.md-typeset h3[id^="warm-up"]::before {
+  content: "Warm-up · practice before the next task";
+}
+
+.md-typeset h3[id^="exercise"]::before {
+  content: "Ungraded exercise";
+}
+
+.md-typeset h4 {
+  margin: 1.1rem 0 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset h2 + h3[id] {
+  margin-top: 1rem;
+}
+
+.mermaid-expand,
+.mermaid-lightbox button {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.2rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+  cursor: pointer;
+  font: inherit;
+}
+
+.mermaid-lightbox button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.mermaid-lightbox {
+  width: 96vw;
+  max-width: none;
+  height: 90dvh;
+  max-height: none;
+  padding: 1rem;
+  border: 0;
+  border-radius: 0.3rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+}
+
+.mermaid-lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.mermaid-lightbox::backdrop {
+  background: rgb(0 0 0 / 70%);
+}
+
+.mermaid-lightbox__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mermaid-lightbox__toolbar strong {
+  margin-right: auto;
+}
+
+.mermaid-lightbox__viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.mermaid-lightbox__canvas {
+  cursor: grab;
+}
+
+.mermaid-lightbox__viewport.is-dragging .mermaid-lightbox__canvas {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.mermaid-lightbox__canvas .mermaid {
+  margin: 0;
+}
+
+body:has(.mermaid-lightbox[open]) {
+  overflow: hidden;
+}

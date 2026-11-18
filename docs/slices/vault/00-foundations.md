@@ -45,6 +45,10 @@ flowchart LR
     vault --> secrets[Protected secrets]
 ```
 
+Vault sits between its clients and the secrets it protects. Terraform, CI jobs,
+and applications all ask Vault for access. None of them reach the protected
+secrets directly.
+
 ### How a request flows
 
 ```mermaid
@@ -65,6 +69,10 @@ sequenceDiagram
     S-->>C: Return result
 ```
 
+Read the steps from top to bottom. The client first proves its identity and
+gets a token. Vault checks the token's policies before it routes the request to
+a mount. A denied request stops at the policy check.
+
 ### How tokens and policies relate
 
 ```mermaid
@@ -73,6 +81,68 @@ flowchart TD
     attached --> rule[Path and capability rules]
     rule --> decision[Request allowed or denied]
 ```
+
+A token does not grant access by itself. Its attached policies hold the path
+and capability rules. Vault compares each request with those rules to allow or
+deny it.
+
+## Warm-ups
+
+Create this separate practice artifact in
+`submissions/vault/00-foundations/warmup/`. Keep its evidence separate from the
+graded Task evidence.
+
+### Warm-up for Task 01 — Diagram a token-renewal request
+
+Practice tracing a fictional client's request to renew its own renewable token.
+Assume its policy permits renewal. Show the policy decision before Vault
+renews the token. Do not use a Vault server or real token.
+
+**Starter:** `submissions/vault/00-foundations/warmup/task-01.md`
+
+````markdown
+# Token-renewal request
+
+Complete the six-node diagram. Replace each `???` and add the missing
+relationships. The policy decision must happen before the renewal.
+
+```mermaid
+flowchart LR
+    %% ===== YOU EDIT: replace each ??? with a label (keep the quotes) =====
+    blank1["???"]
+    blank2["???"]
+    blank3["???"]
+
+    %% ===== DO NOT TOUCH: fixed nodes =====
+    auth["Auth method"]
+    policy["Policy"]
+    mount["Mount"]
+
+    %% ===== DO NOT TOUCH: request flow =====
+    blank1 -->|"authenticate"| auth
+    auth -->|"issues"| blank2
+    blank1 -->|"sends request"| policy
+    policy -->|"allows path"| mount
+    mount --> blank3
+
+    %% ===== DO NOT TOUCH: styling =====
+    classDef todo stroke-dasharray: 5 5,stroke-width:2px
+    class blank1,blank2,blank3 todo
+```
+````
+
+#### Done when
+
+- The three node placeholders identify the fictional client, its token,
+  and the renewal result.
+- Every arrow placeholder has a label that fits the request flow.
+- The arrows show the client sending a request with its token, the policy
+  decision before renewal, and the result returned to the client.
+- The diagram uses no live token or server.
+
+#### Evidence
+
+- Save the completed diagram at the Starter path.
 
 ## Tasks
 

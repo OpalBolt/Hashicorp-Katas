@@ -35,7 +35,67 @@ Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-wit
 - bootstrap token
 - short-lived provider credentials
 
+### Secret to state
+
+```mermaid
+flowchart TD
+  V["Vault holds a secret"] -->|data source reads value| T["Terraform operation"]
+  T -->|passes value| R["Managed resource or destination"]
+  T -->|may persist value| P["Saved plan"]
+  T -->|may persist value| S["Terraform state"]
+  S -->|stored by backend| B["Local or remote state storage"]
+  T -->|diagnostics or provider logs| L["Logs may expose value"]
+```
+
+Marking a value sensitive hides some display output. It does not remove the
+value from state or saved plans. The destination and logs may also expose it.
+
+### First-token bootstrap
+
+```mermaid
+flowchart TD
+  I["Initialize a test Vault"] --> O{"Bootstrap authority"}
+  O -->|initial root token| H["Authorized operator handles token outside the repository"]
+  Q["Recovery: authorized key-share quorum"] -->|generate a new root token| H
+  H --> C["Configure limited policy and authentication"]
+  C --> A["Routine operator authenticates"]
+  A --> T["Bounded provider credential"]
+  T --> M["Terraform manages steady-state Vault configuration"]
+  H --> X["Revoke or replace bootstrap authority after safe handoff"]
+```
+
+Protect initialization material and recovery shares separately. A recovery
+quorum is an alternative when the initial root token is unavailable. Follow
+the server's seal and recovery procedures before generating a root token.
+Bootstrap access must not enter configuration, plans, or state.
+
 ## Tasks
+
+### Warm-up for Task 01 — Trace a fictional API setting
+
+Trace a fictional API setting through a generic IaC pipeline. Work offline.
+Use labels only, not a setting value.
+
+#### Starter
+
+`submissions/terraform-vault/01-terraform-vault/warmup/task-01.md`
+
+```text
+Setting source and IaC read: [complete]
+Flow to destination: [complete]
+Durable artifacts and exposure points: [complete]
+Effect and limit of sensitive marking: [complete]
+```
+
+#### Done when
+
+- The trace names the source, read, and destination in order.
+- It identifies the durable artifacts that can retain the setting.
+- It explains what sensitive marking hides and why storage can still expose it.
+
+#### Evidence to produce
+
+- The completed trace at the Starter path, with no setting value.
 
 ### Task 01 — Make a secret land in state
 
@@ -190,6 +250,43 @@ bootstrap credential is lost or exposed.
 - A responsibility table or equivalent ownership record.
 - A redacted review or test record showing the sequence was checked.
 - A note describing the loss and exposure response.
+
+## Ungraded exercise — Spot the leak in state
+
+Review this partial, fictional state excerpt. The placeholder is not a secret.
+
+```json
+{
+  "resources": [
+    {
+      "type": "fictional_delivery",
+      "instances": [
+        {
+          "attributes": {
+            "setting": "<REDACTED-TEST-VALUE>"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+Assume the provider marks `setting` as sensitive.
+
+### Constraints
+
+- Work offline. Do not create or submit state or a real value.
+- Treat the excerpt as illustrative, not as a complete state format.
+
+### Done when
+
+- The review identifies the exposed attribute and who could read it.
+- It explains the limit of sensitive marking and proposes a safer handoff.
+
+### Evidence to produce
+
+- A value-free review in `submissions/terraform-vault/01-terraform-vault/warmup/spot-state.md`.
 
 ## Explain
 

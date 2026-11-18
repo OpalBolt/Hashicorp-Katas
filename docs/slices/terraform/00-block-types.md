@@ -53,6 +53,21 @@ Use these rules when two choices look similar:
 - Choose **`variable`** when a caller supplies the value. Choose **`locals`**
   when the configuration derives the value from its own inputs and resources.
 
+The five block types can reference one another through expressions. A common
+flow starts with caller input and existing data, derives a value, manages an
+object, and publishes a result:
+
+```mermaid
+flowchart LR
+    variable["variable<br/>caller input"] --> locals["locals<br/>derived value"]
+    data["data<br/>existing information"] --> locals
+    locals --> resource["resource<br/>managed object"]
+    resource --> output["output<br/>published result"]
+```
+
+The arrows are references, not execution commands. Terraform uses them to
+build a dependency graph before it evaluates the configuration.
+
 ### Run an annotated example
 
 This example creates a release note from an existing template. Run it in
@@ -120,7 +135,9 @@ flowchart LR
     managed --> result["output: release_note_path"]
 ```
 
-The resource writes the file. The output exposes its path, not its contents.
+Read the map from left to right. The data source reads the existing template,
+and the local combines it with the variable. The resource writes the file. The
+output exposes its path, not its contents.
 
 Run these commands from the repository root. Initialization downloads the local
 provider. Review the proposed file creation, then enter `yes` at the apply prompt.
@@ -227,6 +244,67 @@ For reference, see HashiCorp's [working directory guide](https://developer.hashi
 and [dependency lock file guide](https://developer.hashicorp.com/terraform/language/files/dependency-lock).
 
 ## Tasks
+
+### Warm-up — Classify an inventory hand-off
+
+Before Task 01, practice choosing a block for each value without creating a
+file. Work in
+`submissions/terraform/00-block-types/warmup/task-01-inventory.md`.
+
+#### Starter
+
+Copy this incomplete hand-off and replace every `???`:
+
+```markdown
+# Northstar inventory hand-off
+
+The Northstar team gives Terraform a project name. Terraform reads an existing
+inventory note, derives a dated hand-off label, and publishes that label for
+the release job. Terraform does not create or own the inventory note.
+
+| Part                                     | What it does                            | Block type | Reason |
+| ---------------------------------------- | --------------------------------------- | ---------- | ------ |
+| Project name supplied by the release job | Caller input                            | ???        | ???    |
+| Existing inventory note                  | Read-only external information          | ???        | ???    |
+| Hand-off label derived from the inputs   | Named local expression                  | ???        | ???    |
+| Published hand-off label                 | Value for the release job               | ???        | ???    |
+| Managed hand-off record                  | Object Terraform would create or update | ???        | ???    |
+
+Value flow:
+
+Caller input → ??? → Published hand-off label
+Existing inventory note → ??? → Managed hand-off record
+Managed hand-off record → ??? → Release job
+```
+
+#### Done when
+
+- The project-name Part blank names the block category for caller input.
+- The project-name Reason blank explains where that value originates.
+- The inventory-note Part blank names the block category for read-only
+  external information.
+- The inventory-note Reason blank explains the ownership boundary.
+- The hand-off-label Part blank names the block category for a derived
+  expression.
+- The hand-off-label Reason blank explains where Terraform computes the value.
+- The published-label Part blank names the block category that makes a result
+  available to the caller.
+- The published-label Reason blank explains that purpose.
+- The managed-record Part blank names the block category for an object
+  Terraform owns.
+- The managed-record Reason blank explains its lifecycle role.
+- The first value-flow blank shows the relationship between caller input,
+  derived value, and published result.
+- The second value-flow blank shows the relationship between the external
+  note, derived value, and managed record.
+- The final value-flow blank shows how the managed record's result reaches
+  the release job.
+- The completed artifact is saved as `warmup/task-01-inventory.md`.
+
+#### Evidence to produce
+
+Submit the completed Markdown artifact in
+`submissions/terraform/00-block-types/warmup/task-01-inventory.md`.
 
 ### Task 01 — Build a five-block local report
 

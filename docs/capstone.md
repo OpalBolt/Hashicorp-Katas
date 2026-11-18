@@ -48,6 +48,37 @@ environment or build-stage solutions while completing these written scenarios.
 - licensing, hosting, and Enterprise decisions
 - diagnosis, evidence, sequencing, and risk
 
+The map shows the written scenarios, not a proposed fix. The service is part
+of the customer scenario, not a container in the supplied environment.
+
+```mermaid
+flowchart TD
+    staff["Warehouse staff"] -->|"Use"| service["Service"]
+    service -->|"Uses for database access"| vault["Test Vault server"]
+    service -->|"Uses for application data"| database["PostgreSQL"]
+    vault -->|"Stores"| vault_secret["Database credential"]
+    database -->|"Stores"| data["Application data"]
+    operators["Operators"] -->|"Use powerful credential"| vault
+    engineers["Engineers on laptops"] -->|"Run changes"| terraform["Terraform"]
+    subgraph repo["Repository"]
+        config["Terraform configuration and inputs"]
+        state["Local Terraform state"]
+        settings["Repository settings"]
+        workflow["GitHub Actions workflow"]
+    end
+    config -->|"Passes database password"| terraform
+    terraform -->|"Records state, including secret-looking values"| state
+    terraform -->|"May expose secret-looking values"| output["Command output"]
+    terraform -->|"Plans changes for"| accounts["Development and production accounts"]
+    settings -->|"Long-lived Vault or cloud credential"| workflow
+    workflow -->|"Plans and can apply"| terraform
+```
+
+Read the map from the people at the top down to the systems they use. Two
+paths run Terraform: engineers on laptops and the GitHub Actions workflow. The
+repository box groups the configuration, state, settings, and workflow that
+both paths share.
+
 ## Tasks
 
 ### Task 01 — Diagnose Terraform ownership and structure
@@ -73,7 +104,8 @@ state or configuration change.
 #### Done when
 
 - The answer separates symptoms, likely causes, and facts that still need
-  verification.
+  verification. A learner-drawn diagram in `answers.md` may support this
+  distinction.
 - The recommendation addresses both state ownership and configuration
   structure without treating a refactor as proof that resources are safe.
 - The work is ordered to preserve resource ownership and avoid accidental
@@ -105,7 +137,8 @@ not become repository or routine-operator secrets.
 #### Done when
 
 - The answer distinguishes availability, seal or recovery, authentication,
-  auditability, and secret-lifecycle symptoms.
+  auditability, and secret-lifecycle symptoms. A learner-drawn diagram in
+  `answers.md` may support these distinctions.
 - The recommendation separates bootstrap access from routine access and
   explains the boundary between Vault and Terraform state.
 - The order includes a way to validate recovery and access removal without
@@ -137,7 +170,8 @@ allowed path and the rejected path.
 #### Done when
 
 - The answer identifies separate trust boundaries for pull requests, apply,
-  repository identity, Vault access, and workflow logs.
+  repository identity, Vault access, and workflow logs. A learner-drawn
+  diagram in `answers.md` may support this identification.
 - The recommendation removes the need for a long-lived routine credential
   without assuming that masking a value is access control.
 - The order keeps a reviewable plan and a recoverable test path while CI
@@ -170,7 +204,8 @@ hosted service, and identify what the local build can and cannot demonstrate.
 #### Done when
 
 - The answer separates client requirements from product capabilities,
-  licence terms, hosting choices, support, and operating cost.
+  licence terms, hosting choices, support, and operating cost. A learner-drawn
+  diagram in `answers.md` may support these distinctions.
 - The recommendation treats namespaces, replication, policy guardrails, and
   hardware-backed protection as questions to verify rather than automatic
   reasons to buy.

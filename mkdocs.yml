@@ -40,6 +40,8 @@ plugins:
   - tags
 extra_css:
   - stylesheets/extra.css
+extra_javascript:
+  - javascripts/mermaid-lightbox.js
 markdown_extensions:
   - admonition
   - attr_list
@@ -47,6 +49,7 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+      toc_depth: 3
   - pymdownx.details
   - pymdownx.superfences:
       custom_fences:

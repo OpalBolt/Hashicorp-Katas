@@ -29,6 +29,39 @@ from evidence.
 - capabilities
 - root token
 
+### Dev mode and a real server
+
+```mermaid
+flowchart TD
+    subgraph dev[Dev mode — disposable learning server]
+        dev_start[Start for local practice] --> dev_memory[Temporary in-memory data]
+        dev_memory --> dev_stop[Stop and discard]
+    end
+    subgraph real[Real server — persistent service]
+        real_config[Reviewed server configuration] --> real_storage[Persistent storage]
+        real_storage --> real_service[Protected service lifecycle]
+    end
+    dev_memory -. is not .-> real_storage
+```
+
+Dev mode keeps data in memory and loses it when the server stops. A real
+server uses reviewed configuration and persistent storage. The dotted edge marks
+the boundary: dev-mode data is never a substitute for real storage.
+
+### KV v2 versions over time
+
+```mermaid
+flowchart TD
+    write1[Write fictional setting] --> version1[Version 1 metadata]
+    version1 --> write2[Update fictional setting]
+    write2 --> version2[Version 2 — current metadata]
+    version1 -. retained as prior version .-> history[Version history]
+    version2 --> history
+```
+
+Each write to the same KV v2 path creates a new version. The update makes
+version 2 current. Version 1 stays in the version history as a prior version.
+
 ## Tasks
 
 ### Task 01 — Start Vault in dev mode
@@ -87,6 +120,42 @@ One fictional application's configuration path is enough. Reuse it for the later
 - Redacted output for the current and earlier versions.
 - Version metadata that shows the update.
 
+### Warm-up for Task 03 — Review document-metadata access
+
+Complete an offline access matrix for a fictional non-root token that may read
+document metadata at one path but must not read its sibling path.
+
+Work in `submissions/vault/01-vault-first-contact/warmup/`. Keep Warm-up
+evidence separate from graded Task evidence. This is an offline exercise. Do
+not copy its artifact into Task answers.
+
+**Starter:** `submissions/vault/01-vault-first-contact/warmup/task-03.md`
+
+```markdown
+# Document-metadata access review
+
+- Fictional policy path: [fill in]
+- Capability required for the allowed read: [fill in]
+- Token lifetime limit: [fill in]
+
+| Request path               | Expected result | Why       |
+| -------------------------- | --------------- | --------- |
+| `secret/metadata/handbook` | [fill in]       | [fill in] |
+| `secret/metadata/payroll`  | [fill in]       | [fill in] |
+```
+
+#### Done when
+
+- The policy path and capability allow only the fictional handbook metadata
+  read.
+- The matrix allows the handbook path and explains why.
+- The matrix denies the sibling payroll path and explains why.
+- The token lifetime is bounded; no server or actual token is used.
+
+#### Evidence
+
+- Save the completed access review at the Starter path.
+
 ### Task 03 — Limit a token to one read path
 
 Write a policy that grants read access to one KV path. Create a non-root token
@@ -141,6 +210,74 @@ and prove that Vault rejects it afterward.
 - Pre-revocation access output.
 - Revocation output or token metadata.
 - Post-revocation denial output.
+
+## Policy allow/deny drills
+
+These are ungraded path-reading exercises. Answer from the policy snippets;
+they require no Vault server. For each request, mark **allow** or **deny** and
+give the matching path and capability.
+
+### Drill 1 — KV v2 read path
+
+Policy:
+
+```hcl
+path "secret/data/reports/weekly" {
+  capabilities = ["read"]
+}
+```
+
+| Request | Allow or deny? | Matching policy path and capability |
+|---|---|---|
+| Read `secret/data/reports/weekly` | [fill in] | [fill in] |
+| Read `secret/data/reports/monthly` | [fill in] | [fill in] |
+| Write `secret/data/reports/weekly` | [fill in] | [fill in] |
+
+#### Constraints
+
+- Use only the literal policy path and listed capability.
+- Do not assume wildcard access or capabilities not shown.
+- Do not start a Vault server or include secret values.
+
+#### Done when
+
+- Every request is marked allow or deny using the exact path and capability.
+- The answer explains why the sibling path and write request do not match.
+
+#### Evidence
+
+- Save the completed decision table and explanation in the slice's notes.
+
+### Drill 2 — Metadata listing path
+
+Policy:
+
+```hcl
+path "secret/metadata/team-a/*" {
+  capabilities = ["list"]
+}
+```
+
+| Request | Allow or deny? | Matching policy path and capability |
+|---|---|---|
+| List `secret/metadata/team-a/guide` | [fill in] | [fill in] |
+| List `secret/metadata/team-b/guide` | [fill in] | [fill in] |
+| Read `secret/data/team-a/guide` | [fill in] | [fill in] |
+
+#### Constraints
+
+- Treat `*` as matching only the remainder of the stated path pattern.
+- Use only the listed `list` capability; do not infer `read`.
+- Do not start a Vault server or include secret values.
+
+#### Done when
+
+- Each request is judged from both its path and requested capability.
+- The explanation distinguishes listing metadata from reading KV data.
+
+#### Evidence
+
+- Save the completed decision table and explanation in the slice's notes.
 
 ## Explain
 

@@ -11,8 +11,22 @@ A group of related slices, such as Terraform or Vault.
 **Foundations slice**
 The `00` slice that teaches the basic concepts for a topic.
 
+**Starter**
+Material the guide provides for a task. It never satisfies the task's Done when
+on its own. It is either a Scaffold or a Fix-it starter. A working example is
+not a starter and is not allowed after the foundations slices.
+
 **Scaffold**
-Guided starter material with blanks. Only foundations slices may use one.
+A Starter with blanks. A blank is any piece the learner must author: a value, a
+block, or a whole file. Every blank has a Done when line.
+
+**Fix-it starter**
+A Starter that is deliberately broken. The learner repairs it.
+
+**Warm-up**
+A guided Task that comes before a Task that introduces a new skill. It uses a
+Starter on a different mini-problem, with its own short Done when and its own
+evidence. It is required. The Task after it stays the graded one.
 
 **Topic slice**
 One of 12 learning units grouped into four topics before the capstone. Topic

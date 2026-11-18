@@ -21,6 +21,7 @@ submissions/
       evidence/
         task-01-plan.txt
         task-01-resources.txt
+      warmup/
       answers.md
     02-state/
     03-modules/
@@ -43,16 +44,41 @@ Keep final code and authored task artifacts, including Markdown findings,
 in `code/`. Keep only transient run captures in `evidence/`.
 Slices that start a new tool track can start with an empty `code/` folder.
 
-## Foundations scaffolds
+Warm-up artifacts use the provisional path
+`submissions/<track>/<slice>/warmup/`. Keep that folder separate from the
+graded task's `code/` and `evidence/` folders. Do not use warm-up output as
+graded-task code or evidence.
 
-A scaffold is an intentionally incomplete starting structure with blanks for the
-learner to complete. Scaffolds are allowed only in foundations slices (`00`).
-They must not provide the completed answer. Slices `01` and later contain no
-solutions or scaffolds.
+## Starters and warm-ups
 
-For a scaffolded task, `Done when` and `Evidence` apply to the learner's
-completed artifact, not merely to filled blanks. The grader checks every
-`Done when` line against the files in `code/` and any required run captures.
+A Starter is material the guide provides before a task. It never satisfies a
+`Done when` on its own. The learner must author the required result and provide
+the evidence that the task asks for.
+
+A Starter is either:
+
+- a **Scaffold**, an intentionally incomplete structure with blanks for the
+  learner to author
+- a **Fix-it starter**, a deliberately broken structure for the learner to
+  repair
+
+Each Scaffold blank must have a corresponding `Done when` line. A blank can be
+a value, a block, or a whole file.
+
+Starters are allowed in any slice. They must not provide the completed answer.
+Slices after the foundations slice (`00`) must not include working examples.
+A working example is not a Starter.
+
+A slice has one required Warm-up. It comes before the graded Task that
+introduces the slice's main new skill. A slice that teaches two unrelated
+skills can have a second Warm-up. The Warm-up uses a Starter and a different
+mini-problem. It has its own concise `Done when` and its own evidence. Grade
+the Warm-up and the graded Task as separate units. The graded Task keeps its
+existing task number.
+
+For a Starter task or Warm-up, `Done when` and `Evidence` apply to the learner's
+completed artifact, not merely to filled blanks or supplied material. The
+grader checks every requirement against the relevant artifacts and captures.
 For text-only tasks, the authored artifact itself can prove the requirement,
 such as a diagram in Markdown.
 

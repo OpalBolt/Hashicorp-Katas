@@ -15,7 +15,7 @@ This is a Terraform and Vault learning guide built with Markdown, MkDocs Materia
 
 ## Boundaries
 ### ✅ Always
-- Read `docs/grading.md` before changing the grading contract or learner evidence layout.
+- Follow `docs/grading.md` for the grading contract, starter rules, and learner evidence layout.
 - Keep learner tasks free of solution code, solution steps, and prewritten answers.
 - Keep generated site output out of source changes.
 

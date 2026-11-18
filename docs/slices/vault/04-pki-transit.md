@@ -36,7 +36,85 @@ secret values from evidence.
 - key versions
 - response wrapping
 
+### CA chain
+
+```mermaid
+flowchart TD
+    A["Root CA: trust anchor, used rarely"] -->|"Signs"| B["Intermediate CA: issuing CA"]
+    B -->|"Signs"| C["Leaf certificate: service identity"]
+    C --> D["Client verifies identity, lifetime, and chain to the trusted root"]
+```
+
+The root CA signs only the intermediate CA. The intermediate CA signs the
+service certificates. A client trusts a leaf certificate only when the chain
+leads back to the trusted root.
+
+Clients check revocation only if their verification setup supports and enables
+it. A valid chain alone does not prove that a certificate is not revoked.
+
+### Transit key versions
+
+```mermaid
+flowchart TD
+    A["Application sends plaintext to Vault transit"] --> B["Vault encrypts with key version 1"]
+    B --> C["Application stores version 1 ciphertext"]
+    B --> D["Vault rotates the key to version 2"]
+    D --> E["New encryption uses version 2"]
+    C --> F["Application sends old ciphertext to Vault"]
+    F --> G["Vault decrypts with version 1 if that version remains allowed"]
+    E --> H["Application stores version 2 ciphertext"]
+```
+
+Rotation adds a new key version and does not replace the old one. New data
+uses version 2, while old ciphertext still needs version 1 to decrypt.
+
+The key stays in Vault. Blocking an old version prevents its ciphertext from
+decrypting until the version is allowed again or the data is otherwise recovered.
+
+### Response wrapping
+
+```mermaid
+flowchart TD
+    A["Sender requests a wrapped response with a TTL"] --> B["Vault returns a single-use wrapping token"]
+    B --> C["Sender delivers the token to the recipient"]
+    C --> D{"Token unused and within TTL?"}
+    D -- Yes --> E["Recipient unwraps the response once"]
+    D -- No --> F["Unwrap fails"]
+    E --> G["Token cannot be reused"]
+```
+
+The key decision is the check on the token. Vault unwraps the response only
+for an unused token within its TTL. After one unwrap, the token is spent.
+
+Anyone who has the wrapping token can attempt to unwrap it. Protect its
+delivery and investigate an unexpected unwrap failure.
+
 ## Tasks
+
+### Warm-up for Task 01 — Draw a metrics trust hierarchy
+
+Complete this offline trust hierarchy for a fictional metrics endpoint. Do not
+create a CA or include key material.
+
+#### Starter
+
+```text
+Root CA role and key-handling boundary: [complete]
+Intermediate CA role and key-handling boundary: [complete]
+Chain from root to metrics endpoint: [complete]
+Bounded issuing lifetime: [complete]
+Key kept offline or used rarely and why: [complete]
+```
+
+#### Done when
+
+- The hierarchy shows the root, intermediate, and endpoint roles and signing relationships.
+- The issuing lifetime is bounded, and the key-handling boundaries distinguish the two CA keys.
+- The record identifies the offline or rarely used key and explains why.
+
+#### Evidence to produce
+
+- The completed hierarchy in `submissions/vault/04-pki-transit/warmup/metrics-trust.md`.
 
 ### Task 01 — Build a root and intermediate CA
 

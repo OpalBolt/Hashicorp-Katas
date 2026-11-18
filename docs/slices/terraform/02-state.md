@@ -13,7 +13,10 @@ Prerequisite: [Terraform 01 — Terraform workflow](01-workflow.md).
 Terraform state connects configuration to real resources. A lost state file can make a team lose track of ownership and recreate resources. A locked state can stop planned work until someone resolves the operation that holds the lock. State can contain secrets, so a leaked state file can expose client credentials. Parallel applies can race, overwrite state, or produce changes that no one reviewed.
 
 Start this slice in a new folder: `submissions/terraform/02-state/`.
-Copy the previous slice's `code/` folder into it and extend that work. The previous slice destroyed its resources, so recreate your local setup before these exercises.
+Copy the previous slice's `code/` folder into it and extend that work. The
+previous slice's Task 04 leaves its resources present. After you capture that
+task's evidence, clean up the resources from the original working folder and
+state. Task 01 in this slice then recreates them with a new working state.
 
 Use the local AWS target at `localhost:4566`. Use fictitious test values only. Keep the configuration and state that the next slice will need.
 Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-without-duplicate-logs).
@@ -27,6 +30,75 @@ Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-wit
 - import
 - moved blocks
 - state commands
+
+## Diagrams
+
+### Configuration, state, and real resources
+
+```mermaid
+flowchart TD
+  config["Configuration: what you declare"] --> plan["terraform plan"]
+  state["State: maps each address to a real object ID"] --> plan
+  real["Real resources"] --> refresh["Refresh reads current values"]
+  refresh --> plan
+  plan --> review["Reviewed plan"]
+  review --> apply["terraform apply"]
+  apply --> realafter["Real resources changed to match configuration"]
+  apply --> stateafter["Updated state with new IDs and values"]
+```
+
+Terraform plans from three inputs. Configuration says what you want. State
+says which real object belongs to each resource address. Refresh reads what
+the real objects look like now. Drift is a difference between configuration
+and the refreshed real object. After apply, the updated state becomes the
+state input for the next plan.
+
+### State locking
+
+```mermaid
+sequenceDiagram
+  participant A as Operation A
+  participant B as Operation B
+  participant S as Shared state backend
+  A->>S: Request lock
+  S-->>A: Lock granted
+  B->>S: Request lock
+  S-->>B: Request fails: lock held
+  Note over B: With -lock-timeout, B retries until the timeout expires
+  A->>S: Write state and release lock
+  B->>S: Retry lock request
+  S-->>B: Lock granted
+  B->>S: Complete operation and release lock
+```
+
+Only one operation can hold the lock on a shared state. Operation B does not
+wait by default. It fails at once unless you give it a lock timeout. When A
+writes its state and releases the lock, B can start from the state that A
+wrote. The lock prevents two applies from overwriting each other's state.
+
+### Local and remote backends
+
+```mermaid
+flowchart TD
+  subgraph local["Local backend"]
+    L["One working folder"] --> LF["Local state file"]
+  end
+  LF --> MIGRATE["terraform init migrates existing state"]
+  subgraph remote["Remote backend"]
+    R["Shared backend"]
+    A["Operator A"] --> R
+    B["Operator B"] --> R
+    R --> LOCK["Locking, when supported"]
+    R --> STATE["Remote state"]
+  end
+  MIGRATE --> R
+```
+
+A local backend keeps state in one folder on one machine. Only that folder
+knows which objects Terraform manages. A remote backend stores state where
+several operators can reach it, and it can lock state while one of them works.
+Migration copies the existing state to the backend. It does not create new
+resources or a new, empty state.
 
 ## Tasks
 
@@ -54,6 +126,38 @@ Continue with the S3 bucket and text object from Terraform 01.
 - The copied and extended configuration files and `.terraform.lock.hcl`.
 - A safe state inspection and a local AWS check of the recreated resources.
 - The working folder and state location.
+
+### Warm-up — Plan a state migration
+
+Before Task 02, practice planning a state migration on paper. Create the
+artifact in `submissions/terraform/02-state/warmup/`. Keep it separate from
+the graded Task evidence.
+
+Use this fictional service-registry scenario: Team Cedar owns a local state
+file at `local-file: ./registry/state.json`. It plans to move the record to
+Team Maple's test-only backend location `test-backend: catalog/registry.tfstate`.
+Use only this scenario. Do not configure a real backend.
+
+**Starter:** `submissions/terraform/02-state/warmup/task-02.md`
+
+```markdown
+# Backend migration note
+
+- Current owner and location: [fill in]
+- Target owner and location: [fill in]
+- Migration risks: [fill in]
+- Checks that ownership stays intact: [fill in]
+```
+
+#### Done when
+
+- The note identifies both locations and who owns each.
+- The risk field names at least two migration risks.
+- The final field lists checks that would show the same objects remain tracked.
+
+#### Evidence
+
+- Save the completed migration note at the Starter path.
 
 ### Task 02 — Move state to a remote backend
 
@@ -210,6 +314,55 @@ The existing text object can hold the test value. You do not need a real credent
 - A redacted state inspection that identifies the value's location.
 - A short note about the access risk.
 - A final check that the working state remains available.
+
+## Predict the plan
+
+These ungraded exercises use fictional resources. Predict the plan before you
+write your reasoning. Do not run Terraform for these scenarios.
+
+### Out-of-band drift
+
+A declared bucket tag is `owner = "platform"`. Someone changes the live tag to
+`owner = "release"` without changing configuration.
+
+#### Constraints
+
+- Do not change the scenario values.
+- Describe what Terraform compares before it proposes an action.
+- Do not treat the exercise as evidence for Task 04.
+
+#### Done when
+
+- The prediction identifies whether the live value matches the declaration.
+- The prediction states what action Terraform is likely to propose.
+- The reasoning distinguishes configuration, state, and the live resource.
+
+#### Evidence to produce
+
+- A short plan prediction and the reasoning behind it.
+
+### Rename with a moved block
+
+A resource block changes from `aws_s3_bucket.logs` to
+`aws_s3_bucket.audit_logs`. The configuration also declares a `moved` block
+from the old address to the new address.
+
+#### Constraints
+
+- Do not apply a plan.
+- Explain the purpose of the address mapping without assuming a real bucket.
+- Keep this prediction separate from Task 06 evidence.
+
+#### Done when
+
+- The prediction describes how the address mapping affects Terraform's state
+  comparison.
+- It identifies the outcome that would signal an unintended replacement.
+- It states what to inspect before any apply.
+
+#### Evidence to produce
+
+- A short plan prediction and one check that would confirm the intended move.
 
 ## Explain
 

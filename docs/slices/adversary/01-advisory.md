@@ -38,6 +38,32 @@ This slice needs written artifacts, not new infrastructure.
 - HSM support
 - HCP and Terraform Cloud versus self-run
 
+### From a client problem to an option
+
+```mermaid
+flowchart TD
+  A["Client describes a problem and planned use"] --> L["Verify current licence terms and product availability"]
+  L --> R{"Which requirement needs investigation?"}
+  R -->|No identified Enterprise need| C["Consider Community or another deployment option"]
+  R -->|Tenant separation| N["Consider namespaces"]
+  R -->|Recovery across clusters| D["Consider Vault Enterprise replication"]
+  R -->|Policy governance| P["Consider Sentinel"]
+  R -->|Hardware-backed keys| H["Consider HSM support"]
+  N --> F["Compare Community alternatives, fit, operations, and cost"]
+  D --> F
+  P --> F
+  H --> F
+  C --> F
+  F --> V["Verify feature availability and terms in current official sources"]
+  V --> Q["Record evidence, open questions, and client decision"]
+```
+
+These are candidates to investigate, not automatic recommendations. Verify
+licence terms, feature availability, and client fit against current official
+sources. Vault Enterprise replication connects clusters. Integrated storage
+replicates data among nodes within one cluster. One does not establish the
+other.
+
 ## Tasks
 
 ### Task 01 — Research current licence terms
@@ -75,6 +101,42 @@ cite every material claim.
 - A redacted comparison of the terms and commercial facts found.
 - A note listing open questions that require confirmation from HashiCorp or
   the client.
+
+### Warm-up for Task 02 — Compare compliance problems
+
+The fictional client Alder runs two teams on a shared Vault cluster. An audit
+asks for separate team administration. A recovery exercise also requires
+service in a second region within four hours. Alder has not tested either
+requirement or agreed on a budget.
+
+Compare candidate tenancy and cross-cluster recovery capabilities. Do not
+recommend a product. Check current official sources for any capability claim.
+
+#### Starter
+
+`submissions/adversary/01-advisory/warmup/task-02.md`
+
+```text
+Tenancy: feature [complete]; client problem [complete]
+Evidence to confirm fit [complete]; cost or operational consequence [complete]
+What the feature does not solve [complete]
+
+Recovery: feature [complete]; client problem [complete]
+Evidence to confirm fit [complete]; cost or operational consequence [complete]
+What the feature does not solve [complete]
+
+Official sources, URLs, and access dates: [complete]
+```
+
+#### Done when
+
+- Both mappings name a candidate feature and a distinct client problem, with current official citations including URLs and access dates.
+- Each mapping identifies evidence to confirm or reject fit and a cost or operational consequence.
+- Each mapping states what the feature does not solve, without recommending a product.
+
+#### Evidence to produce
+
+- The completed comparison and source citations at the Starter path.
 
 ### Task 02 — Map Enterprise features to client problems
 
@@ -180,6 +242,36 @@ operation.
 - The one-page Vault setup review checklist.
 - A redacted record showing it was applied to the fictitious setup.
 - The source list and unresolved questions produced during the review.
+
+## Ungraded exercise — Spot the issues in a client setup
+
+The fictional client Elm runs one Vault cluster with three integrated storage
+nodes. All three nodes and the only snapshot copy are in the same region.
+The client has not tested a restore. It needs a second region to take over
+within four hours after a regional outage.
+
+Elm's adviser says the nodes already provide cross-region disaster recovery
+and that buying Enterprise guarantees the requirement. The adviser has not
+checked the edition, current feature terms, recovery procedure, or operating
+cost. A shared Terraform state store is readable by every employee, and
+Terraform reads a Vault secret into state.
+
+### Constraints
+
+- Work offline from the facts above. Do not use a live environment.
+- Distinguish observed issues from claims that need current official sources
+  or client confirmation.
+- Do not include secret values or assert a licence or product conclusion.
+
+### Done when
+
+- The review identifies the recovery and state-access issues and explains their consequences.
+- It distinguishes node replication within one cluster from replication between clusters.
+- It names the evidence, owners, or current official sources needed to assess the adviser's claims and recovery target.
+
+### Evidence to produce
+
+- A value-free review in `submissions/adversary/01-advisory/warmup/spot-setup.md`.
 
 ## Explain
 

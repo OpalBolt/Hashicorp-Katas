@@ -31,7 +31,73 @@ values. Redact credentials, tokens, passwords, and secret values from evidence.
 - static role
 - rotation
 
+### Lease lifecycle
+
+```mermaid
+flowchart TD
+    A["Request a dynamic credential"] --> B["Vault creates a lease with a TTL"]
+    B --> C{"Renew before the TTL ends?"}
+    C -- Yes --> D["Vault may extend the TTL, up to the effective max TTL"]
+    D --> C
+    C -- TTL ends or max TTL reached --> E["Lease expires"]
+    B --> F["Explicit lease revocation"]
+    D --> F
+    E --> G["Vault attempts to revoke the credential"]
+    F --> G
+    G --> H{"Revocation succeeds?"}
+    H -- Yes --> I["Credential revoked"]
+    H -- No --> J["Investigate the failed revocation"]
+```
+
+Renewal loops back to the TTL decision until the lease reaches its effective
+max TTL. Both expiry and explicit revocation lead to the same revocation
+attempt. A failed revocation needs investigation. Expiration alone does not
+prove database cleanup succeeded.
+
+### Dynamic and static roles
+
+```mermaid
+flowchart TD
+    A["Credential request"] --> B{"Database role type"}
+    B -- Dynamic --> C["Vault creates a database user for the request"]
+    C --> D["Vault leases the temporary credential"]
+    D --> E["Lease expiry or revocation triggers credential revocation"]
+    B -- Static --> F["Role maps to an existing database account"]
+    F --> G["Vault returns the account credential"]
+    G --> H["Vault rotates the account password on its schedule or on request"]
+    H --> I["The database account remains the same"]
+```
+
+The role type is the key decision. A dynamic role creates a new database user
+for each request. Vault revokes that user when the lease expires or is revoked.
+A static role keeps one existing account and changes only its password.
+
 ## Tasks
+
+### Warm-up for Task 01 — Compare report-job leases
+
+Complete this offline record for two fictional report jobs. Do not request
+credentials or include credential values.
+
+#### Starter
+
+```text
+Report-job role permissions: [complete]
+Job A identity and lease timeline: [complete]
+Job B identity and lease timeline: [complete]
+Initial TTL, renewal, and effective max TTL: [complete]
+Check that the jobs use separate identities: [complete]
+```
+
+#### Done when
+
+- The role permissions allow only the jobs' stated reporting needs.
+- Both timelines show separate identities, initial TTL, renewal, and the effective max TTL.
+- The identity check distinguishes the jobs without exposing credentials.
+
+#### Evidence to produce
+
+- The completed record in `submissions/vault/03-dynamic-secrets/warmup/report-job-leases.md`.
 
 ### Task 01 — Request database credentials on demand
 
@@ -107,6 +173,30 @@ longer works while the other user remains separate.
 - Redacted post-revocation checks for both users.
 - A short statement that explains which user the revoked lease created.
 
+### Warm-up for Task 03 — Analyze service-account rotation
+
+Complete this offline rotation record for a fictional service account. Do not
+include credentials or run a rotation.
+
+#### Starter
+
+```text
+Static role and existing service-account mapping: [complete]
+Rotation event: [complete]
+Old credential access before and after rotation: [complete]
+New credential access after rotation: [complete]
+```
+
+#### Done when
+
+- The role maps to one existing service account, and Vault rotates its password.
+- The old credential succeeds before rotation and fails afterward in a new access check.
+- The new credential succeeds after rotation without changing the account identity.
+
+#### Evidence to produce
+
+- The completed record in `submissions/vault/03-dynamic-secrets/warmup/service-account-rotation.md`.
+
 ### Task 03 — Rotate a static database credential
 
 Create a static role for a test database account. Request its credential, rotate
@@ -139,6 +229,32 @@ working.
 - A redacted pre-rotation access check.
 - Redacted rotation output.
 - Redacted checks that show old access fails and new access succeeds.
+
+### Break it on purpose (ungraded) — Let a test lease expire
+
+Issue a short-lived credential for a disposable database identity. Let its
+lease expire, then test a new database connection and inspect the result.
+
+#### Constraints
+
+- Use a separate disposable role and identity, not either Task 01 identity or the static account.
+- Use a bounded lease and max TTL, and do not renew or explicitly revoke the lease.
+- Do not stop or reset Vault, PostgreSQL, or the working database.
+- Do not change other identities or their access.
+- Keep credentials, tokens, connection strings, and secret values out of evidence.
+
+#### Done when
+
+- The disposable identity connects before its lease expires.
+- Vault shows that the lease expired, and a new connection with that identity fails.
+- The record explains the expiry and investigates any failed revocation instead of assuming cleanup succeeded.
+- The working environment remains available.
+
+#### Evidence to produce
+
+- Redacted lease lifetime metadata and pre-expiry connection result.
+- Redacted expiry, post-expiry connection, and working-environment checks.
+- A short explanation of the result, including any revocation failure.
 
 ## Explain
 
