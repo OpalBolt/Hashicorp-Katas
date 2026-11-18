@@ -67,6 +67,28 @@ tags at the top, and the navigation groups the slices by track.
 
 Complete the topics in this order the first time. Each row lists the required earlier work.
 
+The arrows show direct prerequisites. The table also gives a recommended order.
+
+```mermaid
+flowchart TD
+    tool["Terraform tool"] --> tf00["Terraform 00: Block types"]
+    tf00 --> tf01["Terraform 01: Workflow"]
+    setup["Local setup"] --> tf01
+    tf01 --> tf02["Terraform 02: State and drift"]
+    tf02 --> tf03["Terraform 03: HCL and modules"]
+    v00["Vault 00: Foundations"] --> v01["Vault 01: First contact"]
+    v01 --> v02["Vault 02: Real server"]
+    v02 --> v03["Vault 03: Dynamic secrets and rotation"]
+    v03 --> v04["Vault 04: PKI and transit"]
+    tf03 --> tv01["Terraform + Vault 01: Terraform with Vault"]
+    v04 --> tv01
+    tv01 --> tv02["Terraform + Vault 02: CI/CD"]
+    tv01 --> adv01["Adversary 01: Licensing and Enterprise"]
+    v04 --> capstone["Capstone: Client scenarios"]
+    tv02 --> capstone
+    adv01 --> capstone
+```
+
 | # | Slice | Topic | Prerequisites |
 |---|---|---|---|
 | [Terraform 00 — Block types](slices/terraform/00-block-types.md) | Block types | :simple-terraform:{ .track-terraform } Terraform | [Terraform tool](setup.md#install-the-tools) |
