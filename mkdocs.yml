@@ -40,6 +40,8 @@ plugins:
   - tags
 extra_css:
   - stylesheets/extra.css
+extra_javascript:
+  - javascripts/mermaid-lightbox.js
 markdown_extensions:
   - admonition
   - attr_list

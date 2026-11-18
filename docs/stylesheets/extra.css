@@ -100,3 +100,75 @@
 .md-typeset h2 + h3[id] {
   margin-top: 1rem;
 }
+
+.mermaid-expand,
+.mermaid-lightbox button {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.2rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+  cursor: pointer;
+  font: inherit;
+}
+
+.mermaid-lightbox button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.mermaid-lightbox {
+  width: 96vw;
+  max-width: none;
+  height: 90dvh;
+  max-height: none;
+  padding: 1rem;
+  border: 0;
+  border-radius: 0.3rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+}
+
+.mermaid-lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.mermaid-lightbox::backdrop {
+  background: rgb(0 0 0 / 70%);
+}
+
+.mermaid-lightbox__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mermaid-lightbox__toolbar strong {
+  margin-right: auto;
+}
+
+.mermaid-lightbox__viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.mermaid-lightbox__canvas {
+  cursor: grab;
+}
+
+.mermaid-lightbox__viewport.is-dragging .mermaid-lightbox__canvas {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.mermaid-lightbox__canvas .mermaid {
+  margin: 0;
+}
+
+body:has(.mermaid-lightbox[open]) {
+  overflow: hidden;
+}
