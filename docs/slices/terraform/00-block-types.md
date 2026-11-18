@@ -228,6 +228,49 @@ and [dependency lock file guide](https://developer.hashicorp.com/terraform/langu
 
 ## Tasks
 
+### Warm-up — Classify an inventory hand-off
+
+Before Task 01, practice choosing a block for each value without creating a
+file. Work in
+`submissions/terraform/00-block-types/warmup/task-01-inventory.md`.
+
+#### Starter
+
+Copy this incomplete hand-off and replace every `???`:
+
+```markdown
+# Northstar inventory hand-off
+
+The Northstar team gives Terraform a project name. Terraform reads an existing
+inventory note, derives a dated hand-off label, and publishes that label for
+the release job. Terraform does not create or own the inventory note.
+
+| Part | What it does | Block type | Reason |
+|---|---|---|---|
+| Project name supplied by the release job | Caller input | ??? | ??? |
+| Existing inventory note | Read-only external information | ??? | ??? |
+| Hand-off label derived from the inputs | Named local expression | ??? | ??? |
+| Published hand-off label | Value for the release job | ??? | ??? |
+| Managed hand-off record | Object Terraform would create or update | ??? | ??? |
+
+Value flow:
+
+??? → ??? → ???
+Existing inventory note → ??? → managed hand-off record
+Managed hand-off record → ???
+```
+
+#### Done when
+
+- Every blank names the appropriate block type or relationship.
+- The explanation distinguishes caller input, derived values, read-only data, and managed objects.
+- The completed artifact is saved as `warmup/task-01-inventory.md`.
+
+#### Evidence to produce
+
+Submit the completed Markdown artifact in
+`submissions/terraform/00-block-types/warmup/task-01-inventory.md`.
+
 ### Task 01 — Build a five-block local report
 
 Create a small Terraform configuration in

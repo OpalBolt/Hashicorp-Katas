@@ -31,6 +31,38 @@ You do not need separate initialization or apply logs.
 - version pinning
 - emulator limits
 
+The workflow reads and writes different things at each stage:
+
+```mermaid
+flowchart LR
+    config["Configuration files"] --> init["terraform init"]
+    lock["Provider requirements and lock file"] --> init
+    init --> plugins["Provider plugins and working directory"]
+    config --> plan["terraform plan"]
+    plugins --> plan
+    state["Existing state"] --> plan
+    plan --> review["Reviewed plan"]
+    config --> apply["terraform apply"]
+    plugins --> apply
+    state --> apply
+    review --> apply
+    apply --> resources["Managed resources"]
+    apply --> newstate["Updated state"]
+    newstate --> state
+    config --> destroy["terraform destroy"]
+    plugins --> destroy
+    state --> destroy
+    destroy --> resources
+    destroy --> newstate
+```
+
+`init` reads provider requirements and lock information and prepares provider
+plugins; it does not create managed resources. `plan` reads configuration,
+providers, and state and produces a proposal; it does not write managed
+resources. `apply` reads the reviewed proposal and state, then writes managed
+resources and updated state. `destroy` reads configuration and state, removes
+the managed resources, and records the resulting state.
+
 ## Where to find resource information
 
 The [Terraform Registry](https://registry.terraform.io) documents every
@@ -49,6 +81,80 @@ The resource pages describe real AWS. The local AWS target supports a subset of
 services. The [local setup](../../setup.md) page links to the Floci documentation.
 
 ## Tasks
+
+### Exercise — Predict the plan for a queue change
+
+A team has already applied a local-target configuration. Its state contains
+one queue and one text object in that queue. The configuration change does
+three things:
+
+- changes the text object's contents from `ready` to `approved`;
+- adds a description to the queue;
+- leaves the provider version and resource names unchanged.
+
+Predict the plan before anyone runs it. Record the expected action for each
+item and one reason a reviewer should reject a plan that proposes an unrelated
+replacement or a resource outside this configuration.
+
+#### Constraints
+
+- Work from the scenario only; do not run Terraform or contact a cloud account.
+- Record one expected action for the queue and one for the text object.
+- Explain how the existing state helps Terraform distinguish an update from a new resource.
+- Keep the artifact about the fictional queue; do not copy the graded configuration.
+
+#### Done when
+
+- The artifact records a predicted action for both existing resources.
+- The reasoning explains why the provider version and resource names do not imply replacement.
+- The review check identifies an unexpected action that would need investigation.
+
+#### Evidence to produce
+
+Save the prediction and review note as
+`submissions/terraform/01-workflow/code/predict-the-plan.md`.
+
+### Warm-up — Annotate a local-target manifest
+
+Before Task 01, practice provider endpoint and plan review decisions without
+deploying anything. Work in
+`submissions/terraform/01-workflow/warmup/task-01-queue-manifest.md`.
+
+#### Starter
+
+Copy this incomplete manifest and replace every `???`:
+
+```markdown
+# Northstar queue deployment review
+
+This is a fictional deployment proposal. It must stay on the local target.
+
+| Review item | Your entry |
+|---|---|
+| Provider endpoint | ??? |
+| Provider version constraint | ??? |
+| Resource expected to be created | ??? |
+| Resource expected to be updated | ??? |
+| Resource expected to be unchanged | ??? |
+
+## Plan-review questions
+
+1. What evidence would show that the plan uses the local target rather than a real cloud account?
+   Answer: ???
+2. Which plan action would make you stop before apply, and why?
+   Answer: ???
+```
+
+#### Done when
+
+- Every blank specifies a safe local endpoint, a pinned version, or a justified review entry.
+- The completed answers distinguish create, update, and no-op actions.
+- The completed artifact is saved as `warmup/task-01-queue-manifest.md`.
+
+#### Evidence to produce
+
+Submit the completed Markdown artifact in
+`submissions/terraform/01-workflow/warmup/task-01-queue-manifest.md`.
 
 ### Task 01 — Configure a local target
 
@@ -136,6 +242,43 @@ Destroy the resources from the same working folder and state used in the earlier
 - Destroy output.
 - The resulting state inspection.
 - A local AWS check that shows the resources are absent.
+
+### Warm-up — Separate emulator evidence from production claims
+
+Before Task 04, practice separating a local observation from an unverified
+production claim. Work in
+`submissions/terraform/01-workflow/warmup/task-04-emulator-evidence.md`.
+
+#### Starter
+
+Copy this incomplete evidence table and replace every `???`:
+
+```markdown
+# Northstar object-storage emulator review
+
+| Question | Entry |
+|---|---|
+| What the fictional emulator run observed | ??? |
+| Official source to consult | ??? |
+| Production behavior still unverified | ??? |
+| Why confusing the two could harm a client decision | ??? |
+| Check required before production use | ??? |
+
+## Boundary statement
+
+The emulator demonstrates ???, but it does not demonstrate ???.
+```
+
+#### Done when
+
+- Every blank records a local observation, source, limitation, risk, or follow-up check.
+- The boundary statement clearly separates what was demonstrated from what remains unverified.
+- The completed artifact is saved as `warmup/task-04-emulator-evidence.md`.
+
+#### Evidence to produce
+
+Submit the completed Markdown artifact in
+`submissions/terraform/01-workflow/warmup/task-04-emulator-evidence.md`.
 
 ### Task 04 — Find an emulator limit
 
