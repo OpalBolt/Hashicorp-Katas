@@ -35,7 +35,67 @@ Follow the [Terraform evidence guidance](../../grading.md#terraform-evidence-wit
 - bootstrap token
 - short-lived provider credentials
 
+### Secret to state
+
+```mermaid
+flowchart TD
+  V["Vault holds a secret"] -->|data source reads value| T["Terraform operation"]
+  T -->|passes value| R["Managed resource or destination"]
+  T -->|may persist value| P["Saved plan"]
+  T -->|may persist value| S["Terraform state"]
+  S -->|stored by backend| B["Local or remote state storage"]
+  T -->|diagnostics or provider logs| L["Logs may expose value"]
+```
+
+Marking a value sensitive hides some display output. It does not remove the
+value from state or saved plans. The destination and logs may also expose it.
+
+### First-token bootstrap
+
+```mermaid
+flowchart TD
+  I["Initialize a test Vault"] --> O{"Bootstrap authority"}
+  O -->|initial root token| H["Authorized operator handles token outside the repository"]
+  Q["Recovery: authorized key-share quorum"] -->|generate a new root token| H
+  H --> C["Configure limited policy and authentication"]
+  C --> A["Routine operator authenticates"]
+  A --> T["Bounded provider credential"]
+  T --> M["Terraform manages steady-state Vault configuration"]
+  H --> X["Revoke or replace bootstrap authority after safe handoff"]
+```
+
+Protect initialization material and recovery shares separately. A recovery
+quorum is an alternative when the initial root token is unavailable. Follow
+the server's seal and recovery procedures before generating a root token.
+Bootstrap access must not enter configuration, plans, or state.
+
 ## Tasks
+
+### Warm-up for Task 01 — Trace a fictional API setting
+
+Trace a fictional API setting through a generic IaC pipeline. Work offline.
+Use labels only, not a setting value.
+
+#### Starter
+
+`submissions/terraform-vault/01-terraform-vault/warmup/task-01.md`
+
+```text
+Setting source and IaC read: [complete]
+Flow to destination: [complete]
+Durable artifacts and exposure points: [complete]
+Effect and limit of sensitive marking: [complete]
+```
+
+#### Done when
+
+- The trace names the source, read, and destination in order.
+- It identifies the durable artifacts that can retain the setting.
+- It explains what sensitive marking hides and why storage can still expose it.
+
+#### Evidence to produce
+
+- The completed trace at the Starter path, with no setting value.
 
 ### Task 01 — Make a secret land in state
 
@@ -76,6 +136,33 @@ Use only a made-up value. The object can expose its contents as well as Terrafor
 - A redacted state inspection naming the exposed path or attribute.
 - A short note explaining where the leak occurred.
 
+### Warm-up for Task 02 — Compare delivery channels
+
+Compare two fictional channels offline. Channel A stores a setting in a
+deployment record. Channel B passes it for one operation without storing it
+in that record. Neither channel describes the graded destination.
+
+#### Starter
+
+`submissions/terraform-vault/01-terraform-vault/warmup/task-02.md`
+
+```text
+Channel A feature and storage boundary: [complete]
+Channel B feature and storage boundary: [complete]
+Checks for absence from each artifact: [complete]
+Destination boundary and remaining limitation: [complete]
+```
+
+#### Done when
+
+- The comparison identifies how each channel handles the setting and selects a channel for avoiding the deployment record.
+- The checks cover both a saved operation plan and the resulting record without printing a value.
+- The note identifies what the destination may retain and one limit of the selected channel.
+
+#### Evidence to produce
+
+- The completed comparison at the Starter path.
+
 ### Task 02 — Keep a secret out of state and saved plans
 
 Replace the state-exposing hand-off with a supported ephemeral resource or
@@ -113,6 +200,32 @@ ephemeral values or offers a write-only alternative.
 - A redacted destination check showing that the secret reached its intended destination.
 - Redacted state and saved-plan inspections proving absence.
 - A short limitation note backed by the version or provider behavior tested.
+
+### Warm-up for Task 03 — Map configuration ownership
+
+Draw an offline ownership map for a fictional secrets mount managed by IaC.
+Keep its bootstrap authority separate from routine configuration.
+
+#### Starter
+
+`submissions/terraform-vault/01-terraform-vault/warmup/task-03.md`
+
+```text
+Bootstrap owner and authority boundary: [complete]
+IaC owner and managed mount: [complete]
+Authentication and least-privilege policy relationships: [complete]
+Follow-up plan checks: [complete]
+```
+
+#### Done when
+
+- The map distinguishes the bootstrap owner and authority from the IaC owner and managed mount.
+- It connects authentication and a least-privilege policy to the mount's intended access.
+- The follow-up checks identify unexpected recreation or unmanaged changes.
+
+#### Evidence to produce
+
+- The completed ownership map at the Starter path.
 
 ### Task 03 — Manage Vault configuration with Terraform
 
@@ -153,6 +266,32 @@ unless you explicitly bring them under Terraform ownership.
 - Redacted Vault inspections for the policy, auth method, and mount.
 - A note identifying the provider credential lifetime and storage boundary.
 
+### Warm-up for Task 04 — Outline an access handoff
+
+Write an offline runbook outline for handing access to a fictional operations
+team. Do not create or record a credential.
+
+#### Starter
+
+`submissions/terraform-vault/01-terraform-vault/warmup/task-04.md`
+
+```text
+Responsibilities for sender, recipient, and routine operator: [complete]
+Temporary material location and handoff boundary: [complete]
+How the recipient obtains bounded routine access: [complete]
+Loss or exposure response: [complete]
+```
+
+#### Done when
+
+- The outline assigns each responsibility and describes a protected temporary location and handoff.
+- It describes how the recipient obtains bounded routine access without recording a credential.
+- It gives a response for both lost and exposed bootstrap material.
+
+#### Evidence to produce
+
+- The completed runbook outline at the Starter path.
+
 ### Task 04 — Write a safe first-token bootstrap
 
 Write a short runbook for creating and handing off the first Vault token that
@@ -190,6 +329,43 @@ bootstrap credential is lost or exposed.
 - A responsibility table or equivalent ownership record.
 - A redacted review or test record showing the sequence was checked.
 - A note describing the loss and exposure response.
+
+## Ungraded exercise — Spot the leak in state
+
+Review this partial, fictional state excerpt. The placeholder is not a secret.
+
+```json
+{
+  "resources": [
+    {
+      "type": "fictional_delivery",
+      "instances": [
+        {
+          "attributes": {
+            "setting": "<REDACTED-TEST-VALUE>"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+Assume the provider marks `setting` as sensitive.
+
+### Constraints
+
+- Work offline. Do not create or submit state or a real value.
+- Treat the excerpt as illustrative, not as a complete state format.
+
+### Done when
+
+- The review identifies the exposed attribute and who could read it.
+- It explains the limit of sensitive marking and proposes a safer handoff.
+
+### Evidence to produce
+
+- A value-free review in `submissions/terraform-vault/01-terraform-vault/warmup/spot-state.md`.
 
 ## Explain
 
