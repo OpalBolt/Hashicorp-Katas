@@ -86,9 +86,9 @@ without a Vault server.
 ```mermaid
 flowchart LR
     %% ===== YOU EDIT: replace each ??? with a label (keep the quotes) =====
-    client["???"]
-    token["???"]
-    secret["???"]
+    blank1["???"]
+    blank2["???"]
+    blank3["???"]
 
     %% ===== DO NOT TOUCH: fixed nodes =====
     auth["Auth method"]
@@ -96,15 +96,15 @@ flowchart LR
     mount["Mount"]
 
     %% ===== DO NOT TOUCH: request flow =====
-    client -->|"authenticate"| auth
-    auth -->|"issues"| token
-    client -->|"sends request with token"| policy
+    blank1 -->|"authenticate"| auth
+    auth -->|"issues"| blank2
+    blank1 -->|"sends request"| policy
     policy -->|"allows path"| mount
-    mount --> secret
+    mount --> blank3
 
     %% ===== DO NOT TOUCH: styling (dashed = you fill in) =====
     classDef todo stroke-dasharray: 5 5,stroke-width:2px
-    class client,token,secret todo
+    class blank1,blank2,blank3 todo
 ```
 
 #### Constraints
@@ -118,9 +118,9 @@ flowchart LR
 #### Done when
 
 - `diagram.md` contains one Mermaid diagram and no `???` placeholders.
-- The diagram names a client, auth method, token, policy, mount, and secret.
-- The arrows show authentication before the token request reaches the policy
-  and mount.
+- The diagram labels all six nodes with Vault terms that match the request flow.
+- The arrows show authentication before the request reaches the policy and
+  mount.
 
 #### Evidence to produce
 
