@@ -71,6 +71,15 @@ or including a token.
 **Starter:** `submissions/vault/01-vault-first-contact/warmup/task-01.md`
 
 ```markdown
+# Disposable service startup manifest
+
+| Item | Fictional value |
+|---|---|
+| Startup mode | [fill in] |
+| Listener address | [fill in] |
+| Client address | [fill in] |
+| Health probe target | [fill in] |
+
 # Disposable service readiness review
 
 | Item | Current fictional value | Corrected value |
@@ -85,6 +94,8 @@ or including a token.
 
 #### Done when
 
+- The startup manifest identifies a mode and addresses consistent with the
+  corrected review.
 - The corrected listener, client, and health-probe addresses agree.
 - The review explains why the client and probe must reach the listener.
 - The note identifies safe readiness evidence and excludes credentials.
@@ -103,6 +114,14 @@ evidence.
 **Starter:** `submissions/vault/01-vault-first-contact/warmup/task-02.md`
 
 ```markdown
+# Feature-setting mount record
+
+| Item | Fictional value |
+|---|---|
+| Mount name | [fill in] |
+| Engine type and version | [fill in] |
+| Setting path | [fill in] |
+
 # Feature-setting version timeline
 
 | Version | Event | Current or prior | Safe metadata to record |
@@ -116,6 +135,7 @@ evidence.
 
 #### Done when
 
+- The mount record names the fictional mount, versioned engine, and setting path.
 - The timeline records both events and distinguishes the earlier version from
   the current version.
 - The evidence describes version metadata without reproducing either value.
@@ -149,6 +169,7 @@ document metadata at one path but must not read its sibling path.
 
 - The policy path and capability allow only the fictional handbook metadata
   read.
+- The matrix allows the handbook path and explains why.
 - The matrix denies the sibling payroll path and explains why.
 - The token lifetime is bounded; no server or actual token is used.
 
@@ -177,6 +198,7 @@ credential. Do not create or include a live token.
 
 #### Done when
 
+- The retirement event records revocation of the fictional credential.
 - The timeline distinguishes the access check before retirement from the
   denial check afterward.
 - Evidence identifies the credential only through redacted metadata.
