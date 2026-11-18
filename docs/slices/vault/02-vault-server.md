@@ -63,9 +63,12 @@ flowchart TD
 
 ### Audit before reply
 
+This flow applies to auditable requests. Vault exempts endpoints including
+`sys/health` and `sys/unseal` from auditing.
+
 ```mermaid
 flowchart TD
-    A["Client request"] --> B{"Any audit devices enabled?"}
+    A["Auditable client request"] --> B{"Any audit devices enabled?"}
     B -- No --> D["Process request"]
     B -- Yes --> C["Write request audit record"]
     C --> E{"At least one enabled device succeeds?"}
@@ -363,7 +366,7 @@ or change the record, and restore the snapshot in a safe test instance.
 - Restore output and the post-restore record check.
 - The location and handling statement for the snapshot, without its contents.
 
-### Break it on purpose — Reject a bad server configuration
+### Break it on purpose (ungraded) — Reject a bad server configuration
 
 On a disposable test instance, introduce an invalid storage type in its server
 configuration. Start the test instance and inspect the startup failure. Fix
